@@ -7,7 +7,7 @@
 
     <div>
 
-        <h1 class="text-3xl font-bold text-slate-900 tracking-tight">
+        <h1 class="text-3xl font-bold text-brand-text-dark tracking-tight">
             Dashboard
         </h1>
 
@@ -19,7 +19,7 @@
 
     <div class="flex items-center gap-3">
 
-        <button class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-4 py-2.5 rounded-2xl text-sm font-medium shadow-sm transition flex items-center gap-2">
+        <button class="bg-brand-cream-card border border-slate-200 hover:bg-brand-bg-soft/40 text-brand-text-dark px-4 py-2.5 rounded-2xl text-sm font-medium shadow-sm transition flex items-center gap-2">
 
             <i data-lucide="calendar"
                class="w-4 h-4 text-slate-400"></i>
@@ -28,7 +28,7 @@
 
         </button>
 
-        <button class="bg-gradient-to-r from-blue-600 to-blue-500 hover:opacity-90 text-white px-4 py-2.5 rounded-2xl text-sm font-medium shadow-lg shadow-blue-100 transition flex items-center gap-2">
+        <button class="bg-brand-accent-blue hover:opacity-90 text-white px-4 py-2.5 rounded-2xl text-sm font-medium shadow-lg shadow-blue-100 transition flex items-center gap-2">
 
             <i data-lucide="download"
                class="w-4 h-4"></i>
@@ -45,14 +45,14 @@
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
 
     <!-- CARD -->
-    <div class="bg-white rounded-3xl border border-slate-200/60 p-6 shadow-sm hover:shadow-md transition-all duration-300">
+    <div class="bg-brand-cream-card rounded-3xl border border-slate-200/60 p-6 shadow-sm hover:shadow-md transition-all duration-300">
 
         <div class="flex items-start justify-between mb-5">
 
-            <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center">
+            <div class="w-12 h-12 rounded-2xl bg-brand-bg-soft flex items-center justify-center">
 
                 <i data-lucide="users"
-                   class="w-5 h-5 text-blue-600"></i>
+                   class="w-5 h-5 text-brand-text-dark"></i>
 
             </div>
 
@@ -66,14 +66,14 @@
             Total Students
         </p>
 
-        <h1 class="text-3xl font-bold text-slate-900">
+        <h1 class="text-3xl font-bold text-brand-text-dark">
             12,845
         </h1>
 
     </div>
 
     <!-- CARD -->
-    <div class="bg-white rounded-3xl border border-slate-200/60 p-6 shadow-sm hover:shadow-md transition-all duration-300">
+    <div class="bg-brand-cream-card rounded-3xl border border-slate-200/60 p-6 shadow-sm hover:shadow-md transition-all duration-300">
 
         <div class="flex items-start justify-between mb-5">
 
@@ -94,14 +94,14 @@
             Active Courses
         </p>
 
-        <h1 class="text-3xl font-bold text-slate-900">
+        <h1 class="text-3xl font-bold text-brand-text-dark">
             248
         </h1>
 
     </div>
 
     <!-- CARD -->
-    <div class="bg-white rounded-3xl border border-slate-200/60 p-6 shadow-sm hover:shadow-md transition-all duration-300">
+    <div class="bg-brand-cream-card rounded-3xl border border-slate-200/60 p-6 shadow-sm hover:shadow-md transition-all duration-300">
 
         <div class="flex items-start justify-between mb-5">
 
@@ -122,14 +122,14 @@
             Total Revenue
         </p>
 
-        <h1 class="text-3xl font-bold text-slate-900">
+        <h1 class="text-3xl font-bold text-brand-text-dark">
             Rp 84.2M
         </h1>
 
     </div>
 
     <!-- CARD -->
-    <div class="bg-white rounded-3xl border border-slate-200/60 p-6 shadow-sm hover:shadow-md transition-all duration-300">
+    <div class="bg-brand-cream-card rounded-3xl border border-slate-200/60 p-6 shadow-sm hover:shadow-md transition-all duration-300">
 
         <div class="flex items-start justify-between mb-5">
 
@@ -140,7 +140,7 @@
 
             </div>
 
-            <span class="bg-slate-100 text-slate-500 text-xs font-medium px-2 py-1 rounded-lg border border-slate-200">
+            <span class="bg-brand-bg-soft text-brand-text-dark text-xs font-medium px-2 py-1 rounded-lg border border-slate-200">
                 Review
             </span>
 
@@ -150,7 +150,7 @@
             Pending Orders
         </p>
 
-        <h1 class="text-3xl font-bold text-slate-900">
+        <h1 class="text-3xl font-bold text-brand-text-dark">
             36
         </h1>
 
@@ -162,14 +162,14 @@
 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
     <!-- TABLE -->
-    <div class="xl:col-span-2 bg-white rounded-3xl border border-slate-200/60 shadow-sm overflow-hidden">
+    <div class="xl:col-span-2 bg-brand-cream-card rounded-3xl border border-slate-200/60 shadow-sm overflow-hidden">
 
         <!-- HEADER -->
         <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
 
             <div>
 
-                <h1 class="text-lg font-semibold text-slate-900">
+                <h1 class="text-lg font-semibold text-brand-text-dark">
                     Recent Transactions
                 </h1>
 
@@ -179,7 +179,7 @@
 
             </div>
 
-            <button class="text-sm text-blue-600 font-medium">
+            <button class="text-sm text-brand-accent-blue font-medium">
                 View All
             </button>
 
@@ -190,7 +190,7 @@
 
             <table class="w-full text-sm">
 
-                <thead class="bg-[#f8fafc] text-slate-500 uppercase text-[11px] tracking-wider">
+                <thead class="bg-brand-cream-card text-brand-text-dark font-bold uppercase text-[11px] tracking-wider">
 
                     <tr>
 
@@ -216,13 +216,13 @@
 
                 <tbody class="divide-y divide-slate-100">
 
-                    <tr class="hover:bg-slate-50 transition">
+                    <tr class="hover:bg-brand-bg-soft/40 transition">
 
                         <td class="px-6 py-4">
 
                             <div class="flex items-center gap-3">
 
-                                <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-semibold">
+                                <div class="w-10 h-10 rounded-full bg-brand-bg-soft text-brand-text-dark flex items-center justify-center font-semibold">
                                     A
                                 </div>
 
@@ -246,7 +246,7 @@
                             UI/UX Design
                         </td>
 
-                        <td class="px-6 py-4 text-right font-semibold text-slate-900">
+                        <td class="px-6 py-4 text-right font-semibold text-brand-text-dark">
                             Rp 350K
                         </td>
 
@@ -260,7 +260,7 @@
 
                     </tr>
 
-                    <tr class="hover:bg-slate-50 transition">
+                    <tr class="hover:bg-brand-bg-soft/40 transition">
 
                         <td class="px-6 py-4">
 
@@ -290,7 +290,7 @@
                             Laravel Advanced
                         </td>
 
-                        <td class="px-6 py-4 text-right font-semibold text-slate-900">
+                        <td class="px-6 py-4 text-right font-semibold text-brand-text-dark">
                             Rp 499K
                         </td>
 
@@ -313,11 +313,11 @@
     </div>
 
     <!-- POPULAR COURSES -->
-    <div class="bg-white rounded-3xl border border-slate-200/60 shadow-sm overflow-hidden">
+    <div class="bg-brand-cream-card rounded-3xl border border-slate-200/60 shadow-sm overflow-hidden">
 
         <div class="px-6 py-5 border-b border-slate-100">
 
-            <h1 class="text-lg font-semibold text-slate-900">
+            <h1 class="text-lg font-semibold text-brand-text-dark">
                 Popular Courses
             </h1>
 
@@ -330,14 +330,14 @@
         <div class="p-4 space-y-3">
 
             <!-- ITEM -->
-            <div class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 transition">
+            <div class="flex items-center justify-between p-3 rounded-2xl hover:bg-brand-bg-soft/40 transition">
 
                 <div class="flex items-center gap-3">
 
-                    <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center">
+                    <div class="w-12 h-12 rounded-2xl bg-brand-bg-soft flex items-center justify-center">
 
                         <i data-lucide="pen-tool"
-                           class="w-5 h-5 text-blue-600"></i>
+                           class="w-5 h-5 text-brand-text-dark"></i>
 
                     </div>
 
@@ -355,14 +355,14 @@
 
                 </div>
 
-                <span class="font-semibold text-slate-900">
+                <span class="font-semibold text-brand-text-dark">
                     Rp 350K
                 </span>
 
             </div>
 
             <!-- ITEM -->
-            <div class="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 transition">
+            <div class="flex items-center justify-between p-3 rounded-2xl hover:bg-brand-bg-soft/40 transition">
 
                 <div class="flex items-center gap-3">
 
@@ -387,7 +387,7 @@
 
                 </div>
 
-                <span class="font-semibold text-slate-900">
+                <span class="font-semibold text-brand-text-dark">
                     Rp 499K
                 </span>
 

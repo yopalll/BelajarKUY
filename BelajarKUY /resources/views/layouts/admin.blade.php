@@ -32,12 +32,12 @@
 
 </head>
 
-<body class="bg-[#f5f7fb] text-slate-800 antialiased">
+<body class="bg-brand-bg-soft text-slate-800 antialiased">
 
 <div class="flex min-h-screen">
 
     <!-- SIDEBAR -->
-    <aside class="w-[270px] bg-white border-r border-slate-200/70 flex flex-col">
+    <aside class="w-[270px] bg-brand-sidebar-light text-brand-text-dark border-r border-slate-200/70 flex flex-col">
 
         <!-- LOGO -->
         <div class="h-20 flex items-center px-6 border-b border-slate-200/70">
@@ -45,10 +45,8 @@
             <div class="flex items-center gap-3">
 
                 <!-- ICON -->
-                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center shadow-sm">
-
-                    <i data-lucide="book-open"
-                       class="w-5 h-5 text-white"></i>
+                <div class="w-11 h-11 rounded-2xl bg-brand-text-dark flex items-center justify-center shadow-sm mb-3">
+                    <i data-lucide="book-open" class="w-5 h-5 text-white"></i>
 
                 </div>
 
@@ -57,11 +55,11 @@
 
                     <h1 class="text-[22px] leading-none font-bold tracking-tight">
 
-                        <span class="text-blue-600">
+                        <span class="text-brand-text-dark mb-3">
                             Belajar
                         </span>
 
-                        <span class="text-orange-500">
+                        <span class="text-orange-600">
                             KUY
                         </span>
 
@@ -91,7 +89,7 @@
                     <!-- DASHBOARD -->
                     <a href="/admin/dashboard"
                        class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200
-                       {{ request()->is('admin/dashboard') ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-100' : 'text-slate-600 hover:bg-slate-100' }}">
+                       {{ request()->is('admin/dashboard') ? 'bg-brand-accent-blue text-white shadow-lg shadow-blue-100' : 'text-brand-text-dark hover:bg-slate-100' }}">
 
                         <i data-lucide="layout-dashboard"
                            class="w-5 h-5"></i>
@@ -105,7 +103,7 @@
                     <!-- CATEGORIES -->
                     <a href="/admin/categories"
                        class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200
-                       {{ request()->is('admin/categories*') ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-100' : 'text-slate-600 hover:bg-slate-100' }}">
+                       {{ request()->is('admin/categories*') ? 'bg-brand-accent-blue text-white shadow-lg shadow-blue-100' : 'text-brand-text-dark hover:bg-slate-100' }}">
 
                         <i data-lucide="folders"
                            class="w-5 h-5"></i>
@@ -116,28 +114,142 @@
 
                     </a>
 
+                    <!-- SUB CATEGORIES -->
+                    <a href="/admin/sub-categories"
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200
+                       {{ request()->is('admin/sub-categories*') ? 'bg-brand-accent-blue text-white shadow-lg shadow-blue-100' : 'text-brand-text-dark hover:bg-slate-100' }}">
+
+                        <i data-lucide="layout-grid"
+                           class="w-5 h-5"></i>
+
+                        <span class="font-medium">
+                            Sub Categories
+                        </span>
+
+                    </a>
+
+                    <!-- SLIDERS -->
+                    <a href="/admin/sliders"
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200
+                       {{ request()->is('admin/sliders*') ? 'bg-brand-accent-blue text-white shadow-lg shadow-blue-100' : 'text-brand-text-dark hover:bg-slate-100' }}">
+
+                        <i data-lucide="sliders"
+                           class="w-5 h-5"></i>
+
+                        <span class="font-medium">
+                            Sliders
+                        </span>
+
+                    </a>
+
+                    <!-- INFO BOXES -->
+                    <a href="/admin/info-boxes"
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200
+                       {{ request()->is('admin/info-boxes*') ? 'bg-brand-accent-blue text-white shadow-lg shadow-blue-100' : 'text-brand-text-dark hover:bg-slate-100' }}">
+
+                        <i data-lucide="box"
+                           class="w-5 h-5"></i>
+
+                        <span class="font-medium">
+                            Info Boxes
+                        </span>
+
+                    </a>
+
+                    <!-- PARTNERS -->
+                    <a href="/admin/partners"
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200
+                       {{ request()->is('admin/partners*') ? 'bg-brand-accent-blue text-white shadow-lg shadow-blue-100' : 'text-brand-text-dark hover:bg-slate-100' }}">
+
+                        <i data-lucide="briefcase"
+                           class="w-5 h-5"></i>
+
+                        <span class="font-medium">
+                            Partners
+                        </span>
+
+                    </a>
+
                     <!-- COURSES -->
-                    <a href="#"
-                       class="flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-600 hover:bg-slate-100 transition-all duration-200">
+                    <a href="/admin/courses"
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200
+                       {{ request()->is('admin/courses*') ? 'bg-brand-accent-blue text-white shadow-lg shadow-blue-100' : 'text-brand-text-dark hover:bg-slate-100' }}">
 
                         <i data-lucide="book-open"
                            class="w-5 h-5"></i>
 
                         <span class="font-medium">
-                            Courses
+                            Course Management
                         </span>
 
                     </a>
 
-                    <!-- USERS -->
-                    <a href="#"
-                       class="flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-600 hover:bg-slate-100 transition-all duration-200">
+                    <!-- INSTRUCTORS -->
+                    <a href="/admin/instructors"
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200
+                       {{ request()->is('admin/instructors*') ? 'bg-brand-accent-blue text-white shadow-lg shadow-blue-100' : 'text-brand-text-dark hover:bg-slate-100' }}">
 
                         <i data-lucide="users"
                            class="w-5 h-5"></i>
 
                         <span class="font-medium">
-                            Users
+                            Instructors
+                        </span>
+
+                    </a>
+
+                    <!-- ORDERS -->
+                    <a href="/admin/orders"
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200
+                       {{ request()->is('admin/orders*') ? 'bg-brand-accent-blue text-white shadow-lg shadow-blue-100' : 'text-brand-text-dark hover:bg-slate-100' }}">
+
+                        <i data-lucide="shopping-cart"
+                           class="w-5 h-5"></i>
+
+                        <span class="font-medium">
+                            Order Management
+                        </span>
+
+                    </a>
+
+                    <!-- USERS -->
+                    <a href="/admin/users"
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200
+                       {{ request()->is('admin/users*') ? 'bg-brand-accent-blue text-white shadow-lg shadow-blue-100' : 'text-brand-text-dark hover:bg-slate-100' }}">
+
+                        <i data-lucide="user-check"
+                           class="w-5 h-5"></i>
+
+                        <span class="font-medium">
+                            User Management
+                        </span>
+
+                    </a>
+
+                    <!-- REVIEWS -->
+                    <a href="/admin/reviews"
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200
+                       {{ request()->is('admin/reviews*') ? 'bg-brand-accent-blue text-white shadow-lg shadow-blue-100' : 'text-brand-text-dark hover:bg-slate-100' }}">
+
+                        <i data-lucide="message-square"
+                           class="w-5 h-5"></i>
+
+                        <span class="font-medium">
+                            Ulasan
+                        </span>
+
+                    </a>
+
+                    <!-- SETTINGS -->
+                    <a href="/admin/settings"
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200
+                       {{ request()->is('admin/settings*') ? 'bg-brand-accent-blue text-white shadow-lg shadow-blue-100' : 'text-brand-text-dark hover:bg-slate-100' }}">
+
+                        <i data-lucide="settings"
+                           class="w-5 h-5"></i>
+
+                        <span class="font-medium">
+                            Site Settings
                         </span>
 
                     </a>
@@ -177,7 +289,7 @@
     <main class="flex-1 flex flex-col">
 
         <!-- TOPBAR -->
-        <header class="h-20 bg-white border-b border-slate-200/70 px-8 flex items-center justify-between">
+        <header class="h-20 bg-brand-cream-card border-b border-slate-200/70 px-8 flex items-center justify-between">
 
             <!-- SEARCH -->
             <div class="relative w-[360px]">
@@ -187,7 +299,7 @@
 
                 <input type="text"
                        placeholder="Search courses, users, orders..."
-                       class="w-full bg-[#f8fafc] border border-slate-200 rounded-2xl py-3 pl-11 pr-4 text-sm outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-300 transition-all">
+                       class="w-full bg-brand-bg-soft border border-slate-200 rounded-2xl py-3 pl-11 pr-4 text-sm outline-none focus:ring-4 focus:ring-brand-accent-blue/20 focus:border-brand-accent-blue/50 transition-all">
 
             </div>
 
@@ -215,7 +327,7 @@
                 <!-- USER -->
                 <div class="flex items-center gap-3 pl-4 border-l border-slate-200">
 
-                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-500 text-white flex items-center justify-center font-semibold shadow-sm">
+                    <div class="w-11 h-11 rounded-2xl bg-brand-text-dark text-white flex items-center justify-center font-semibold shadow-sm mb-3">
 
                         Q
 
