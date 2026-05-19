@@ -6,9 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Models\Category;
+use App\Services\CloudinaryService;
 
 class CategoryController extends Controller
 {
+    public function __construct(protected CloudinaryService $cloudinaryService)
+    {
+    }
+
     /**
      * Display a listing of the categories.
      */
@@ -34,10 +39,15 @@ class CategoryController extends Controller
     {
         $validated = $request->validated();
         
-        // Handle image upload logic here when implementing Cloudinary integration
-        // if ($request->hasFile('image')) {
-        //     $validated['image'] = ... 
-        // }
+        if ($request->hasFile('image')) {
+            try {
+                $uploadResult = $this->cloudinaryService->uploadImage($request->file('image'), 'categories');
+                $validated['image_url'] = $uploadResult['url'];
+                $validated['image_public_id'] = $uploadResult['public_id'];
+            } catch (\Exception $e) {
+                return redirect()->back()->withInput()->with('error', 'Failed to upload image. Please try again.');
+            }
+        }
         
         Category::create($validated);
 
@@ -60,10 +70,19 @@ class CategoryController extends Controller
     {
         $validated = $request->validated();
         
-        // Handle image upload logic here when implementing Cloudinary integration
-        // if ($request->hasFile('image')) {
-        //     $validated['image'] = ... 
-        // }
+        if ($request->hasFile('image')) {
+            try {
+                $uploadResult = $this->cloudinaryService->replaceImage(
+                    $request->file('image'),
+                    $category->image_public_id,
+                    'categories'
+                );
+                $validated['image_url'] = $uploadResult['url'];
+                $validated['image_public_id'] = $uploadResult['public_id'];
+            } catch (\Exception $e) {
+                return redirect()->back()->withInput()->with('error', 'Failed to update image. Please try again.');
+            }
+        }
 
         $category->update($validated);
 
@@ -76,7 +95,13 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        // Add logic to delete image from Cloudinary if necessary
+        if ($category->image_public_id) {
+            try {
+                $this->cloudinaryService->deleteImage($category->image_public_id);
+            } catch (\Exception $e) {
+                // Log exception if necessary, but proceed to delete category from DB
+            }
+        }
         
         $category->delete();
 
