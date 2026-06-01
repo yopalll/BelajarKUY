@@ -1,76 +1,70 @@
-# 🛡️ F07: Admin Panel (Filament v5)
+# 🛡️ F07: Admin Panel (React + Inertia)
 
 > Dashboard dan management panel untuk administrator.
 > **Scope:** Sesuai ADR-005 (no payout) dan ADR-006 (no instructor approval).
-> **Implementasi:** Menggunakan **Filament v5** sebagai admin panel builder.
+> **Implementasi:** Halaman **React + Inertia** di `resources/js/Pages/Admin/*` (lihat `ADR-008`). **Bukan Filament** — `composer.json` tidak memuat paket `filament/*`.
 
 ---
 
-## Arsitektur Filament
+## Arsitektur Admin Panel
 
-Admin panel dibangun menggunakan **Filament v5** — sebuah admin panel builder berbasis Livewire yang menyediakan UI modern, form builder, table builder, dan dashboard widgets secara out-of-the-box.
+Admin panel dibangun sebagai **halaman React yang dirender via Inertia** dari controller Laravel yang sudah ada. Routing tetap server-side (grup `role:admin`, prefix `/admin`); controller mengganti respons `view(...)` menjadi `Inertia::render('Admin/...', $props)`. Tidak ada admin panel builder pihak ketiga (Filament tidak terpasang).
 
 ### Komponen Utama
 
 | Komponen | Lokasi | Fungsi |
 |----------|--------|--------|
-| `AdminPanelProvider` | `app/Providers/Filament/AdminPanelProvider.php` | Konfigurasi panel: path `/admin`, warna, middleware, resource discovery |
-| Filament Resources | `app/Filament/Resources/` | CRUD untuk setiap model (form, table, pages) |
-| User Model | `app/Models/User.php` | Implements `FilamentUser` — method `canAccessPanel()` mengecek `role === 'admin'` |
+| Halaman Admin (React) | `resources/js/Pages/Admin/` | Dashboard, CRUD, moderasi (komponen React per halaman) |
+| Komponen reusable | `resources/js/Components/` | `AdminSidebar`, tabel, form, dsb. (Konteks_B: krem + slate-blue, Inter) |
+| Controller Admin | `app/Http/Controllers/**` (existing) | Logika & data; me-render `Inertia::render('Admin/...')` |
+| Root view Inertia | `resources/views/app.blade.php` | Root view `app` (`HandleInertiaRequests::$rootView`) |
 
 ### Akses Kontrol
 
-```php
-// app/Models/User.php
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
+Kontrol akses admin memakai **`RoleMiddleware`** yang sudah ada (grup `role:admin`) — **bukan** interface panel pihak ketiga. Enum peran terverifikasi pada `RoleMiddleware.php`: `admin`, `instructor`, default `user` (Student).
 
-class User extends Authenticatable implements FilamentUser
-{
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return $this->role === 'admin';
-    }
-}
+```php
+// routes/web.php — grup admin (sudah ada)
+Route::middleware(['auth', 'verified', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        // admin.dashboard, admin.categories.*, admin.courses.*, dst.
+    });
 ```
 
-### Resources yang Sudah Dibuat
+### Halaman React yang Perlu Dibuat
 
-| Resource | Model | Fitur | Halaman |
-|----------|-------|-------|---------|
-| `UserResource` | `User` | CRUD + View | List, Create, Edit, View |
-| `ProductResource` | `Product` | CRUD + View | List, Create, Edit, View |
-
-### Resources yang Perlu Dibuat (TBD)
-
-Resource berikut akan di-migrate dari custom Blade ke Filament Resources:
-- `CategoryResource` — CRUD categories + images (Cloudinary)
-- `SubCategoryResource` — CRUD sub-categories
-- `CourseResource` — List + approve/reject
-- `SliderResource` — CRUD hero slider
-- `InfoBoxResource` — CRUD info boxes
-- `PartnerResource` — CRUD partner logos
-- `ReviewResource` — Moderasi review
-- `OrderResource` — View-only orders
-- `SiteSettingResource` — Key-value site settings
+Setiap area admin dipetakan ke halaman React di `resources/js/Pages/Admin/*` (lihat `SCREEN_MAPPING_STITCH_REACT.md`):
+- `Admin/Categories/Index.jsx` — CRUD categories + images (Cloudinary) — route `admin.categories.*`
+- `Admin/SubCategories/Index.jsx` — CRUD sub-categories — route `admin.sub-categories.*`
+- `Admin/Courses/Index.jsx` — List + approve/reject — route `admin.courses.index`, `admin.courses.update-status`
+- `Admin/Sliders/Index.jsx` — CRUD hero slider — route `admin.sliders.*`
+- `Admin/InfoBoxes/Index.jsx` — CRUD info boxes — route `admin.info-boxes.*`
+- `Admin/Partners/Index.jsx` — CRUD partner logos — route `admin.partners.*`
+- `Admin/Reviews/Index.jsx` — Moderasi review — route `admin.reviews.index`, `admin.reviews.update-status`
+- `Admin/Orders/Index.jsx` — View-only orders — route `admin.orders.index`, `admin.orders.show`
+- `Admin/Settings/Index.jsx` — Key-value site settings — route `admin.settings.index`, `admin.settings.update`
+- `Admin/Users/Index.jsx` — List students — route `admin.users.index`
 
 ## Halaman Admin
 
-| # | Halaman | Route | Deskripsi |
+> Route dikutip dari `routes/web.php` (`verified-facts.md` §5.2). Halaman React di `resources/js/Pages/Admin/*`.
+
+| # | Halaman React | Route nyata (`name` → path) | Deskripsi |
 |---|---------|-------|-----------|
-| 1 | Dashboard | `/admin/dashboard` | Stats overview: total users, courses, orders, revenue |
-| 2 | Category Mgmt | `/admin/category` | CRUD categories + images (Cloudinary upload) |
-| 3 | SubCategory Mgmt | `/admin/subcategory` | CRUD sub-categories |
-| 4 | Course Mgmt | `/admin/course` | List semua kursus, **approve/reject** (pending_review → active/inactive) |
-| 5 | Instructor List | `/admin/instructor` | **View only** — list instructor + statistik (ADR-006) |
-| 6 | Order Mgmt | `/admin/order` | List orders, filter by status, detail view |
-| 7 | User List | `/admin/user` | List students (role=user) + view detail |
-| 8 | Slider Mgmt | `/admin/slider` | CRUD hero slider (Cloudinary) |
-| 9 | Info Box Mgmt | `/admin/info-box` | CRUD value proposition boxes |
-| 10 | Partner Mgmt | `/admin/partner` | CRUD partner logos (Cloudinary) |
-| 11 | Site Settings | `/admin/site-setting` | Logo, contact info, social media (key-value pairs) |
-| 12 | Review Mgmt | `/admin/reviews` | Approve/reject reviews |
-| 13 | Profile | `/admin/profile` | Edit admin profile |
+| 1 | `Admin/Dashboard.jsx` | `admin.dashboard` → `/admin/dashboard` | Stats overview: total users, courses, orders, revenue |
+| 2 | `Admin/Categories/Index.jsx` | `admin.categories.index` → `/admin/categories` | CRUD categories + images (Cloudinary upload) |
+| 3 | `Admin/SubCategories/Index.jsx` | `admin.sub-categories.*` → `/admin/sub-categories` | CRUD sub-categories |
+| 4 | `Admin/Courses/Index.jsx` | `admin.courses.index` → `/admin/courses`; `admin.courses.update-status` | List semua kursus, **approve/reject** (pending_review → active/inactive) |
+| 5 | `Admin/Instructors/Index.jsx` | `admin.instructors.index` → `/admin/instructors` | **View only** — list instructor + statistik (ADR-006) |
+| 6 | `Admin/Orders/Index.jsx` | `admin.orders.index` → `/admin/orders` | List orders, filter by status, detail view |
+| 7 | `Admin/Users/Index.jsx` | `admin.users.index` → `/admin/users` | List students (role=user) + view detail |
+| 8 | `Admin/Sliders/Index.jsx` | `admin.sliders.*` → `/admin/sliders` | CRUD hero slider (Cloudinary) |
+| 9 | `Admin/InfoBoxes/Index.jsx` | `admin.info-boxes.*` → `/admin/info-boxes` | CRUD value proposition boxes |
+| 10 | `Admin/Partners/Index.jsx` | `admin.partners.*` → `/admin/partners` | CRUD partner logos (Cloudinary) |
+| 11 | `Admin/Settings/Index.jsx` | `admin.settings.index` → `/admin/settings` | Logo, contact info, social media (key-value pairs) |
+| 12 | `Admin/Reviews/Index.jsx` | `admin.reviews.index` → `/admin/reviews` | Approve/reject reviews |
 
 ---
 
@@ -129,9 +123,11 @@ public function index(): View
         ->take(5)
         ->get();
 
-    return view('backend.admin.dashboard', compact('stats', 'recentOrders', 'recentStudents'));
+    return Inertia::render('Admin/Dashboard', compact('stats', 'recentOrders', 'recentStudents'));
 }
 ```
+
+> **Catatan migrasi (presentasi):** logika pengumpulan data di atas dipertahankan utuh; hanya respons presentasi yang berubah dari `view('backend.admin.dashboard', …)` menjadi `Inertia::render('Admin/Dashboard', …)`. Backend (model, query, route) tidak berubah.
 
 ---
 
@@ -198,7 +194,7 @@ public function index(): View
         ->latest()
         ->paginate(15);
 
-    return view('backend.admin.instructor.index', compact('instructors'));
+    return Inertia::render('Admin/Instructors/Index', compact('instructors'));
 }
 ```
 
@@ -223,7 +219,7 @@ public function store(StoreCategoryRequest $request): RedirectResponse
 
     Category::create($data);
 
-    return redirect()->route('admin.category.index')
+    return redirect()->route('admin.categories.index')
         ->with('success', 'Kategori berhasil dibuat!');
 }
 ```
@@ -232,46 +228,44 @@ public function store(StoreCategoryRequest $request): RedirectResponse
 
 ## UI Design
 
-Filament v5 menyediakan UI admin modern secara built-in:
+UI admin dibangun sebagai komponen React (Konteks_B: palet krem + slate-blue, font Inter), mengikuti aset redesign Stitch:
 
-- **Sidebar** dengan navigasi otomatis berdasarkan Resources yang terdaftar
-- **Dark mode** toggle built-in
-- **Responsive** — mobile-friendly out-of-the-box
-- **Form builder** — text input, select, toggle, file upload, rich editor, dll
-- **Table builder** — sortable, searchable, filterable, bulk actions
-- **Dashboard widgets** — stats overview, charts, account info
-- **Warna primer** dikonfigurasi via `AdminPanelProvider` (default: Amber)
-- **SweetAlert2/Toast** tetap digunakan untuk custom notifications di luar Filament
-- Login page built-in di `/admin/login`
+- **Sidebar** (`AdminSidebar`) — komponen React dengan navigasi statis (link via Inertia `<Link>`)
+- **Responsive** — mobile-friendly via utilitas Tailwind
+- **Form** — komponen React + `@headlessui/react` (input, select, toggle, file upload)
+- **Table** — komponen React: sortable, searchable, filterable, bulk actions
+- **Dashboard widgets** — kartu stats yang menerima props dari `Inertia::render('Admin/Dashboard', …)`
+- **Warna primer** & token desain diatur via Tailwind (lihat `UI_UX_GUIDELINES.md`)
+- **SweetAlert2/Toast** digunakan untuk notifikasi (prop bersama `flash` dari `HandleInertiaRequests.php`)
+- Login admin via halaman React di route `admin.login.page` (`/admin/login`)
 
 ---
 
 ## File Structure
 
+```text
+resources/js/
+├── Pages/
+│   └── Admin/
+│       ├── Dashboard.jsx
+│       ├── Categories/Index.jsx
+│       ├── SubCategories/Index.jsx
+│       ├── Courses/Index.jsx
+│       ├── Instructors/Index.jsx
+│       ├── Orders/Index.jsx
+│       ├── Users/Index.jsx
+│       ├── Sliders/Index.jsx
+│       ├── InfoBoxes/Index.jsx
+│       ├── Partners/Index.jsx
+│       ├── Reviews/Index.jsx
+│       └── Settings/Index.jsx
+└── Components/
+    └── Admin/
+        ├── AdminSidebar.jsx
+        └── DataTable.jsx
 ```
-app/
-├── Filament/
-│   └── Resources/
-│       ├── Users/
-│       │   ├── UserResource.php
-│       │   └── Pages/
-│       │       ├── ListUsers.php
-│       │       ├── CreateUser.php
-│       │       ├── EditUser.php
-│       │       └── ViewUser.php
-│       └── Products/
-│           ├── ProductResource.php
-│           └── Pages/
-│               ├── ListProducts.php
-│               ├── CreateProduct.php
-│               ├── EditProduct.php
-│               └── ViewProduct.php
-├── Providers/
-│   └── Filament/
-│       └── AdminPanelProvider.php
-└── Models/
-    └── User.php  (implements FilamentUser)
-```
+
+> Kontrol akses tetap via `RoleMiddleware` (`role:admin`) pada `routes/web.php`; tidak ada interface `FilamentUser` atau `app/Filament/**` (paket Filament tidak terpasang).
 
 ---
 

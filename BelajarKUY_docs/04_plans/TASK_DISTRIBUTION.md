@@ -14,6 +14,10 @@
 | **Vascha U** | Frontend Lead | Landing page, course detail, student panel, Course Player (frontend) | Admin panel UI |
 | **Quinsha Ilmi** | UI/UX Lead (Admin) | Admin panel, admin dashboard, admin CRUD | Frontend components |
 
+> **Aset Redesign (Google Stitch):** `BelajarKuy_Design_Revisi.zip` dibuat berdua oleh **Vascha** & **Quinsha** — 2 folder ekspor per orang (Vascha = ekspor (5) & (7) / Konteks_A; Quinsha = ekspor (6) & (8) / Konteks_B). Detail: `04_plans/SCREEN_MAPPING_STITCH_REACT.md` §1.0.
+>
+> **Jadwal pengerjaan & rencana push per bagian:** lihat `04_plans/MIGRATION_SCHEDULE_REACT_INERTIA.md`.
+
 ### Konvensi "Lead vs Collaborator"
 
 - **Lead** = owner fitur. Decision-maker, pastikan spec terpenuhi, buat PR utama.
@@ -26,8 +30,8 @@
 ### 1. Yosua Valentino (PM)
 
 ```
-☐ Init Laravel 12 project
-☐ Setup TailwindCSS + Vite config
+☐ Init Laravel ^13.7 project
+☐ Setup TailwindCSS + Vite config + React/Inertia (app.jsx, @vitejs/plugin-react)
 ☐ Create ALL database migrations (~20 files)
 ☐ Create ALL Eloquent models (~18 models)
 ☐ Create database seeders (admin, categories, demo courses)
@@ -82,24 +86,22 @@ Lead:
 ### 4. Vascha U (Frontend Lead)
 
 ```
-Lead:
-☐ Main layout (app.blade.php) with TailwindCSS + Alpine
-☐ Admin layout (admin.blade.php) — collaborate with Quinsha
-☐ Instructor layout (instructor.blade.php)
-☐ Student layout (student.blade.php)
-☐ Navbar component (responsive, cart badge, user menu)
-☐ Footer component
-☐ Hero slider section
-☐ Category card component
-☐ Course card component
-☐ Featured courses section
-☐ Course detail page (full)
-☐ Cart & Checkout page UI
-☐ Student dashboard
-☐ Student enrolled courses page (with progress bars)
-☐ Course Player frontend (F13) — video embed, sidebar, progress
-☐ Live search component (Meilisearch + Alpine)
-☐ Toast/notification listener (Reverb events)
+Lead (React + Inertia — ADR-008):
+☐ Root view Inertia (app.blade.php) + entry app.jsx
+☐ Layout React per peran (komponen layout, bukan Blade @extends) — collaborate with Quinsha
+☐ Navbar component (React `Components/AppHeader.jsx` — responsive, cart badge, user menu)
+☐ Footer component (React)
+☐ Hero slider section (React)
+☐ Category card component (React)
+☐ Course card component (`Components/CourseCard.jsx`)
+☐ Featured courses section (React)
+☐ Course detail page (`Pages/Courses/Show.jsx`)
+☐ Cart & Checkout page UI (`Pages/Cart/Index.jsx`, `Pages/Checkout/Index.jsx`)
+☐ Student dashboard (`Pages/Student/Dashboard.jsx`)
+☐ Student enrolled courses page (`Pages/Student/MyCourses.jsx` — progress bars)
+☐ Course Player frontend (F13) — `Pages/Courses/Player.jsx` (video embed, sidebar, progress)
+☐ Live search component (Meilisearch + React state)
+☐ Toast/notification listener (Reverb events; konsumsi shared prop `flash`)
 ```
 
 ### 5. Quinsha Ilmi (UI/UX Lead — Admin & Frontend)
@@ -123,6 +125,28 @@ Lead:
 Collaborator (with Vascha):
 ☐ Review & Rating system backend logic
 ☐ Course card component polish
+```
+
+---
+
+## 🚀 Alokasi Tugas Migrasi Frontend React + Inertia (ADR-008)
+
+> Selaras dengan fase di `MASTER_PLAN_REACT_INERTIA.md` & `MASTER_ROADMAP.md` (Phase 6). Backend tidak berubah.
+
+```
+Fase 1 — Fondasi & Publik (Vascha & Quinsha + Yosua)
+☐ Scaffolding Inertia: app.blade.php (root view 'app') + resources/js/app.jsx
+☐ Port halaman publik ke Pages/ (Welcome, Home, Courses/Show) — controller view() → Inertia::render()
+☐ Komponen reusable awal: AppHeader, CourseCard, FlashToast
+
+Fase 2 — Auth & Student (Albariqi + Vascha)
+☐ Halaman auth React (Pages/Auth/*) via Breeze + Inertia
+☐ Panel Student ke Pages/Student/* (Dashboard, MyCourses, Wishlist, Profile, Notifications)
+
+Fase 3 — Instructor & Admin (Albariqi + Quinsha & Vascha)
+☐ Panel Instructor ke Pages/Instructor/*
+☐ Panel Admin ke Pages/Admin/* (tanpa Filament; akses via RoleMiddleware role:admin)
+☐ Deaktivasi & arsip view Blade lama sesuai deactivation sequence
 ```
 
 ---

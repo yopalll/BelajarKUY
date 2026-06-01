@@ -18,9 +18,15 @@
         "vite": "^8.0.0"
     },
     "dependencies": {
+        "@headlessui/react": "^2.2.10",
+        "@inertiajs/react": "^3.3.0",
+        "@vitejs/plugin-react": "^6.0.2",
         "axios": "^1.16.0",
         "laravel-echo": "^2.3.4",
+        "lucide-react": "^1.17.0",
         "pusher-js": "^8.5.0",
+        "react": "^19.2.6",
+        "react-dom": "^19.2.6",
         "sweetalert2": "^11.26.24"
     }
 }

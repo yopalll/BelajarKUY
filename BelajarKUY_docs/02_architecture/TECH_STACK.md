@@ -8,13 +8,14 @@
 
 | Komponen | Teknologi | Versi | Alasan |
 |----------|-----------|-------|--------|
-| Framework | Laravel | 12.x | Latest stable, PHP modern, ecosystem mature |
-| PHP | PHP | 8.3+ | Required by Laravel 12, typed properties, enums |
+| Framework | Laravel | `^13.7` | Stable, PHP modern, ecosystem mature |
+| PHP | PHP | `^8.3` | Required by Laravel 13, typed properties, enums |
 | Database | MySQL | 8.x | Reliable, widely supported |
-| Frontend | Blade + TailwindCSS | v4 | SSR rendering, utility-first CSS |
-| JS Interactivity | Alpine.js | ^3.x | Lightweight, "Tailwind for JS", TALL stack |
-| **Admin Panel** | **Filament** | **v5.x** | **Livewire-based admin panel builder, auto-generated CRUD, form/table builder, dashboard widgets** |
-| Build | Vite | Latest | Fast HMR, native Laravel support |
+| **Frontend** | **React (via Inertia.js)** | `react ^19.2.6`, `@inertiajs/react ^3.3.0` (adapter klien), `inertiajs/inertia-laravel ^3.1` (adapter server) | SPA-like UX tanpa API layer terpisah; selaras `ADR-008` & aset redesign Stitch |
+| Styling | TailwindCSS | `tailwindcss ^3.1.0` (paket inti) **+** `@tailwindcss/vite ^4.0.0` (plugin Vite) | Utility-first CSS. Catatan: paket inti v`^3.1.0`, plugin Vite v`^4.0.0` — keduanya dikutip apa adanya, bukan "v4" |
+| UI React | `@headlessui/react ^2.2.10`, `lucide-react ^1.17.0` | — | Komponen aksesibel + ikon |
+| JS Interactivity | Alpine.js | `alpinejs ^3.15.12` (`devDependencies`) | **Diturunkan** — bukan lapisan presentasi utama; interaktivitas ditangani komponen React |
+| Build | Vite | `^8.0.0` (`@vitejs/plugin-react ^6.0.2`, `laravel-vite-plugin ^3.1`) | Fast HMR, native Laravel + React support |
 | Payment | Midtrans Snap | v2 | Payment gateway Indonesia, sandbox gratis |
 | Media Storage | Cloudinary | Latest | Auto-compress, resize, CDN, free tier besar |
 | Video Hosting | YouTube (Unlisted) | — | Backup video hosting, 100% gratis |
@@ -31,23 +32,26 @@
 {
     "require": {
         "php": "^8.3",
-        "laravel/framework": "^12.0",
-        "laravel/breeze": "^2.0",
-        "laravel/socialite": "^5.0",
-        "laravel/scout": "^10.0",
-        "laravel/tinker": "^2.9",
-        "filament/filament": "^5.6",
-        "midtrans/midtrans-php": "^2.5",
-        "intervention/image": "^3.0",
-        "cloudinary-labs/cloudinary-laravel": "^2.0",
-        "meilisearch/meilisearch-php": "^1.0"
+        "cloudinary/cloudinary_php": "^3.1",
+        "inertiajs/inertia-laravel": "^3.1",
+        "intervention/image": "^4.0",
+        "laravel/framework": "^13.7",
+        "laravel/reverb": "^1.10",
+        "laravel/scout": "^11.1",
+        "laravel/socialite": "^5.27",
+        "laravel/tinker": "^3.0",
+        "meilisearch/meilisearch-php": "^1.16",
+        "midtrans/midtrans-php": "^2.6"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
-        "laravel/pint": "^1.18",
+        "laravel/breeze": "^2.4",
+        "laravel/pail": "^1.2.5",
+        "laravel/pao": "^1.0.6",
+        "laravel/pint": "^1.27",
         "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.0",
-        "phpunit/phpunit": "^11.0"
+        "nunomaduro/collision": "^8.6",
+        "phpunit/phpunit": "^12.5.12"
     }
 }
 ```
@@ -56,15 +60,18 @@
 
 | Package | Fungsi |
 |---------|--------|
-| `laravel/breeze` | Authentication scaffolding (login, register, password reset) |
+| `inertiajs/inertia-laravel` | Adapter Inertia sisi server — menjembatani controller Laravel ke komponen React tanpa API layer terpisah |
+| `laravel/breeze` | Authentication scaffolding (login, register, password reset) — me-render halaman React via Inertia |
 | `laravel/socialite` | Google OAuth login |
 | `laravel/scout` | Full-text search driver untuk Meilisearch |
-| `filament/filament` | Admin panel builder — auto-generated CRUD, form builder, table builder, dashboard widgets. Menggunakan Livewire secara internal. |
+| `laravel/reverb` | WebSocket server bawaan Laravel (real-time/notifikasi) |
 | `midtrans/midtrans-php` | Midtrans payment SDK |
 | `intervention/image` | Image resize & manipulation (thumbnail) |
-| `cloudinary-labs/cloudinary-laravel` | Upload media ke Cloudinary CDN |
+| `cloudinary/cloudinary_php` | Upload media ke Cloudinary CDN |
 | `meilisearch/meilisearch-php` | Meilisearch PHP client untuk Laravel Scout |
 | `laravel/pint` | Code formatting (PSR-12) |
+
+> **Catatan:** Admin panel **tidak** memakai Filament (tidak ada paket `filament/*` pada `composer.json`). Admin panel dibangun sebagai halaman React+Inertia di `resources/js/Pages/Admin/*` dengan kontrol akses via `RoleMiddleware` (`role:admin`). Lihat `ADR-008` dan `F07_ADMIN_PANEL.md`.
 
 ---
 
@@ -72,20 +79,28 @@
 
 ```json
 {
-    "devDependencies": {
-        "@tailwindcss/vite": "^4.0",
-        "autoprefixer": "^10.4",
-        "axios": "^1.7",
-        "laravel-vite-plugin": "^1.0",
-        "postcss": "^8.4",
-        "tailwindcss": "^4.0",
-        "vite": "^6.0"
-    },
     "dependencies": {
-        "sweetalert2": "^11.0",
-        "alpinejs": "^3.0",
-        "laravel-echo": "^1.0",
-        "pusher-js": "^8.0"
+        "@headlessui/react": "^2.2.10",
+        "@inertiajs/react": "^3.3.0",
+        "@vitejs/plugin-react": "^6.0.2",
+        "axios": "^1.16.0",
+        "laravel-echo": "^2.3.4",
+        "lucide-react": "^1.17.0",
+        "pusher-js": "^8.5.0",
+        "react": "^19.2.6",
+        "react-dom": "^19.2.6",
+        "sweetalert2": "^11.26.24"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.2",
+        "@tailwindcss/vite": "^4.0.0",
+        "alpinejs": "^3.15.12",
+        "autoprefixer": "^10.4.2",
+        "concurrently": "^9.0.1",
+        "laravel-vite-plugin": "^3.1",
+        "postcss": "^8.4.31",
+        "tailwindcss": "^3.1.0",
+        "vite": "^8.0.0"
     }
 }
 ```
@@ -94,12 +109,18 @@
 
 | Package | Fungsi |
 |---------|--------|
-| `tailwindcss` | Utility-first CSS framework |
-| `alpinejs` | Lightweight JS for interactivity (dropdown, modal, toggle, live search) |
+| `react`, `react-dom` | Pustaka UI utama (lapisan presentasi) |
+| `@inertiajs/react` | Adapter Inertia sisi klien (React) — menukar halaman tanpa full reload |
+| `@vitejs/plugin-react` | Plugin Vite untuk kompilasi React/JSX |
+| `@headlessui/react` | Komponen UI aksesibel (dropdown, modal, dsb.) |
+| `lucide-react` | Ikon SVG untuk komponen React |
+| `tailwindcss` (+ `@tailwindcss/vite`) | Utility-first CSS framework (paket inti `^3.1.0`; plugin Vite `^4.0.0`) |
+| `alpinejs` | **Diturunkan** — masih di `devDependencies`, bukan lapisan presentasi utama setelah adopsi React |
 | `sweetalert2` | Beautiful alert/confirmation dialogs |
 | `axios` | HTTP client untuk AJAX requests |
 | `laravel-echo` | Client-side WebSocket listener (untuk Reverb/Pusher) |
 | `pusher-js` | WebSocket client (required oleh Laravel Echo) |
+| `concurrently` | Menjalankan beberapa proses dev (Vite + server) bersamaan |
 
 ---
 

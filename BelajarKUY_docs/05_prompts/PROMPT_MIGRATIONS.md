@@ -8,11 +8,11 @@
 ## PROMPT
 
 ```
-Kamu adalah senior Laravel developer. Buat SEMUA migration files untuk project BelajarKUY (Udemy clone Indonesia) menggunakan Laravel 12.
+Kamu adalah senior Laravel developer. Buat SEMUA migration files untuk project BelajarKUY (Udemy clone Indonesia) menggunakan Laravel `^13.7`.
 
 ## CONTEXT:
 - Project: BelajarKUY — platform e-learning Indonesia
-- Framework: Laravel 12
+- Framework: Laravel `^13.7`
 - Database: MySQL
 - Payment: Midtrans (bukan Stripe)
 - 3 user roles: user, instructor, admin
@@ -118,7 +118,7 @@ Tambahkan kolom:
 - UNIQUE constraint pada (user_id, lecture_id)
 
 ## CONSTRAINT:
-- Gunakan anonymous class migration (Laravel 12 style)
+- Gunakan anonymous class migration (Laravel `^13.7` style)
 - Semua FK harus eksplisit (constrained + cascadeOnDelete / nullOnDelete)
 - Gunakan `$table->id()` untuk primary key
 - Gunakan `$table->foreignId()` untuk foreign keys

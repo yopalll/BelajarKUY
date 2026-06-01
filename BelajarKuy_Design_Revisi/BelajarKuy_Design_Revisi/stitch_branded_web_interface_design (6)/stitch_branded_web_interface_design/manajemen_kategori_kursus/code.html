@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BelajarKUY Admin - Category Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#2d2c28",
+                        "on-secondary": "#ffffff",
+                        "background-subtle": "#F8F5F2",
+                        "on-surface-variant": "#4f434c",
+                        "tertiary-fixed-dim": "#c9c6c0",
+                        "secondary-fixed-dim": "#ffb95c",
+                        "on-primary-container": "#be7db9",
+                        "success": "#2D8A56",
+                        "surface-variant": "#e5e2e1",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#e6e2db",
+                        "secondary": "#855400",
+                        "secondary-container": "#ffb145",
+                        "tertiary": "#181814",
+                        "inverse-on-surface": "#f3f0ef",
+                        "surface": "#FFFFFF",
+                        "secondary-fixed": "#ffddb7",
+                        "on-primary-fixed-variant": "#693168",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1b1b1c",
+                        "primary": "#300033",
+                        "surface-tint": "#844981",
+                        "warning": "#E67E22",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "on-primary-fixed": "#370139",
+                        "surface-container": "#f0eded",
+                        "on-tertiary-container": "#95938d",
+                        "on-background": "#1b1b1c",
+                        "surface-container-highest": "#e5e2e1",
+                        "primary-fixed": "#ffd6f8",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#f6afef",
+                        "surface-container-high": "#eae7e7",
+                        "outline-variant": "#d2c2cd",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "error": "#D91E18",
+                        "surface-bright": "#fcf9f8",
+                        "inverse-surface": "#303030",
+                        "background": "#fcf9f8",
+                        "primary-container": "#4a154b",
+                        "on-tertiary-fixed": "#1c1c18",
+                        "on-tertiary-fixed-variant": "#484742",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#dcd9d9",
+                        "inverse-primary": "#f6afef",
+                        "on-secondary-container": "#6f4600",
+                        "outline": "#80737d",
+                        "on-secondary-fixed": "#2a1700",
+                        "surface-container-low": "#f6f3f2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "xxl": "64px",
+                        "margin-desktop": "48px",
+                        "xs": "4px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "caption": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fcf9f8; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(48, 0, 51, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(48, 0, 51, 0.12), 0 2px 4px -1px rgba(48, 0, 51, 0.06);
+        }
+    </style>
+</head>
+<body class="text-on-background bg-background h-screen flex overflow-hidden">
+<!-- SideNavBar (Shared Component) -->
+<nav class="hidden md:flex bg-surface dark:bg-surface-container-lowest fixed left-0 top-0 h-full w-64 shadow-sm dark:shadow-none flex-col py-md px-sm z-20">
+<div class="mb-xl px-md pt-lg">
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">BelajarKUY</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Admin Console</p>
+</div>
+<div class="mb-lg px-sm">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md rounded-lg py-sm px-md flex items-center justify-center gap-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+                New Announcement
+            </button>
+</div>
+<ul class="flex-1 flex flex-col gap-xs overflow-y-auto">
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg font-label-md text-label-md text-on-surface-variant dark:text-on-tertiary-container hover:text-primary hover:bg-background-subtle dark:hover:bg-tertiary-container transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg font-label-md text-label-md text-on-surface-variant dark:text-on-tertiary-container hover:text-primary hover:bg-background-subtle dark:hover:bg-tertiary-container transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">school</span>
+                    Courses
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg font-label-md text-label-md text-on-surface-variant dark:text-on-tertiary-container hover:text-primary hover:bg-background-subtle dark:hover:bg-tertiary-container transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">rate_review</span>
+                    Reviews
+                </a>
+</li>
+<li>
+<!-- Active Tab -->
+<a class="flex items-center gap-md px-md py-sm rounded-lg font-label-md text-label-md text-primary dark:text-primary-fixed font-bold border-r-4 border-primary dark:border-primary-fixed bg-background-subtle transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">category</span>
+                    Categories
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg font-label-md text-label-md text-on-surface-variant dark:text-on-tertiary-container hover:text-primary hover:bg-background-subtle dark:hover:bg-tertiary-container transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">settings</span>
+                    Settings
+                </a>
+</li>
+</ul>
+<div class="mt-auto pt-lg border-t border-surface-variant">
+<ul class="flex flex-col gap-xs">
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg font-label-md text-label-md text-on-surface-variant dark:text-on-tertiary-container hover:text-primary hover:bg-background-subtle transition-all duration-200" href="#">
+<span class="material-symbols-outlined">help</span>
+                        Support
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg font-label-md text-label-md text-error hover:bg-error-container transition-all duration-200" href="#">
+<span class="material-symbols-outlined">logout</span>
+                        Logout
+                    </a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 ml-0 md:ml-64 flex flex-col h-screen overflow-hidden">
+<!-- TopAppBar (Shared Component) -->
+<header class="bg-surface dark:bg-surface-container docked full-width top-0 sticky flat no shadows flex justify-between items-center h-16 px-lg z-10 border-b border-surface-variant">
+<div class="flex items-center gap-md">
+<button class="md:hidden p-xs text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="font-headline-md text-headline-md font-black text-primary dark:text-primary-fixed hidden md:block">Admin Portal</h2>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 font-body-md text-body-md focus:ring-2 focus:ring-primary w-64 text-on-surface" placeholder="Search categories..." type="text"/>
+</div>
+<button class="p-sm rounded-full text-on-surface-variant hover:text-secondary scale-95 active:scale-100 transition-transform">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-sm rounded-full text-on-surface-variant hover:text-secondary scale-95 active:scale-100 transition-transform">
+<img alt="Admin Profile Picture" class="w-8 h-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFl79NO-H_zT1KsyTjposp4kg11CA6T-V5X7qYJv-SzZIPcKa-eCdUHKPGlfqfl41NsAs9MhfomWTRhmeCwdB4oytxkNRLDjcrayjZCWONEyps2VCIFxaVeUV-y7T47sZFhC1wxc-V7ol0M7dzjU9iP_zeabcX87WKfLbLXOG4ISH30uCZ76Oy9OMjUfNVL1Pqf1XTQP-xo46jZHFl81QE1pi2RhWNxpkxPPvFALfF9_RYzEmM4Y7tILPP90oav_Ncn__wPLPkfw"/>
+</button>
+</div>
+</header>
+<!-- Page Content Canvas -->
+<main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop">
+<!-- Page Header & Actions -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-xl gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Category Management</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Organize and structure the learning ecosystem.</p>
+</div>
+<button class="bg-primary text-on-primary font-label-md text-label-md rounded-lg py-2 px-4 flex items-center gap-2 hover:bg-primary-container transition-colors shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+                    Create New Category
+                </button>
+</div>
+<!-- Bento Grid Layout for Categories -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Category Card 1 -->
+<div class="glass-card rounded-2xl p-lg flex flex-col hover:shadow-lg transition-shadow duration-300 relative group overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+<button class="bg-surface text-on-surface-variant hover:text-primary p-2 rounded-full shadow-sm"><span class="material-symbols-outlined text-sm">edit</span></button>
+<button class="bg-surface text-error hover:bg-error-container p-2 rounded-full shadow-sm"><span class="material-symbols-outlined text-sm">delete</span></button>
+</div>
+<div class="w-16 h-16 rounded-xl bg-primary-fixed flex items-center justify-center mb-md text-primary">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">code</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Technology &amp; IT</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md flex-1">Programming, web development, and software engineering fundamentals.</p>
+<div class="flex justify-between items-center border-t border-surface-variant pt-md mt-auto">
+<div class="flex items-center gap-1 text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-sm">account_tree</span>
+                            12 Sub-cats
+                        </div>
+<div class="flex items-center gap-1 text-primary font-label-md text-label-md">
+<span class="material-symbols-outlined text-sm">school</span>
+                            145 Courses
+                        </div>
+</div>
+</div>
+<!-- Category Card 2 -->
+<div class="glass-card rounded-2xl p-lg flex flex-col hover:shadow-lg transition-shadow duration-300 relative group overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+<button class="bg-surface text-on-surface-variant hover:text-primary p-2 rounded-full shadow-sm"><span class="material-symbols-outlined text-sm">edit</span></button>
+<button class="bg-surface text-error hover:bg-error-container p-2 rounded-full shadow-sm"><span class="material-symbols-outlined text-sm">delete</span></button>
+</div>
+<div class="w-16 h-16 rounded-xl bg-secondary-fixed flex items-center justify-center mb-md text-secondary">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Business &amp; Finance</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md flex-1">Entrepreneurship, accounting, and marketing strategies for growth.</p>
+<div class="flex justify-between items-center border-t border-surface-variant pt-md mt-auto">
+<div class="flex items-center gap-1 text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-sm">account_tree</span>
+                            8 Sub-cats
+                        </div>
+<div class="flex items-center gap-1 text-primary font-label-md text-label-md">
+<span class="material-symbols-outlined text-sm">school</span>
+                            92 Courses
+                        </div>
+</div>
+</div>
+<!-- Category Card 3 -->
+<div class="glass-card rounded-2xl p-lg flex flex-col hover:shadow-lg transition-shadow duration-300 relative group overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+<button class="bg-surface text-on-surface-variant hover:text-primary p-2 rounded-full shadow-sm"><span class="material-symbols-outlined text-sm">edit</span></button>
+<button class="bg-surface text-error hover:bg-error-container p-2 rounded-full shadow-sm"><span class="material-symbols-outlined text-sm">delete</span></button>
+</div>
+<div class="w-16 h-16 rounded-xl bg-tertiary-fixed flex items-center justify-center mb-md text-tertiary">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">palette</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Design &amp; Creative</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md flex-1">Graphic design, UI/UX, video editing, and digital art techniques.</p>
+<div class="flex justify-between items-center border-t border-surface-variant pt-md mt-auto">
+<div class="flex items-center gap-1 text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-sm">account_tree</span>
+                            15 Sub-cats
+                        </div>
+<div class="flex items-center gap-1 text-primary font-label-md text-label-md">
+<span class="material-symbols-outlined text-sm">school</span>
+                            210 Courses
+                        </div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

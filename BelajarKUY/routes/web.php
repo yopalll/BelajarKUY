@@ -19,10 +19,12 @@ use App\Http\Controllers\Admin\AdminPartnerController;
 use App\Http\Controllers\Admin\AdminSiteSettingController;
 use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\Frontend\HomeController;
+use Inertia\Inertia;
 
 // --- Public Routes ---
+// Fase 1 migrasi React+Inertia (ADR-008): landing dirender via Inertia → Pages/Welcome.jsx
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome');
 });
 
 // Universal Dashboard: tampilkan konten sesuai role, URL tetap /dashboard

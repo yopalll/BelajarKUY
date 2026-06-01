@@ -1,9 +1,9 @@
 # 📚 BelajarKUY — Dokumentasi Proyek (Master Index)
 
 > **Project:** BelajarKUY — Platform E-Learning Indonesia (Udemy Clone)
-> **Tech Stack:** Laravel 12 + MySQL/SQLite + Midtrans Sandbox + TailwindCSS v4 + Alpine.js + Cloudinary + Meilisearch + Laravel Reverb + Resend
+> **Tech Stack:** Laravel `^13.7` + React `^19.2.6` (Inertia `@inertiajs/react ^3.3.0`) + MySQL/SQLite + Midtrans Sandbox + TailwindCSS `^3.1.0` + Cloudinary + Meilisearch + Laravel Reverb + Resend
 > **Team:** 5 Anggota | **Deadline:** Tugas Besar Kuliah
-> **Created:** 12 Mei 2026 | **Last Updated:** 28 Mei 2026
+> **Created:** 12 Mei 2026 | **Last Updated:** 31 Mei 2026
 
 ---
 
@@ -37,25 +37,27 @@ BelajarKUY_docs/
 │   ├── GLOSSARY.md                      🆕 Terminologi (student/user, paid/enrolled, dll)
 │   ├── SETUP_GUIDE.md                   Setup project dari nol
 │   ├── GIT_WORKFLOW.md                  Branching & commit convention (simplified v2)
-│   ├── CODING_STANDARDS.md              Konvensi kode Laravel 12
+│   ├── CODING_STANDARDS.md              Konvensi kode Laravel ^13.7 + React/Inertia
 │   ├── SECURITY_GUIDELINES.md           🆕 Security checklist
 │   ├── TESTING_STRATEGY.md              🆕 Testing pyramid + patterns
 │   └── UI_UX_GUIDELINES.md              Design workflow
 │
 ├── 02_architecture/                     🏗️ Architecture & Design
-│   ├── TECH_STACK.md                    Detail tech stack & versi
+│   ├── TECH_STACK.md                    Detail tech stack & versi (React+Inertia)
+│   ├── REACT_INERTIA_BENEFITS.md        🆕 Keunggulan adopsi React + Inertia
 │   ├── DATABASE_SCHEMA.md               ⭐ Schema v2 canonical (19 tabel)
-│   ├── FOLDER_STRUCTURE.md              Struktur folder Laravel
+│   ├── FOLDER_STRUCTURE.md              Struktur folder Laravel + resources/js
 │   ├── API_ROUTES.md                    Semua routes & endpoint
 │   └── ADR/                             🆕 Architecture Decision Records
 │       ├── README.md                    Index ADR
 │       ├── ADR-001-midtrans-payment-gateway.md
-│       ├── ADR-002-frontend-blade-not-livewire.md
+│       ├── ADR-002-frontend-blade-not-livewire.md   (⛔ Superseded by ADR-008)
 │       ├── ADR-003-denormalized-instructor-in-orders.md
 │       ├── ADR-004-sandbox-only-midtrans.md
 │       ├── ADR-005-payout-out-of-scope.md
 │       ├── ADR-006-instructor-auto-active.md
-│       └── ADR-007-role-naming.md
+│       ├── ADR-007-role-naming.md
+│       └── ADR-008-frontend-react-inertia.md        🆕 Adopsi React + Inertia
 │
 ├── 03_features/                         🎁 Feature Specs
 │   ├── F01_AUTH_SYSTEM.md               Register, Login, Multi-role, Google OAuth
@@ -76,16 +78,23 @@ BelajarKUY_docs/
 ├── 04_plans/                            📅 Timeline & Task Distribution
 │   ├── MASTER_ROADMAP.md                Timeline Phase 1-5 (relative days)
 │   ├── SPRINT_PLAN.md                   Sprint breakdown per minggu
-│   └── TASK_DISTRIBUTION.md             Pembagian tugas per anggota
+│   ├── TASK_DISTRIBUTION.md             Pembagian tugas per anggota
+│   ├── MASTER_PLAN_REACT_INERTIA.md     🆕 Master plan migrasi Blade → React+Inertia
+│   ├── DOCS_UPDATE_PLAN_REACT_INERTIA.md 🆕 Rencana pembaruan seluruh dokumentasi
+│   ├── SCREEN_MAPPING_STITCH_REACT.md   🆕 Peta layar Stitch → halaman React
+│   └── MIGRATION_SCHEDULE_REACT_INERTIA.md 🆕 Jadwal & push per bagian (per anggota)
 │
 ├── 05_prompts/                          🤖 AI Prompt Templates
-│   ├── PROMPT_SETUP_PROJECT.md          Init Laravel 12 project
+│   ├── PROMPT_SETUP_PROJECT.md          Init Laravel ^13.7 + React/Inertia project
 │   ├── PROMPT_MIGRATIONS.md             Generate migrations (Schema v2)
 │   ├── PROMPT_MODELS.md                 Generate Eloquent models
 │   ├── PROMPT_AUTH.md                   Build auth system
 │   ├── PROMPT_MIDTRANS.md               Integrate Midtrans
-│   ├── PROMPT_FRONTEND.md               Build frontend pages
-│   └── PROMPT_ADMIN_PANEL.md            Build admin panel
+│   ├── PROMPT_FRONTEND.md               Build frontend pages (React+Inertia)
+│   ├── PROMPT_ADMIN_PANEL.md            Build admin panel (React+Inertia)
+│   ├── PROMPT_INSTRUCTOR_PANEL.md       🆕 Sisa kerja Albariqi (instructor + course player)
+│   ├── PROMPT_COMMERCE.md               🆕 Sisa kerja Ray (cart/wishlist/coupon/Midtrans)
+│   └── PROMPT_ADMIN_REACT_MIGRATION.md  🆕 Sisa kerja Quinsha (migrasi admin → React)
 │
 ├── 06_reports/                          📊 Progress & Daily Reports
 │   ├── PROGRESS_TRACKER.md              Status live progress
@@ -116,12 +125,12 @@ BelajarKUY_docs/
 
 | Phase | Status | Notes |
 |-------|--------|-------|
-| P0: Project Setup | 🟢 Done | Laravel 12 + Tailwind + Vite |
+| P0: Project Setup | 🟢 Done | Laravel ^13.7 + React/Inertia + Tailwind + Vite |
 | P1: Database (Migrations + Models) | 🟢 Done | 19 tables, 19 models |
 | P1b: Seeders + Factories | 🟢 Done | 896 records seeded |
 | P2: Auth System | 🔜 Next | Breeze + RoleMiddleware + Google OAuth |
 | P3: Commerce | 🔴 Pending | Cart, wishlist, Midtrans, coupon |
-| P4: Admin Panel | 🟡 In Progress | **Filament v5 terinstall** — UserResource & ProductResource ready. Remaining resources TBD. |
+| P4: Admin Panel | 🟡 In Progress | **Halaman React + Inertia** (`Pages/Admin/*`, tanpa Filament). Sebagian halaman TBD. |
 | P5: Polish | 🔴 Pending | Review, settings, testing, deploy |
 
 **Overall:** ~20% complete.
@@ -151,6 +160,11 @@ Lihat `06_reports/PROGRESS_TRACKER.md` untuk detail live.
 - [🛡️ Security Guidelines](./01_guides/SECURITY_GUIDELINES.md) — Security checklist
 - [🧪 Testing Strategy](./01_guides/TESTING_STRATEGY.md) — Testing patterns
 - [🏛️ ADR Index](./02_architecture/ADR/README.md) — Decision records
+- [🏛️ ADR-008](./02_architecture/ADR/ADR-008-frontend-react-inertia.md) — Adopsi React + Inertia (supersede ADR-002)
+- [🚀 Master Plan React+Inertia](./04_plans/MASTER_PLAN_REACT_INERTIA.md) — Migrasi frontend bertahap
+- [🚀 React+Inertia Benefits](./02_architecture/REACT_INERTIA_BENEFITS.md) — Justifikasi adopsi
+- [🗂️ Docs Update Plan](./04_plans/DOCS_UPDATE_PLAN_REACT_INERTIA.md) — Rencana pembaruan dokumentasi
+- [🖼️ Screen Mapping](./04_plans/SCREEN_MAPPING_STITCH_REACT.md) — Layar Stitch → halaman React
 - [🗃️ Database Schema](./02_architecture/DATABASE_SCHEMA.md) — v2 canonical
 - [🎬 Course Player Spec](./03_features/F13_COURSE_PLAYER.md) — Core LMS feature
 - [📢 Notifications Spec](./03_features/F14_NOTIFICATIONS.md) — Mail + real-time

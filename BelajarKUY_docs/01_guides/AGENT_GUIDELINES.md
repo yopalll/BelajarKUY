@@ -27,7 +27,7 @@
 - **Admin** → Mengelola seluruh platform (user, kursus, kategori, order, setting)
 
 ### Referensi Fitur
-Project ini terinspirasi dari [Shuvouits/YouTubeLMS](https://github.com/Shuvouits/YouTubeLMS) (Laravel 11 LMS). Kita membangun versi yang **LEBIH BAIK** menggunakan **Laravel 12** dengan payment gateway **Midtrans** (bukan Stripe). Lihat `ADR-001` untuk reasoning.
+Project ini terinspirasi dari [Shuvouits/YouTubeLMS](https://github.com/Shuvouits/YouTubeLMS) (Laravel 11 LMS). Kita membangun versi yang **LEBIH BAIK** menggunakan **Laravel `^13.7`** dengan payment gateway **Midtrans** (bukan Stripe). Lihat `ADR-001` untuk reasoning.
 
 ---
 
@@ -37,22 +37,23 @@ Project ini terinspirasi dari [Shuvouits/YouTubeLMS](https://github.com/Shuvouit
 
 | Layer | Teknologi | Versi |
 |-------|-----------|-------|
-| **Backend** | Laravel | 12.x (boot Laravel 13 compatible) |
-| **PHP** | PHP | ^8.3 |
+| **Backend** | Laravel | `^13.7` |
+| **PHP** | PHP | `^8.3` |
 | **Database** | MySQL (prod) / SQLite (dev) | 8.x / 3.x |
-| **Frontend** | Blade + TailwindCSS | v4 |
-| **JS Interactivity** | Alpine.js | ^3.x |
-| **Build Tool** | Vite | Latest |
+| **Frontend** | React (via Inertia.js) | `react ^19.2.6`, `@inertiajs/react ^3.3.0`, `inertiajs/inertia-laravel ^3.1` |
+| **Styling** | TailwindCSS | `tailwindcss ^3.1.0` (+ `@tailwindcss/vite ^4.0.0`) |
+| **JS Interactivity** | React (Alpine.js diturunkan) | `alpinejs ^3.15.12` (devDependencies, bukan lapisan utama) |
+| **Build Tool** | Vite | `^8.0.0` (`@vitejs/plugin-react ^6.0.2`) |
 | **Payment** | Midtrans Snap API | v2 (sandbox only — ADR-004) |
-| **Auth** | Laravel Breeze (Blade) | Latest |
-| **Social Login** | Laravel Socialite (Google) | Latest |
-| **Media Storage** | Cloudinary | Latest |
+| **Auth** | Laravel Breeze (halaman React via Inertia) | `^2.4` |
+| **Social Login** | Laravel Socialite (Google) | `^5.27` |
+| **Media Storage** | Cloudinary | `cloudinary/cloudinary_php ^3.1` |
 | **Video Hosting** | YouTube (Unlisted) | — |
-| **Search Engine** | Meilisearch + Laravel Scout | Latest |
-| **Real-time** | Laravel Reverb (WebSocket) | Latest |
+| **Search Engine** | Meilisearch + Laravel Scout | `^1.16` / `^11.1` |
+| **Real-time** | Laravel Reverb (WebSocket) | `^1.10` |
 | **Email (prod)** | Resend | Latest |
 | **Email (dev)** | Mailtrap / log driver | — |
-| **Admin Panel** | Custom Blade (bukan Filament) | — |
+| **Admin Panel** | Halaman React + Inertia (bukan Filament) | `resources/js/Pages/Admin/*` |
 
 ### 2.2 Database Schema (Canonical)
 
@@ -92,7 +93,7 @@ Kerjakan sesuai urutan prioritas. **JANGAN** loncat ke prioritas lebih rendah se
 
 | Priority | Modul | Status | PIC |
 |----------|-------|--------|-----|
-| **P0** | Project Setup (Laravel 12 + DB) | ✅ DONE | Yosua |
+| **P0** | Project Setup (Laravel `^13.7` + React/Inertia + DB) | ✅ DONE | Yosua |
 | **P1** | Database Migrations & Models | ✅ DONE | Yosua |
 | **P1b** | Seeders & Factories | ✅ DONE | Yosua |
 | **P2** | Auth System (Breeze + Role + Google) | 🔜 NEXT | Albariqi |
@@ -124,7 +125,9 @@ Kerjakan sesuai urutan prioritas. **JANGAN** loncat ke prioritas lebih rendah se
 - **Route URL:** English, kebab-case/snake-case
 - **Route name:** English, dot notation
 
-### 4.2 Konvensi Laravel 12
+### 4.2 Konvensi Laravel `^13.7`
+
+> **Frontend:** lapisan presentasi memakai React via Inertia (`ADR-008`). Controller me-render `Inertia::render('Nama/Halaman', $props)`; halaman React di `resources/js/Pages`, komponen di `resources/js/Components`. Penamaan komponen PascalCase, props dari controller diterima sebagai props komponen.
 
 ✅ **BENAR — Eloquent relationships + eager loading:**
 ```php

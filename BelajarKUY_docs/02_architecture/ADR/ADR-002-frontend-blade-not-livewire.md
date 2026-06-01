@@ -1,6 +1,6 @@
 # ADR-002: Frontend pakai Blade + Alpine.js (bukan Livewire / Inertia / Vue SPA)
 
-**Status:** ✅ Accepted
+**Status:** Superseded by ADR-008
 **Date:** 12 Mei 2026
 **Decision By:** Yosua (PM)
 

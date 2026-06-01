@@ -1,4 +1,4 @@
-# 🗂️ BelajarKUY — Folder Structure (Laravel 12)
+# 🗂️ BelajarKUY — Folder Structure (Laravel `^13.7` + React/Inertia)
 
 > Struktur folder lengkap project BelajarKUY.
 
@@ -147,66 +147,36 @@ BelajarKUY/
 │   │   └── app.css                     # Tailwind imports
 │   │
 │   ├── js/
-│   │   ├── app.js                      # Main JS (Alpine, Echo, Reverb)
+│   │   ├── app.jsx                     # Entry point Inertia (createInertiaApp, resolve Pages/)
 │   │   ├── echo.js                     # Laravel Echo setup (WebSocket)
-│   │   └── midtrans.js                 # Midtrans Snap handler
+│   │   ├── midtrans.js                 # Midtrans Snap handler
+│   │   │
+│   │   ├── Pages/                      # Halaman React (Inertia::render('Nama/Halaman'))
+│   │   │   ├── Welcome.jsx             # landing_page_welcome → '/'
+│   │   │   ├── Home.jsx                # katalog_kursus → 'home'
+│   │   │   ├── Courses/
+│   │   │   │   ├── Show.jsx            # detail kursus → 'course.detail'
+│   │   │   │   └── Player.jsx          # course player
+│   │   │   ├── Cart/Index.jsx          # 'cart.index'
+│   │   │   ├── Checkout/Index.jsx      # 'checkout'
+│   │   │   ├── Payment/                # Success.jsx, Failed.jsx
+│   │   │   ├── Auth/                   # Login.jsx, Register.jsx (Breeze via Inertia)
+│   │   │   ├── Student/               # Dashboard.jsx, MyCourses.jsx, Notifications.jsx, ...
+│   │   │   ├── Instructor/            # Dashboard.jsx, Courses/* ...
+│   │   │   ├── Admin/                 # Dashboard.jsx, Categories/*, Courses/*, ... (lihat F07)
+│   │   │   └── Errors/                # 403.jsx, 404.jsx, 419.jsx, 429.jsx, 500.jsx, 503.jsx
+│   │   │
+│   │   └── Components/                 # Komponen React reusable (≥2 halaman)
+│   │       ├── CourseCard.jsx
+│   │       ├── AppHeader.jsx
+│   │       ├── Admin/AdminSidebar.jsx
+│   │       ├── EmptyState.jsx
+│   │       └── Common/FlashToast.jsx   # konsumsi shared prop `flash`
 │   │
 │   └── views/
-│       ├── layouts/
-│       │   ├── app.blade.php           # Main public layout
-│       │   ├── admin.blade.php         # Admin panel layout
-│       │   └── instructor.blade.php    # Instructor panel layout
-│       │
-│       ├── components/
-│       │   ├── navbar.blade.php
-│       │   ├── footer.blade.php
-│       │   ├── sidebar.blade.php
-│       │   ├── course-card.blade.php
-│       │   ├── category-card.blade.php
-│       │   ├── alert.blade.php
-│       │   └── pagination.blade.php
-│       │
-│       ├── frontend/
-│       │   ├── home.blade.php
-│       │   ├── course-detail.blade.php
-│       │   ├── cart.blade.php
-│       │   ├── checkout.blade.php
-│       │   └── partials/
-│       │       ├── hero-slider.blade.php
-│       │       ├── featured-courses.blade.php
-│       │       ├── categories-section.blade.php
-│       │       ├── info-boxes.blade.php
-│       │       └── partners-section.blade.php
-│       │
-│       ├── backend/
-│       │   ├── admin/
-│       │   │   ├── dashboard.blade.php
-│       │   │   ├── category/
-│       │   │   ├── course/
-│       │   │   ├── order/
-│       │   │   ├── user/
-│       │   │   ├── slider/
-│       │   │   ├── setting/
-│       │   │   └── profile/
-│       │   │
-│       │   ├── instructor/
-│       │   │   ├── dashboard.blade.php
-│       │   │   ├── course/
-│       │   │   ├── section/
-│       │   │   ├── coupon/
-│       │   │   └── profile/
-│       │   │
-│       │   └── student/
-│       │       ├── dashboard.blade.php
-│       │       ├── enrolled-courses.blade.php
-│       │       ├── wishlist.blade.php
-│       │       └── profile/
-│       │
-│       └── auth/
-│           ├── login.blade.php
-│           ├── register.blade.php
-│           ├── forgot-password.blade.php
-│           └── reset-password.blade.php
+│       └── app.blade.php               # ⭐ Root view Inertia tunggal (HandleInertiaRequests::$rootView = 'app')
+│       # Catatan: layout `@extends` & view Blade lama (frontend/, backend/, auth/, components/)
+│       # dinonaktifkan bertahap sesuai deactivation sequence di MASTER_PLAN_REACT_INERTIA.md.
 │
 ├── routes/
 │   ├── web.php                         # ALL web routes

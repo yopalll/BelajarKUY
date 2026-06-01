@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Instructor Profile - BelajarKUY</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary": "#ffffff",
+                        "secondary": "#855400",
+                        "tertiary": "#181814",
+                        "success": "#2D8A56",
+                        "surface-variant": "#e5e2e1",
+                        "primary-fixed-dim": "#f6afef",
+                        "on-primary-container": "#be7db9",
+                        "error": "#D91E18",
+                        "on-surface": "#1b1b1c",
+                        "on-secondary-fixed": "#2a1700",
+                        "background": "#fcf9f8",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-secondary-container": "#6f4600",
+                        "on-tertiary-container": "#95938d",
+                        "on-tertiary-fixed": "#1c1c18",
+                        "surface-dim": "#dcd9d9",
+                        "warning": "#E67E22",
+                        "on-primary-fixed": "#370139",
+                        "outline": "#80737d",
+                        "tertiary-container": "#2d2c28",
+                        "surface-tint": "#844981",
+                        "outline-variant": "#d2c2cd",
+                        "error-container": "#ffdad6",
+                        "background-subtle": "#F8F5F2",
+                        "surface": "#FFFFFF",
+                        "surface-container": "#f0eded",
+                        "on-tertiary-fixed-variant": "#484742",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#f6afef",
+                        "secondary-fixed-dim": "#ffb95c",
+                        "surface-bright": "#fcf9f8",
+                        "inverse-surface": "#303030",
+                        "primary": "#300033",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#eae7e7",
+                        "primary-container": "#4a154b",
+                        "on-primary-fixed-variant": "#693168",
+                        "primary-fixed": "#ffd6f8",
+                        "surface-container-low": "#f6f3f2",
+                        "secondary-container": "#ffb145",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#c9c6c0",
+                        "tertiary-fixed": "#e6e2db",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#1b1b1c",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "secondary-fixed": "#ffddb7",
+                        "inverse-on-surface": "#f3f0ef",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#4f434c"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1rem"
+                    },
+                    spacing: {
+                        "xl": "32px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "margin-desktop": "48px",
+                        "xxl": "64px",
+                        "margin-mobile": "16px",
+                        "base": "4px",
+                        "gutter": "24px",
+                        "sm": "8px",
+                        "md": "16px"
+                    },
+                    fontFamily: {
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "caption": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"]
+                    },
+                    fontSize: {
+                        "headline-lg": ["32px", { lineHeight: "40px", fontWeight: "700" }],
+                        "headline-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+                        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "800" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "700" }],
+                        "caption": ["12px", { lineHeight: "16px", fontWeight: "500" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+                        "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .brand-shadow {
+            box-shadow: 0 4px 20px rgba(48, 0, 51, 0.12);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar Shared Component -->
+<nav class="bg-surface text-primary font-body-md text-body-md shadow-sm flex justify-between items-center w-full px-margin-desktop py-4 sticky top-0 z-50 transition-all duration-200">
+<div class="flex items-center gap-xl">
+<a class="font-headline-md text-headline-md font-bold text-primary active:scale-95 transition-all" href="#">BelajarKUY</a>
+<div class="hidden md:flex gap-lg ml-xl">
+<a class="text-on-surface-variant hover:text-primary transition-opacity hover:opacity-80 active:scale-95" href="#">Categories</a>
+<a class="text-on-surface-variant hover:text-primary transition-opacity hover:opacity-80 active:scale-95" href="#">My Learning</a>
+<!-- Active Navigation State for Instructor Profile -->
+<a class="text-primary font-bold border-b-2 border-primary pb-1 active:scale-95 transition-all" href="#">Instructors</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="font-label-md text-label-md px-4 py-2 border-2 border-primary text-primary rounded-lg hover:opacity-80 transition-opacity active:scale-95">Log In</button>
+<button class="font-label-md text-label-md px-4 py-2 bg-primary text-on-primary rounded-lg hover:opacity-80 transition-opacity active:scale-95">Sign Up</button>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow">
+<!-- Hero Profile Section -->
+<section class="w-full max-w-[1440px] mx-auto px-margin-desktop py-xxl relative overflow-hidden">
+<!-- Decorative background element to reinforce brand energy -->
+<div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-bl from-primary-fixed to-transparent opacity-20 pointer-events-none rounded-bl-[100px]"></div>
+<div class="flex flex-col md:flex-row gap-xl items-start relative z-10">
+<!-- Profile Image Block -->
+<div class="flex-shrink-0 relative">
+<div class="w-48 h-48 rounded-full overflow-hidden border-4 border-surface brand-shadow relative z-10">
+<img alt="Profile Photo" class="w-full h-full object-cover" data-alt="A professional headshot of an energetic and approachable female instructor in a modern, well-lit studio environment. The lighting is soft and bright, creating a high-key, optimistic atmosphere consistent with a modern e-learning platform. The background is a clean, subtle cream color that beautifully complements the corporate yet vibrant brand aesthetic. The person exudes confidence and friendliness, dressed in smart-casual business attire with a subtle hint of deep authoritative purple to match the brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4XR6XfBxtAbbNsXtzyLb0LxI8soqIIxd5QW2zlLH0DHb77aGyVq0gYZ77xZJ5cJLrhtKFgL8aaE6iKaf4EgENyiaUoZn8fRdvGv0tDZc0yfuiou1cZbBH0nucAD_hicvQ2O744QK5nu7h6Tpis_FbgPMhOW5ag1pCmNZE9hYebYnCE5yGGM0pwjMAbAdD7SbhDJqcVx4fb09WURQxRwMVN-HJQSYgqIv-i1qiB9tj9_lFSjaWQt9oMTnxxQdovUhWLT5crWZ-Qg"/>
+</div>
+<!-- Brand decorative rocket metaphor -->
+<div class="absolute -bottom-2 -right-2 bg-warning w-12 h-12 rounded-full flex items-center justify-center brand-shadow z-20" title="Top Instructor">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+</div>
+<!-- Profile Info Block -->
+<div class="flex-grow flex flex-col gap-sm mt-4 md:mt-0">
+<h1 class="font-display-lg text-display-lg text-primary">Dr. Sarah Jennings</h1>
+<p class="font-headline-md text-headline-md text-secondary">Senior Data Science Instructor &amp; Industry Expert</p>
+<div class="mt-md max-w-3xl">
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                            Passionate about demystifying complex algorithms and empowering the next generation of data professionals. With over 10 years of experience leading data teams at top tech firms, I focus on practical, project-based learning that bridges the gap between academic theory and real-world application. Let's launch your career in data together!
+                        </p>
+</div>
+<!-- Statistics Bento Box -->
+<div class="mt-lg grid grid-cols-2 md:grid-cols-4 gap-md max-w-2xl">
+<div class="bg-surface rounded-xl p-md brand-shadow flex flex-col items-center justify-center text-center">
+<span class="font-display-lg text-display-lg text-primary mb-xs">45K+</span>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wide">Students</span>
+</div>
+<div class="bg-surface rounded-xl p-md brand-shadow flex flex-col items-center justify-center text-center">
+<div class="flex items-center gap-xs mb-xs text-warning">
+<span class="font-display-lg text-display-lg text-primary">4.9</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wide">Avg Rating</span>
+</div>
+<div class="bg-surface rounded-xl p-md brand-shadow flex flex-col items-center justify-center text-center">
+<span class="font-display-lg text-display-lg text-primary mb-xs">12</span>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wide">Courses</span>
+</div>
+<div class="bg-surface rounded-xl p-md brand-shadow flex flex-col items-center justify-center text-center">
+<span class="font-display-lg text-display-lg text-primary mb-xs">8k</span>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wide">Reviews</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Courses Grid Section -->
+<section class="w-full max-w-[1440px] mx-auto px-margin-desktop py-xl">
+<div class="flex justify-between items-end mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-primary">Courses by Dr. Sarah Jennings</h2>
+<button class="hidden md:flex items-center gap-xs font-label-md text-label-md text-primary hover:opacity-80 transition-opacity">
+                    View All <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
+<!-- Course Card 1 -->
+<div class="bg-surface rounded-2xl overflow-hidden brand-shadow flex flex-col group cursor-pointer hover:-translate-y-1 transition-transform duration-300">
+<div class="relative w-full h-48 overflow-hidden">
+<img alt="Data Science Course Thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A vibrant, modern promotional graphic for an online course about advanced data science. The composition features abstract geometric shapes, glowing data visualizations, and interconnected nodes arranged in a dynamic perspective. The color palette utilizes deep authoritative purples mixed with bright, optimistic orange accents against a clean white and cream background. The overall style is professional, high-energy, and scholarly, designed to inspire upward mobility and continuous learning." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_j6PCSpMZvt9fgoi-Zwo8smstt0NftHmkfNXdrEsrVH8teIQhOW32AeimyyxmGJSrQRkG8bmiqlSGQJ6L5Uxkml8ggEKJVCXbsSW3Rk5TeMDrmjHNp9zVOn6i98f_wPlVnkWV4p0A2jfEynPb5YlQWo8MJR7mcWmTqjjjqS-zJHP7rW2uvBdrcV6NCZN9rl7sP2vIAfbdWgJPFBBOB51qzI3lvnOqkWaZeWT2K34pTnqdtXMa8mKNMdG4nkkz1CtnJisxgVYeUg"/>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<div class="mb-sm flex items-center justify-between">
+<span class="px-3 py-1 bg-primary/10 text-primary font-label-md text-label-md rounded-full">Data Science</span>
+<div class="flex items-center gap-xs text-warning">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md text-on-surface">4.9</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs line-clamp-2">Complete Machine Learning Bootcamp</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2 mb-md">Master Python, algorithms, and real-world modeling from scratch.</p>
+<div class="mt-auto flex justify-between items-center pt-sm border-t border-surface-variant">
+<div class="flex items-center gap-sm text-on-surface-variant font-caption text-caption">
+<span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">schedule</span> 42 Hours</span>
+</div>
+<span class="font-headline-md text-headline-md text-primary">$89.99</span>
+</div>
+</div>
+</div>
+<!-- Course Card 2 -->
+<div class="bg-surface rounded-2xl overflow-hidden brand-shadow flex flex-col group cursor-pointer hover:-translate-y-1 transition-transform duration-300">
+<div class="relative w-full h-48 overflow-hidden">
+<img alt="Python Course Thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="An engaging and professional thumbnail graphic for a Python programming course. The image showcases a stylized, abstract representation of code structures and glowing pathways in a sleek, modern technological environment. Deep purple tones provide an authoritative backdrop, while vibrant orange highlights add energy and optimism. The visual style is polished and scholarly, perfectly suited for an upwardly mobile tech education platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHAKGXQQrrAbeGBCxCvyadgmk3mfEfUM4WedUuA5QRF6lZ1ADA-pN4dGpQKqk3BmwHKvE3XPYa2q1IYcj2RiSezi_Lx_GZJ_lIY-2kpLUnAqGupOrJqVD6rl_QsyP2Kaj9loDeq_mAHdn9abwLRc3s3sVrmstiUgJ7A-wCoRdddIjHHl2Ol_e0tSH1Rly85xe7n2e-3a3k9XlrPEFyMhf4li5cwBNM97MlQKQzP06ztGdpZqpfwK8mkz0r0xTVVAi6uw-pAgjXog"/>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<div class="mb-sm flex items-center justify-between">
+<span class="px-3 py-1 bg-secondary/10 text-secondary font-label-md text-label-md rounded-full">Programming</span>
+<div class="flex items-center gap-xs text-warning">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md text-on-surface">4.8</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs line-clamp-2">Python for Data Analysis</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2 mb-md">Learn Pandas, NumPy, and Data Visualization techniques.</p>
+<div class="mt-auto flex justify-between items-center pt-sm border-t border-surface-variant">
+<div class="flex items-center gap-sm text-on-surface-variant font-caption text-caption">
+<span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">schedule</span> 28 Hours</span>
+</div>
+<span class="font-headline-md text-headline-md text-primary">$64.99</span>
+</div>
+</div>
+</div>
+<!-- Course Card 3 -->
+<div class="bg-surface rounded-2xl overflow-hidden brand-shadow flex flex-col group cursor-pointer hover:-translate-y-1 transition-transform duration-300">
+<div class="relative w-full h-48 overflow-hidden">
+<img alt="AI Course Thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A cutting-edge visual composition for an Artificial Intelligence course. The design features a minimalist, futuristic conceptualization of a neural network overlaying a clean, light-mode background. The color scheme strictly adheres to the brand's sophisticated deep purples and striking orange accents, conveying professionalism and high energy. The overall aesthetic is clean, modern, and inspiring for lifelong learners." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJfYjs3Y4QDAKH-aYPhbSc18OIGXnjCaWyXyuwVJr3fcJEeixOQAKaVlE6mgg_WTQsinUjy5R5KyhMRyq-WY4jXoDEMjbfmxzl6V5XTm-QG6se8gWcIcgekvbv1ImV7yBV1V-rM-MRSdLGnVdHgEqC5kMi8DQYfTRWpqssl5m4I-e3BM6U6woAJYXpi7VeGVTfHIOav1LcKVpg01sqyK5N3EJSyjhwrish9gXH1rsFpfqMaxG_nJN89jZ-Uczo1D2ob1l1-a0rQw"/>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<div class="mb-sm flex items-center justify-between">
+<span class="px-3 py-1 bg-primary/10 text-primary font-label-md text-label-md rounded-full">Artificial Intelligence</span>
+<div class="flex items-center gap-xs text-warning">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md text-on-surface">5.0</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs line-clamp-2">Deep Learning Foundations</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2 mb-md">Understand neural networks and build your first AI models.</p>
+<div class="mt-auto flex justify-between items-center pt-sm border-t border-surface-variant">
+<div class="flex items-center gap-sm text-on-surface-variant font-caption text-caption">
+<span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">schedule</span> 35 Hours</span>
+</div>
+<span class="font-headline-md text-headline-md text-primary">$99.99</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Shared Component -->
+<footer class="bg-tertiary text-on-tertiary font-body-md text-body-md w-full py-xxl px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-gutter mt-auto">
+<div class="flex flex-col gap-sm">
+<span class="font-headline-md text-headline-md font-bold text-on-tertiary">BelajarKUY</span>
+<p class="text-on-tertiary-container mt-2 max-w-xs text-sm">Empowering your learning journey with world-class instructors and industry-relevant curriculum.</p>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-md text-label-md text-secondary font-semibold mb-2">Company</h4>
+<a class="text-on-tertiary-container hover:text-secondary-fixed transition-colors" href="#">About Us</a>
+<a class="text-on-tertiary-container hover:text-secondary-fixed transition-colors" href="#">Careers</a>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-md text-label-md text-secondary font-semibold mb-2">Support</h4>
+<a class="text-on-tertiary-container hover:text-secondary-fixed transition-colors" href="#">Help Center</a>
+<a class="text-on-tertiary-container hover:text-secondary-fixed transition-colors" href="#">Contact</a>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-md text-label-md text-secondary font-semibold mb-2">Legal</h4>
+<a class="text-on-tertiary-container hover:text-secondary-fixed transition-colors" href="#">Privacy Policy</a>
+<a class="text-on-tertiary-container hover:text-secondary-fixed transition-colors" href="#">Terms of Service</a>
+</div>
+<div class="col-span-1 md:col-span-4 mt-xl pt-lg border-t border-tertiary-container text-center text-on-tertiary-container text-sm">
+            © 2024 BelajarKUY. Launch your career with us.
+        </div>
+</footer>
+</body></html>

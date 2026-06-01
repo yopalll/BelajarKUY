@@ -7,7 +7,7 @@
 ## Sprint 1 (Hari 1-7): Foundation & Auth
 
 ### Goals:
-- ✅ Project Laravel 12 tersetup dan bisa diakses
+- ✅ Project Laravel `^13.7` (+ React/Inertia) tersetup dan bisa diakses
 - ✅ Semua tabel database ter-migrate
 - ✅ Semua model ter-create
 - ✅ Auth system berfungsi (login/register/role)
@@ -17,8 +17,8 @@
 
 | Task | PIC | Status |
 |------|-----|--------|
-| Init Laravel 12 + Breeze | Yosua | ☐ |
-| Setup TailwindCSS + Vite | Yosua | ☐ |
+| Init Laravel `^13.7` + Breeze | Yosua | ☐ |
+| Setup TailwindCSS + Vite + React/Inertia | Yosua | ☐ |
 | Create all migrations | Yosua | ☐ |
 | Create all models | Yosua | ☐ |
 | Create seeders | Yosua | ☐ |
@@ -26,10 +26,10 @@
 | Customize register (role selection) | Albariqi | ☐ |
 | Post-login redirect by role | Albariqi | ☐ |
 | Google OAuth setup | Albariqi | ☐ |
-| Main layout (app.blade.php) | Vascha & Quinsha | ☐ |
-| Navbar component | Vascha & Quinsha | ☐ |
-| Footer component | Vascha & Quinsha | ☐ |
-| Landing page (basic) | Vascha & Quinsha | ☐ |
+| Root view Inertia (`app.blade.php`) + entry `app.jsx` | Vascha & Quinsha | ☐ |
+| Navbar component (React, `Components/AppHeader.jsx`) | Vascha & Quinsha | ☐ |
+| Footer component (React) | Vascha & Quinsha | ☐ |
+| Landing page (basic) — `Pages/Welcome.jsx` | Vascha & Quinsha | ☐ |
 
 ### Definition of Done:
 - `php artisan migrate` berhasil tanpa error
@@ -135,6 +135,24 @@
 - UI bersih dan responsive
 - Payment Midtrans tested end-to-end
 - Siap dipresentasikan
+
+---
+
+## 🚀 Sprint Migrasi Frontend React + Inertia (ADR-008)
+
+> Tiga sprint **berurutan**, selaras dengan fase di `MASTER_PLAN_REACT_INERTIA.md` & `MASTER_ROADMAP.md` (Phase 6). Backend tidak berubah; hanya respons presentasi controller (`view` → `Inertia::render`).
+
+### Sprint M1 — Fase 1: Fondasi & Halaman Publik
+**Goal:** shell Inertia aktif + halaman publik (`welcome`, `home`, `course.detail`) jalan di React.
+**Exit criteria (DoD):** semua route publik me-render via `Inertia::render`; **0** referensi `@extends` pada halaman publik; smoke test manual lulus.
+
+### Sprint M2 — Fase 2: Autentikasi & Panel Student
+**Goal:** auth (Breeze) + panel Student pindah ke React.
+**Exit criteria (DoD):** login/registrasi/verifikasi berjalan via halaman React (`Pages/Auth/*`); dashboard & my-courses Student tampil dari `resources/js/Pages/Student/*`.
+
+### Sprint M3 — Fase 3: Panel Instructor & Admin
+**Goal:** panel Instructor & Admin pindah ke React.
+**Exit criteria (DoD):** seluruh route `admin.*` & `instructor.*` me-render React; jumlah `.blade.php` presentasi yang masih dirujuk router = **0** (di luar root view `app.blade.php` & email).
 
 ---
 
