@@ -319,7 +319,7 @@ function searchComponent() {
 **Status:** ADOPTED (menggunakan Pusher sebagai fallback jika setup Reverb terlalu kompleks)
 
 ### Laravel Reverb (Primary)
-- **Package:** Built-in Laravel 12 (`php artisan install:broadcasting`)
+- **Package:** `laravel/reverb ^1.10` (Laravel `^13.7`, `php artisan install:broadcasting`)
 - **Fungsi:** WebSocket server untuk notifikasi real-time
 - **Budget:** 100% Gratis (self-hosted)
 - **Digunakan untuk:**
@@ -474,6 +474,6 @@ php artisan scout:import "App\Models\Course"  # Index courses ke Meilisearch
 ## 🎯 Tech Stack CV-ready
 
 > **BelajarKUY (LMS Platform)**
-> *Tech Stack: Laravel 12, MySQL, TailwindCSS v4, Alpine.js, Midtrans Snap (Payment), Cloudinary (Media), Meilisearch + Laravel Scout (Search), Laravel Reverb (WebSocket), Resend (Email), YouTube (Video Hosting).*
+> *Tech Stack: Laravel `^13.7`, React `^19.2.6` (Inertia.js), MySQL, TailwindCSS `^3.1.0` (+ `@tailwindcss/vite ^4.0.0`), Midtrans Snap (Payment), Cloudinary (Media), Meilisearch + Laravel Scout (Search), Laravel Reverb (WebSocket), Resend (Email), YouTube (Video Hosting).*
 
 **Zero cost (Rp 0)** — semua service di atas punya free tier yang cukup untuk project akademik.

@@ -8,10 +8,10 @@
 ## PROMPT
 
 ```
-Kamu adalah senior Laravel 12 developer. Bangun sistem autentikasi lengkap untuk project BelajarKUY (Udemy clone Indonesia).
+Kamu adalah senior Laravel `^13.7` developer. Bangun sistem autentikasi lengkap untuk project BelajarKUY (Udemy clone Indonesia).
 
 ## CONTEXT:
-- Laravel Breeze SUDAH terinstall (Blade stack)
+- Laravel Breeze SUDAH terinstall (React + Inertia stack) — halaman auth di `resources/js/Pages/Auth/*`
 - User model SUDAH punya kolom: role (enum: user, instructor, admin)
 - RoleMiddleware SUDAH terdaftar dengan alias 'role'
 - Google OAuth keys ada di .env
@@ -77,8 +77,8 @@ Kamu adalah senior Laravel 12 developer. Bangun sistem autentikasi lengkap untuk
 - JANGAN modifikasi migration users (sudah final)
 
 ## OUTPUT:
-- Semua controller files
-- Semua view files (Blade)
+- Semua controller files (me-render `Inertia::render('Auth/...')`)
+- Semua halaman React (`resources/js/Pages/Auth/*`)
 - Route additions untuk routes/web.php
 - Form Request files jika ada
 ```

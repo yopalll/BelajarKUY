@@ -43,6 +43,59 @@ npm install
 
 ---
 
+## Step 2b: Setup Frontend React + Inertia
+
+> Lapisan presentasi memakai **React via Inertia** (`ADR-008`). `composer install`/`npm install` di atas sudah memasang seluruh dependensi dari `composer.json`/`package.json`. Tiga bagian berikut adalah konfigurasi inti React+Inertia (sesuai `Kode_Nyata`).
+
+### 1. Dependensi React (versi sesuai `package.json`)
+
+```bash
+npm install @inertiajs/react@^3.3.0 react@^19.2.6 react-dom@^19.2.6 \
+  @vitejs/plugin-react@^6.0.2 @headlessui/react@^2.2.10 lucide-react@^1.17.0
+# Adapter server (sudah ada di composer.json):
+composer require inertiajs/inertia-laravel:^3.1
+```
+
+### 2. Konfigurasi `@vitejs/plugin-react` pada Vite
+
+```js
+// vite.config.js
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+    plugins: [
+        laravel({ input: ['resources/css/app.css', 'resources/js/app.jsx'], refresh: true }),
+        react(),
+    ],
+});
+```
+
+### 3. Entry point Inertia (resolve `resources/js/Pages`, root view `app`)
+
+```js
+// resources/js/app.jsx
+import { createInertiaApp } from '@inertiajs/react';
+import { createRoot } from 'react-dom/client';
+
+createInertiaApp({
+    // root view Blade 'app' (resources/views/app.blade.php), sesuai
+    // HandleInertiaRequests::$rootView = 'app'
+    resolve: (name) => {
+        const pages = import.meta.glob('./Pages/**/*.jsx', { eager: true });
+        return pages[`./Pages/${name}.jsx`];
+    },
+    setup({ el, App, props }) {
+        createRoot(el).render(<App {...props} />);
+    },
+});
+```
+
+> Prop bersama `auth.user` & `flash` otomatis tersedia di setiap halaman via `usePage().props` (dibagikan oleh `app/Http/Middleware/HandleInertiaRequests.php`).
+
+---
+
 ## Step 3: Environment Setup
 
 ```bash

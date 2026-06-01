@@ -19,10 +19,12 @@ use App\Http\Controllers\Admin\AdminPartnerController;
 use App\Http\Controllers\Admin\AdminSiteSettingController;
 use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\Frontend\HomeController;
+use Inertia\Inertia;
 
 // --- Public Routes ---
+// Fase 1 migrasi React+Inertia (ADR-008): landing dirender via Inertia → Pages/Welcome.jsx
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome');
 });
 
 // Universal Dashboard: tampilkan konten sesuai role, URL tetap /dashboard
@@ -103,10 +105,9 @@ Route::get('/auth/google-callback', [GoogleController::class, 'callback'])->name
 // Landing page & katalog kursus (Phase 2)
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-// Course detail page (Phase 2)
-Route::get('/courses/{slug}', function ($slug) {
-    return view('frontend.course-detail');
-})->name('course.detail');
+// Course detail page — Fase 1 migrasi React+Inertia (ADR-008)
+use App\Http\Controllers\Frontend\CourseDetailController;
+Route::get('/courses/{slug}', [CourseDetailController::class, 'show'])->name('course.detail');
 
 // Cart (Phase 3)
 Route::get('/cart', function () {

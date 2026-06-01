@@ -8,29 +8,31 @@
 ## PROMPT
 
 ```
-Kamu adalah senior Laravel 12 developer. Bangun admin panel lengkap untuk project BelajarKUY (Udemy clone Indonesia).
+Kamu adalah senior Laravel `^13.7` + React/Inertia developer. Bangun admin panel lengkap untuk project BelajarKUY (Udemy clone Indonesia). Admin panel = halaman React + Inertia (ADR-008), **bukan Filament**.
 
 ## PREREQUISITE: Baca file-file berikut terlebih dahulu:
 - BelajarKUY_docs/01_guides/AGENT_GUIDELINES.md
 - BelajarKUY_docs/03_features/F07_ADMIN_PANEL.md
 - BelajarKUY_docs/02_architecture/API_ROUTES.md (section Admin Routes)
+- BelajarKUY_docs/04_plans/SCREEN_MAPPING_STITCH_REACT.md
 
 ## CONTEXT:
 - Semua model sudah ada
-- RoleMiddleware sudah terdaftar (alias 'role')
+- RoleMiddleware sudah terdaftar (alias 'role') — akses admin via `role:admin` (tanpa Filament)
 - Admin route prefix: /admin, middleware: auth + role:admin
-- Layout admin terpisah dari layout publik
+- Halaman admin = komponen React di `resources/js/Pages/Admin/*`; controller me-render `Inertia::render('Admin/...')`
+- Konteks_B (Admin): palet krem + slate-blue, font Inter
 
 ## TASKS:
 
-### 1. Admin Layout (resources/views/layouts/admin.blade.php)
-- Sidebar navigasi (collapsible)
-- Top bar (admin name, notifications, logout)
+### 1. Admin Layout (`resources/js/Layouts/AdminLayout.jsx` + `resources/js/Components/Admin/AdminSidebar.jsx`)
+- Sidebar navigasi (collapsible, state React)
+- Top bar (admin name dari `auth.user`, notifications, logout)
 - Content area
-- TailwindCSS dark sidebar style
+- TailwindCSS sidebar style (Konteks_B)
 - Menu items: Dashboard, Kategori, Sub-kategori, Kursus, Instructor, Order, User, Slider, Info Box, Partner, Review, Settings, Profile
 
-### 2. Admin Dashboard (resources/views/backend/admin/dashboard.blade.php)
+### 2. Admin Dashboard (`resources/js/Pages/Admin/Dashboard.jsx`)
 - Stats cards: Total Users, Total Instructors, Total Courses, Active Courses, Total Orders, Total Revenue, This Month Revenue
 - Recent orders table (last 10)
 - Recent registrations (last 5 users)
@@ -96,27 +98,29 @@ Project ini tidak memerlukan edit API keys via UI — credentials cukup di `.env
 - Index: Table (Student, Course, Rating, Comment, Status, Actions)
 - Approve/Reject toggle
 
-## DESIGN:
-- Sidebar gelap (bg-gray-800 / bg-slate-900)
-- Content area putih
-- Cards untuk stats
-- Tables dengan pagination
-- Forms dengan validation feedback
+## DESIGN (Konteks_B):
+- Sidebar slate-blue, latar krem (Inter)
+- Content area terang
+- Cards untuk stats (komponen React menerima props)
+- Tables dengan pagination (props Inertia / paginator Laravel)
+- Forms dengan validation feedback (errors dari Inertia `useForm`)
 - SweetAlert2 untuk delete confirmation
-- Toast notification untuk success/error
+- Toast notification dari shared prop `flash`
 
 ## CONSTRAINT:
-- Semua route di prefix 'admin' dengan middleware auth + role:admin
+- Semua route di prefix 'admin' dengan middleware auth + role:admin (TANPA Filament)
+- Halaman = React di `resources/js/Pages/Admin/*`; controller me-render `Inertia::render(...)`
+- Submit form via `useForm().post/put` dari `@inertiajs/react`
 - Image upload ke **Cloudinary** (BUKAN ke public/uploads/)
-- Validasi menggunakan Form Request classes
+- Validasi menggunakan Form Request classes (backend tidak berubah)
 - Pagination 10-15 items per halaman
 - Text UI dalam Bahasa Indonesia
 - Kode dalam English
 
 ## OUTPUT:
-- Admin layout file
-- Semua controller files (di Backend/Admin/)
-- Semua view files (di backend/admin/)
+- Admin layout & sidebar (React)
+- Semua controller files (di Backend/Admin/) — me-render `Inertia::render`
+- Semua halaman React (`resources/js/Pages/Admin/*`)
 - Form Request files
 - Route additions
 ```

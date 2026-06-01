@@ -44,8 +44,8 @@ gantt
 
 | # | Task | PIC | Est. Days | Deliverable |
 |---|------|-----|-----------|-------------|
-| 1.1 | Init Laravel 12 project | Yosua | 0.5 | Clean Laravel project |
-| 1.2 | Setup TailwindCSS + Vite | Yosua | 0.5 | Working build pipeline |
+| 1.1 | Init Laravel `^13.7` project | Yosua | 0.5 | Clean Laravel project |
+| 1.2 | Setup TailwindCSS + Vite + React/Inertia | Yosua | 0.5 | Working build pipeline (Vite + `@vitejs/plugin-react`) |
 | 1.3 | Create all migrations (19) | Yosua | 1 | All tables created |
 | 1.4 | Create all Eloquent models (19) | Yosua | 1 | Models with relationships |
 | 1.5 | Create seeders + factories | Yosua | 0.5 | Seeded database |
@@ -124,6 +124,20 @@ gantt
 | Week 2 | Frontend + Course CRUD | 50% |
 | Week 3 | Commerce (Cart, Payment) + Panels | 75% |
 | Week 4 | Polish, Testing, Deploy | 100% |
+
+---
+
+## 🚀 Phase 6: Migrasi Frontend Blade → React + Inertia (ADR-008)
+
+> Tiga fase **berurutan**, selaras dengan `MASTER_PLAN_REACT_INERTIA.md`. Setiap fase punya nama & **exit criteria** yang dapat diverifikasi dua peninjau independen. Backend (model, route, controller, skema, middleware peran) dipertahankan utuh — hanya respons presentasi controller yang berubah dari `view(...)` ke `Inertia::render(...)`.
+
+| # | Fase | Cakupan | Exit criteria (terukur) |
+|---|------|---------|--------------------------|
+| 6.1 | **Fase 1 — Fondasi & Halaman Publik** | Shell Inertia + `welcome`, `home`, `course.detail` | Semua route publik me-render via `Inertia::render`; 0 referensi `@extends` pada halaman publik; smoke test manual lulus |
+| 6.2 | **Fase 2 — Autentikasi & Panel Student** | View Breeze + `student.*` (dashboard, my-courses, wishlist, profile, setting) | Login/registrasi/verifikasi berjalan via halaman React (`Pages/Auth/*`); dashboard & my-courses Student tampil dari `resources/js/Pages/Student/*` |
+| 6.3 | **Fase 3 — Panel Instructor & Admin** | `instructor.*` + `admin.*` | Seluruh route `admin.*` & `instructor.*` me-render React; jumlah `.blade.php` presentasi yang masih dirujuk router = 0 (di luar root view `app.blade.php` & email) |
+
+> Strategi rollback per fase & deactivation sequence: lihat `MASTER_PLAN_REACT_INERTIA.md` §5, §9.
 
 ---
 

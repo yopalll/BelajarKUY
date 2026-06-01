@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pembayaran Berhasil - BelajarKUY</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e5e2e1",
+                        "inverse-primary": "#f6afef",
+                        "surface-container-low": "#f6f3f2",
+                        "warning": "#E67E22",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "tertiary": "#181814",
+                        "on-primary": "#ffffff",
+                        "surface": "#FFFFFF",
+                        "secondary-fixed-dim": "#ffb95c",
+                        "secondary-fixed": "#ffddb7",
+                        "on-tertiary-container": "#95938d",
+                        "tertiary-fixed-dim": "#c9c6c0",
+                        "on-background": "#1b1b1c",
+                        "inverse-on-surface": "#f3f0ef",
+                        "background-subtle": "#F8F5F2",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#dcd9d9",
+                        "surface-tint": "#844981",
+                        "primary-fixed": "#ffd6f8",
+                        "on-surface": "#1b1b1c",
+                        "on-secondary-container": "#6f4600",
+                        "outline": "#80737d",
+                        "primary": "#300033",
+                        "secondary": "#855400",
+                        "on-secondary-fixed": "#2a1700",
+                        "surface-bright": "#fcf9f8",
+                        "on-surface-variant": "#4f434c",
+                        "tertiary-container": "#2d2c28",
+                        "secondary-container": "#ffb145",
+                        "tertiary-fixed": "#e6e2db",
+                        "on-tertiary-fixed-variant": "#484742",
+                        "outline-variant": "#d2c2cd",
+                        "surface-container-high": "#eae7e7",
+                        "on-primary-fixed-variant": "#693168",
+                        "on-primary-container": "#be7db9",
+                        "on-tertiary-fixed": "#1c1c18",
+                        "success": "#2D8A56",
+                        "primary-fixed-dim": "#f6afef",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-primary-fixed": "#370139",
+                        "on-error": "#ffffff",
+                        "surface-container": "#f0eded",
+                        "error": "#D91E18",
+                        "inverse-surface": "#303030",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#4a154b",
+                        "background": "#fcf9f8",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1rem"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "xxl": "64px",
+                        "margin-desktop": "48px",
+                        "base": "4px",
+                        "margin-mobile": "16px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "xs": "4px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "caption": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fcf9f8; /* background */
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background flex flex-col min-h-screen">
+<!-- TopNavBar (Suppressed due to transactional nature, but keeping brand minimal presence if needed. Hiding full nav shell as per rules) -->
+<header class="w-full py-md px-margin-desktop flex justify-center items-center">
+<div class="font-display-lg text-headline-md font-extrabold text-primary">BelajarKUY</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex items-center justify-center p-margin-mobile md:p-margin-desktop">
+<!-- Glassmorphism Success Card -->
+<div class="bg-surface rounded-2xl shadow-lg shadow-primary/10 border border-primary/10 p-xl md:p-xxl max-w-lg w-full text-center relative overflow-hidden flex flex-col items-center">
+<!-- Decorative Rocket / Confetti effect (simulated via SVG/CSS background) -->
+<div class="absolute -top-20 -right-20 w-40 h-40 bg-secondary-container/20 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-20 -left-20 w-40 h-40 bg-primary-container/20 rounded-full blur-3xl"></div>
+<!-- Success Icon -->
+<div class="w-24 h-24 bg-success/10 rounded-full flex items-center justify-center mb-lg relative">
+<div class="absolute inset-0 bg-success/20 rounded-full animate-ping opacity-75"></div>
+<span class="material-symbols-outlined text-[48px] text-success" data-icon="check_circle" data-weight="fill">check_circle</span>
+</div>
+<!-- Headlines -->
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-sm">Pembayaran Berhasil!</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mb-xl">Hore! Kamu sudah selangkah lebih dekat dengan impianmu. Selamat belajar!</p>
+<!-- Order Details -->
+<div class="w-full bg-surface-container-low rounded-xl p-md mb-xl flex flex-col gap-sm text-left border border-outline-variant/50">
+<div class="flex justify-between items-center border-b border-outline-variant/30 pb-sm">
+<span class="font-body-md text-body-md text-on-surface-variant">Nomor Order</span>
+<span class="font-label-md text-label-md text-on-surface">ORD-20240520-X8J2</span>
+</div>
+<div class="flex justify-between items-center border-b border-outline-variant/30 py-sm">
+<span class="font-body-md text-body-md text-on-surface-variant">Metode Pembayaran</span>
+<span class="font-label-md text-label-md text-on-surface">Transfer Bank / Virtual Account</span>
+</div>
+<div class="flex justify-between items-center pt-sm">
+<span class="font-label-md text-label-md text-on-surface">Total Bayar</span>
+<span class="font-headline-md text-headline-md text-primary">Rp 450.000</span>
+</div>
+</div>
+<!-- CTAs -->
+<div class="flex flex-col w-full gap-md">
+<button class="w-full bg-primary text-on-primary rounded-lg py-md px-lg font-label-md text-label-md hover:bg-primary-container transition-colors shadow-sm flex justify-center items-center gap-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="rocket_launch">rocket_launch</span>
+                    Mulai Belajar Sekarang
+                </button>
+<button class="w-full bg-surface text-primary border-2 border-primary rounded-lg py-md px-lg font-label-md text-label-md hover:bg-surface-container-low transition-colors flex justify-center items-center gap-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+                    Lihat Dashboard Saya
+                </button>
+</div>
+</div>
+</main>
+<!-- Footer (Suppressed as per rules for transactional/success splash screens to focus on Canvas) -->
+</body></html>

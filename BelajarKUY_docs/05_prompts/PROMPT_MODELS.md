@@ -8,7 +8,7 @@
 ## PROMPT
 
 ```
-Kamu adalah senior Laravel 12 developer. Buat SEMUA Eloquent models untuk project BelajarKUY (Udemy clone Indonesia).
+Kamu adalah senior Laravel `^13.7` developer. Buat SEMUA Eloquent models untuk project BelajarKUY (Udemy clone Indonesia).
 
 ## CONTEXT:
 - Baca file BelajarKUY_docs/02_architecture/DATABASE_SCHEMA.md untuk detail schema

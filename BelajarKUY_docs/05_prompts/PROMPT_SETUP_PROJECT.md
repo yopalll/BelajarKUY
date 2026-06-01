@@ -1,4 +1,4 @@
-# 🤖 PROMPT: Setup Laravel 12 Project
+# 🤖 PROMPT: Setup Laravel `^13.7` Project (React + Inertia)
 
 > Copy-paste prompt ini ke AI agent untuk inisialisasi project BelajarKUY.
 > **PIC: Yosua Valentino**
@@ -8,36 +8,41 @@
 ## PROMPT
 
 ```
-Kamu adalah senior Laravel developer. Tugas kamu adalah menginisialisasi project Laravel 12 bernama "BelajarKUY" — sebuah platform e-learning (Udemy clone) untuk pasar Indonesia.
+Kamu adalah senior Laravel developer. Tugas kamu adalah menginisialisasi project Laravel `^13.7` bernama "BelajarKUY" — sebuah platform e-learning (Udemy clone) untuk pasar Indonesia. Lapisan frontend memakai React via Inertia (ADR-008).
 
 ## LANGKAH-LANGKAH:
 
-### 1. Buat project Laravel 12
+### 1. Buat project Laravel `^13.7`
 ```bash
 composer create-project laravel/laravel BelajarKUY
 cd BelajarKUY
 ```
 
-### 2. Install Laravel Breeze (Blade + TailwindCSS)
+### 2. Install Laravel Breeze (React + Inertia)
 ```bash
 composer require laravel/breeze --dev
-php artisan breeze:install blade
+php artisan breeze:install react
 npm install && npm run build
 ```
 
 ### 3. Install additional packages
 ```bash
+composer require inertiajs/inertia-laravel:^3.1
 composer require laravel/socialite
 composer require midtrans/midtrans-php
 composer require intervention/image
-composer require cloudinary-labs/cloudinary-laravel
+composer require cloudinary/cloudinary_php
 composer require laravel/scout
 composer require meilisearch/meilisearch-php
+composer require laravel/reverb
 ```
 
-### 4. Install frontend packages
+### 4. Install frontend packages (React + Inertia)
 ```bash
-npm install sweetalert2 alpinejs laravel-echo pusher-js
+npm install @inertiajs/react@^3.3.0 react@^19.2.6 react-dom@^19.2.6 \
+  @vitejs/plugin-react@^6.0.2 @headlessui/react@^2.2.10 lucide-react@^1.17.0
+npm install sweetalert2 laravel-echo pusher-js
+# alpinejs tetap di devDependencies (diturunkan, bukan lapisan presentasi utama)
 ```
 
 ### 4b. Setup Broadcasting (Reverb)
@@ -97,9 +102,9 @@ Register di bootstrap/app.php dengan alias 'role'
 - Tambahkan scope berdasarkan role
 
 ## CONSTRAINT:
-- Gunakan Laravel 12, PHP 8.3+
+- Gunakan Laravel `^13.7`, PHP `^8.3`
 - Database: MySQL
-- Frontend: Blade + TailwindCSS (BUKAN Livewire, BUKAN Inertia)
+- Frontend: React + Inertia (`@inertiajs/react ^3.3.0`, `inertiajs/inertia-laravel ^3.1`); halaman di `resources/js/Pages`, root view `app` (ADR-008)
 - Payment: Midtrans (BUKAN Stripe)
 - Semua text UI dalam Bahasa Indonesia
 - Semua kode (variabel, fungsi) dalam English

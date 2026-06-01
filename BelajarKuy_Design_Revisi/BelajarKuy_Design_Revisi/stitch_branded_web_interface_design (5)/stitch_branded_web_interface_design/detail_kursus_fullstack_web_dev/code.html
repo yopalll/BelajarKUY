@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Course Detail - BelajarKUY</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-secondary-fixed": "#2a1700",
+                        "inverse-primary": "#f6afef",
+                        "tertiary": "#181814",
+                        "outline": "#80737d",
+                        "on-background": "#1b1b1c",
+                        "warning": "#E67E22",
+                        "surface-container-low": "#f6f3f2",
+                        "secondary": "#855400",
+                        "outline-variant": "#d2c2cd",
+                        "surface-container": "#f0eded",
+                        "secondary-fixed": "#ffddb7",
+                        "on-tertiary-fixed-variant": "#484742",
+                        "primary-fixed": "#ffd6f8",
+                        "on-secondary-container": "#6f4600",
+                        "tertiary-fixed-dim": "#c9c6c0",
+                        "surface-dim": "#dcd9d9",
+                        "tertiary-container": "#2d2c28",
+                        "on-surface-variant": "#4f434c",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-tertiary-fixed": "#1c1c18",
+                        "error": "#D91E18",
+                        "secondary-fixed-dim": "#ffb95c",
+                        "error-container": "#ffdad6",
+                        "background": "#fcf9f8",
+                        "inverse-surface": "#303030",
+                        "surface-variant": "#e5e2e1",
+                        "on-surface": "#1b1b1c",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#300033",
+                        "surface-tint": "#844981",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#be7db9",
+                        "surface-bright": "#fcf9f8",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#95938d",
+                        "on-primary-fixed-variant": "#693168",
+                        "success": "#2D8A56",
+                        "primary-fixed-dim": "#f6afef",
+                        "on-error-container": "#93000a",
+                        "surface": "#FFFFFF",
+                        "surface-container-high": "#eae7e7",
+                        "on-primary-fixed": "#370139",
+                        "background-subtle": "#F8F5F2",
+                        "secondary-container": "#ffb145",
+                        "tertiary-fixed": "#e6e2db",
+                        "primary-container": "#4a154b",
+                        "on-secondary": "#ffffff"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "margin-mobile": "16px",
+                        "xs": "4px",
+                        "margin-desktop": "48px",
+                        "xxl": "64px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "gutter": "24px",
+                        "md": "16px",
+                        "lg": "24px"
+                    },
+                    fontFamily: {
+                        "caption": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"]
+                    },
+                    fontSize: {
+                        "caption": ["12px", { lineHeight: "16px", fontWeight: "500" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+                        "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600" }],
+                        "headline-lg": ["32px", { lineHeight: "40px", fontWeight: "700" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "700" }],
+                        "headline-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+                        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "800" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined.fill { font-variation-settings: 'FILL' 1; }
+        
+        /* Accordion transition */
+        .accordion-content {
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+        .accordion-content.open {
+            max-height: 1000px; /* Arbitrary large number */
+            padding-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar Shared Component -->
+<nav class="bg-surface dark:bg-inverse-surface shadow-sm dark:shadow-none docked full-width top-0 flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 sticky top-0 z-50">
+<div class="flex items-center gap-gutter">
+<a class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed" href="#">BelajarKUY</a>
+<!-- Search Bar (Left aligned per JSON) -->
+<div class="hidden md:flex items-center bg-surface-container-low rounded-full px-4 py-2 border border-outline-variant focus-within:border-primary transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md font-body-md text-on-surface w-64 placeholder-on-surface-variant" placeholder="Search courses..." type="text"/>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="hidden md:flex items-center gap-6">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed hover:opacity-80 transition-opacity" href="#">Categories</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed hover:opacity-80 transition-opacity" href="#">My Learning</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed hover:opacity-80 transition-opacity" href="#">Instructors</a>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-4">
+<a class="hidden md:block font-label-md text-label-md text-primary hover:text-primary-fixed hover:opacity-80 transition-opacity" href="#">Log In</a>
+<a class="font-label-md text-label-md bg-primary text-on-primary px-4 py-2 rounded-lg hover:opacity-80 transition-opacity active:scale-95 transition-all duration-200" href="#">Sign Up</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="w-full max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-lg md:py-xl grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Left Column: Course Info (Hero & Details) -->
+<div class="lg:col-span-8 flex flex-col gap-lg">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 font-caption text-caption text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Development</a>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-on-surface">Web Development</span>
+</div>
+<!-- Hero Header -->
+<div class="flex flex-col gap-sm">
+<div class="flex gap-2">
+<span class="bg-primary/10 text-primary font-caption text-caption px-3 py-1 rounded-full">Development</span>
+<span class="bg-secondary/10 text-secondary font-caption text-caption px-3 py-1 rounded-full">Bestseller</span>
+</div>
+<h1 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-on-background">Fullstack Web Development Bootcamp</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Master modern web development from frontend to backend. Learn React, Node.js, MongoDB, and build real-world scalable applications.</p>
+<div class="flex flex-wrap items-center gap-4 mt-2">
+<div class="flex items-center gap-1">
+<span class="font-label-md text-label-md text-warning">4.9</span>
+<div class="flex text-warning">
+<span class="material-symbols-outlined fill text-[18px]">star</span>
+<span class="material-symbols-outlined fill text-[18px]">star</span>
+<span class="material-symbols-outlined fill text-[18px]">star</span>
+<span class="material-symbols-outlined fill text-[18px]">star</span>
+<span class="material-symbols-outlined text-[18px]">star_half</span>
+</div>
+<a class="font-body-md text-body-md text-primary hover:underline" href="#reviews">(120 reviews)</a>
+</div>
+<span class="text-on-surface-variant">•</span>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-md text-body-md">
+<span class="material-symbols-outlined text-[18px]">group</span>
+<span>4,500+ students</span>
+</div>
+<span class="text-on-surface-variant">•</span>
+<div class="font-body-md text-body-md text-on-surface">
+                        Created by <a class="text-primary hover:underline font-semibold" href="#instructor">Dr. Sarah Chen</a>
+</div>
+</div>
+<div class="flex gap-4 mt-1 font-caption text-caption text-on-surface-variant">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">new_releases</span> Last updated 10/2023</div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">language</span> Indonesian</div>
+</div>
+</div>
+<!-- What You'll Learn Bento Grid -->
+<section class="bg-surface p-lg md:p-xl rounded-2xl shadow-sm border border-primary/10 mt-lg">
+<h2 class="font-headline-md text-headline-md text-on-background mb-md">Yang akan Anda pelajari</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-success mt-1">check_circle</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Build responsive, accessible, and fast web applications using HTML5, CSS3, and JavaScript (ES6+).</span>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-success mt-1">check_circle</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Master React.js and Redux for building complex frontend user interfaces and state management.</span>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-success mt-1">check_circle</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Develop robust backend APIs using Node.js, Express, and secure authentication flows (JWT).</span>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-success mt-1">check_circle</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Design and query databases using MongoDB and Mongoose, understanding NoSQL architecture.</span>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-success mt-1">check_circle</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Deploy full-stack applications to cloud platforms like Vercel and Heroku.</span>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-success mt-1">check_circle</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Learn modern development workflows including Git, GitHub, and CI/CD basics.</span>
+</div>
+</div>
+</section>
+<!-- Course Content / Curriculum Accordion -->
+<section class="mt-lg">
+<div class="flex justify-between items-end mb-md">
+<h2 class="font-headline-md text-headline-md text-on-background">Konten Kursus</h2>
+<span class="font-body-md text-body-md text-on-surface-variant">15 sections • 120 lectures • 24h 30m total length</span>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Accordion Item 1 -->
+<div class="bg-surface rounded-lg border border-outline-variant overflow-hidden">
+<button class="w-full flex justify-between items-center p-4 bg-surface-container-low hover:bg-surface-variant transition-colors" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('.icon').textContent = this.nextElementSibling.classList.contains('open') ? 'expand_less' : 'expand_more'">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined icon text-on-surface-variant transition-transform">expand_more</span>
+<span class="font-label-md text-label-md text-on-surface">1. Introduction to Web Development</span>
+</div>
+<span class="font-caption text-caption text-on-surface-variant">5 lectures • 45 min</span>
+</button>
+<div class="accordion-content px-4 bg-surface">
+<ul class="py-2 flex flex-col gap-2">
+<li class="flex justify-between items-center py-2 border-b border-surface-variant last:border-0">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">play_circle</span>
+<a class="font-body-md text-body-md text-on-surface hover:text-primary transition-colors" href="#">Welcome to the Bootcamp</a>
+</div>
+<span class="font-caption text-caption text-on-surface-variant">05:20</span>
+</li>
+<li class="flex justify-between items-center py-2 border-b border-surface-variant last:border-0">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">play_circle</span>
+<a class="font-body-md text-body-md text-on-surface hover:text-primary transition-colors" href="#">How the Internet Works</a>
+</div>
+<span class="font-caption text-caption text-on-surface-variant">10:15</span>
+</li>
+<li class="flex justify-between items-center py-2 border-b border-surface-variant last:border-0">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">article</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Development Environment Setup Guide</span>
+</div>
+<span class="font-caption text-caption text-on-surface-variant">10 min read</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Accordion Item 2 -->
+<div class="bg-surface rounded-lg border border-outline-variant overflow-hidden">
+<button class="w-full flex justify-between items-center p-4 bg-surface-container-low hover:bg-surface-variant transition-colors" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('.icon').textContent = this.nextElementSibling.classList.contains('open') ? 'expand_less' : 'expand_more'">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined icon text-on-surface-variant transition-transform">expand_more</span>
+<span class="font-label-md text-label-md text-on-surface">2. HTML5 &amp; CSS3 Masterclass</span>
+</div>
+<span class="font-caption text-caption text-on-surface-variant">12 lectures • 2h 15m</span>
+</button>
+<div class="accordion-content px-4 bg-surface">
+<ul class="py-2 flex flex-col gap-2">
+<li class="flex justify-between items-center py-2 border-b border-surface-variant last:border-0">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">play_circle</span>
+<span class="font-body-md text-body-md text-on-surface">HTML5 Semantic Tags</span>
+</div>
+<span class="font-caption text-caption text-on-surface-variant">15:00</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Accordion Item 3 -->
+<div class="bg-surface rounded-lg border border-outline-variant overflow-hidden">
+<button class="w-full flex justify-between items-center p-4 bg-surface-container-low hover:bg-surface-variant transition-colors" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('.icon').textContent = this.nextElementSibling.classList.contains('open') ? 'expand_less' : 'expand_more'">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined icon text-on-surface-variant transition-transform">expand_more</span>
+<span class="font-label-md text-label-md text-on-surface">3. JavaScript Fundamentals to Advanced</span>
+</div>
+<span class="font-caption text-caption text-on-surface-variant">25 lectures • 5h 40m</span>
+</button>
+<div class="accordion-content px-4 bg-surface">
+<div class="p-4 text-center font-body-md text-on-surface-variant">Content locked. Enroll to view.</div>
+</div>
+</div>
+</div>
+<button class="mt-4 w-full py-3 bg-surface-container-low hover:bg-surface-variant text-primary font-label-md rounded-lg transition-colors border border-outline-variant">Lihat semua 15 section</button>
+</section>
+<!-- Instructor Profile -->
+<section class="mt-xl" id="instructor">
+<h2 class="font-headline-md text-headline-md text-on-background mb-lg">Instruktur</h2>
+<div class="flex flex-col md:flex-row gap-lg bg-surface p-lg rounded-2xl shadow-sm border border-primary/5">
+<div class="flex-shrink-0 flex flex-col items-center">
+<img alt="Dr. Sarah Chen" class="w-32 h-32 rounded-full object-cover border-4 border-surface-container-low shadow-sm" data-alt="Professional headshot of an Asian female tech instructor in a modern office setting. She is wearing a smart casual blazer and smiling warmly at the camera. The background is slightly blurred with bright, natural lighting reflecting a clean, modern aesthetic. The overall mood is approachable, knowledgeable, and energetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9b_jA3hbvhPXhwzcK2JWLqnmnpUnIGmzNFLiTsU5lIW1Ya3Z-1wqGbdfdk7Rl38wVf8ul1YoA4v0l9RmEdsvfPqjX5Y9ls0qwzC5E_jg5w2ZTmslkSHig-gingFlTB9amGQdmSUEUIRiKu4L7s_zfscAF5MGZon0haYInTpLF3ksDgfQ8lh4Wu_6D0e6PNDgw9MlOPNS9PGvxhvnIEPrdO2rFj15piQ0WcKDoKiugXf6AjlB57kgdkHuOxo7ZhOcnkgx_VPKPnw"/>
+<div class="mt-4 flex flex-col gap-1 w-full">
+<div class="flex items-center gap-2 text-on-surface-variant font-caption">
+<span class="material-symbols-outlined text-[16px] fill text-warning">star</span>
+<span>4.8 Rating Instruktur</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-caption">
+<span class="material-symbols-outlined text-[16px] fill text-primary">workspace_premium</span>
+<span>15,000+ Siswa</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-caption">
+<span class="material-symbols-outlined text-[16px] fill text-primary">play_lesson</span>
+<span>12 Kursus</span>
+</div>
+</div>
+</div>
+<div class="flex-grow">
+<h3 class="font-headline-md text-headline-md text-on-background text-lg">Dr. Sarah Chen</h3>
+<p class="font-label-md text-label-md text-primary mb-4">Senior Software Engineer &amp; Educator</p>
+<p class="font-body-md text-body-md text-on-surface-variant whitespace-pre-line">
+                            Sarah has over 10 years of experience building scalable enterprise applications for Silicon Valley tech giants. She holds a Ph.D. in Computer Science and is passionate about breaking down complex technical concepts into accessible, engaging lessons.
+                            
+                            Her teaching philosophy centers on project-based learning, ensuring students don't just memorize syntax, but understand the "why" behind the code. When not coding, she enjoys hiking and contributing to open-source projects.
+                        </p>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Sticky Sidebar -->
+<div class="lg:col-span-4 relative">
+<div class="sticky top-[100px] bg-surface rounded-2xl shadow-sm border border-outline-variant overflow-hidden flex flex-col">
+<!-- Course Preview Image/Video -->
+<div class="relative w-full h-48 bg-surface-container-high group cursor-pointer">
+<img alt="Course Preview" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" data-alt="A clean, modern workspace featuring a laptop open to lines of colorful code on a dark theme IDE. Next to the laptop is a steaming cup of coffee and a sleek smartphone. The lighting is bright and natural, coming from a window out of frame. The aesthetic is professional, energetic, and scholarly, fitting a high-end web development bootcamp." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsmUtEPP2T1A6Cdx2rkq1MXNHBZZ6V5ZqortlDldbSr_XPYyrpii-hXEByImXguQ8x0phGmZCgr_-xhI1yY8vj8bbZUSZxirlSUz24wMZxw72cWc2H0yPeT5RO2RAF_gVS3IDQdSnYA4qWzhmIBttjZbV_xzbnc0Q76nqh4TYZAHMh4UXtqXnsLzMzvA5P2VhOSb0FYqSDPwoxxx6HbKhyfHm7rsatRHk6NJxN_lUiaebqVNCtptoNUP84TQ_SiByZ5V-RyCZmug"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-4xl ml-1 fill">play_arrow</span>
+</div>
+</div>
+<div class="absolute bottom-4 left-0 right-0 text-center font-label-md text-white drop-shadow-md">
+                        Preview this course
+                    </div>
+</div>
+<!-- Pricing & Actions -->
+<div class="p-lg flex flex-col gap-6">
+<div>
+<div class="flex items-end gap-3 mb-1">
+<span class="font-display-lg text-headline-lg md:text-display-lg text-on-background font-bold">Rp899.000</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-body-md text-body-md text-on-surface-variant line-through">Rp1.125.000</span>
+<span class="font-label-md text-label-md text-warning">Diskon 20%</span>
+</div>
+<div class="flex items-center gap-1 mt-2 text-error font-caption text-caption">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span>Penawaran berakhir dalam 2 hari!</span>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-3 rounded-lg hover:bg-primary-container transition-colors active:scale-95 duration-200">
+                            Tambah ke Keranjang
+                        </button>
+<button class="w-full bg-warning text-on-secondary-fixed font-label-md text-label-md py-3 rounded-lg hover:opacity-90 transition-opacity active:scale-95 duration-200">
+                            Beli Sekarang
+                        </button>
+</div>
+<p class="text-center font-caption text-caption text-on-surface-variant">Garansi uang kembali 30 hari</p>
+<!-- Includes List -->
+<div class="pt-4 border-t border-surface-variant">
+<h4 class="font-label-md text-label-md text-on-background mb-3">Kursus ini mencakup:</h4>
+<ul class="flex flex-col gap-2 font-body-md text-caption text-on-surface-variant">
+<li class="flex items-center gap-3"><span class="material-symbols-outlined text-[18px]">ondemand_video</span> 24.5 jam video on-demand</li>
+<li class="flex items-center gap-3"><span class="material-symbols-outlined text-[18px]">article</span> 45 artikel</li>
+<li class="flex items-center gap-3"><span class="material-symbols-outlined text-[18px]">download</span> 60 sumber daya unduhan</li>
+<li class="flex items-center gap-3"><span class="material-symbols-outlined text-[18px]">code</span> Akses latihan coding</li>
+<li class="flex items-center gap-3"><span class="material-symbols-outlined text-[18px]">all_inclusive</span> Akses seumur hidup penuh</li>
+<li class="flex items-center gap-3"><span class="material-symbols-outlined text-[18px]">smartphone</span> Akses di HP dan TV</li>
+<li class="flex items-center gap-3"><span class="material-symbols-outlined text-[18px]">emoji_events</span> Sertifikat penyelesaian</li>
+</ul>
+</div>
+<div class="pt-4 border-t border-surface-variant flex gap-4 justify-between">
+<button class="flex-1 flex items-center justify-center gap-2 font-label-md text-label-md text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined">share</span> Bagikan
+                        </button>
+<button class="flex-1 flex items-center justify-center gap-2 font-label-md text-label-md text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined">favorite_border</span> Wishlist
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Shared Component -->
+<footer class="bg-tertiary dark:bg-tertiary-container w-full py-xxl px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-gutter mt-xxl">
+<div class="col-span-1 md:col-span-1 flex flex-col gap-4">
+<a class="font-headline-md text-headline-md font-bold text-on-tertiary" href="#">BelajarKUY</a>
+<p class="font-body-md text-body-md text-on-tertiary-container">© 2024 BelajarKUY. Launch your career with us.</p>
+</div>
+<div class="col-span-1 md:col-span-3 flex flex-wrap gap-x-8 gap-y-4 justify-start md:justify-end">
+<a class="font-body-md text-body-md text-on-tertiary-container dark:text-tertiary-fixed-dim hover:text-secondary-fixed transition-colors" href="#">About Us</a>
+<a class="font-body-md text-body-md text-on-tertiary-container dark:text-tertiary-fixed-dim hover:text-secondary-fixed transition-colors" href="#">Careers</a>
+<a class="font-body-md text-body-md text-on-tertiary-container dark:text-tertiary-fixed-dim hover:text-secondary-fixed transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-tertiary-container dark:text-tertiary-fixed-dim hover:text-secondary-fixed transition-colors" href="#">Terms of Service</a>
+<a class="font-body-md text-body-md text-on-tertiary-container dark:text-tertiary-fixed-dim hover:text-secondary-fixed transition-colors" href="#">Help Center</a>
+<a class="font-body-md text-body-md text-on-tertiary-container dark:text-tertiary-fixed-dim hover:text-secondary-fixed transition-colors" href="#">Contact</a>
+</div>
+</footer>
+</body></html>
