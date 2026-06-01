@@ -1,5 +1,5 @@
 // Komponen Badge reusable (L1 - Vascha).
-// Varian: 'indigo' (default) | 'amber' | 'emerald' | 'red' | 'gray' | 'purple' | 'orange'
+// Varian: 'indigo' (default) | 'amber' | 'emerald' | 'red' | 'gray' | 'purple' | 'orange' | 'featured'
 // Size: 'sm' (default) | 'md' | 'lg'
 export default function Badge({ children, variant = 'indigo', size = 'sm', className = '' }) {
     const variants = {
@@ -19,12 +19,17 @@ export default function Badge({ children, variant = 'indigo', size = 'sm', class
         lg:  'px-4 py-1.5 text-sm',
     };
 
+    // Gunakan Object.hasOwn() agar hanya own properties yang bisa diakses,
+    // mencegah akses ke prototype chain (__proto__, constructor, toString, dll).
+    const variantClass = Object.hasOwn(variants, variant) ? variants[variant] : variants.indigo;
+    const sizeClass    = Object.hasOwn(sizes, size)       ? sizes[size]       : sizes.sm;
+
     return (
         <span
             className={`
                 inline-flex items-center font-bold rounded-full border
-                ${variants[variant] ?? variants.indigo}
-                ${sizes[size] ?? sizes.sm}
+                ${variantClass}
+                ${sizeClass}
                 ${className}
             `}
         >
