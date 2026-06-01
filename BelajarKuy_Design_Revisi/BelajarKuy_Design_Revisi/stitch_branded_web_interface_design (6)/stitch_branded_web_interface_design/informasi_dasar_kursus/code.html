@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Instructor Basic Info Editor - BelajarKUY</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#be7db9",
+                        "background-subtle": "#F8F5F2",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#ffd6f8",
+                        "surface-variant": "#e5e2e1",
+                        "error-container": "#ffdad6",
+                        "warning": "#E67E22",
+                        "secondary-fixed-dim": "#ffb95c",
+                        "tertiary-container": "#2d2c28",
+                        "surface-dim": "#dcd9d9",
+                        "secondary": "#855400",
+                        "tertiary-fixed": "#e6e2db",
+                        "on-secondary-fixed": "#2a1700",
+                        "primary-fixed-dim": "#f6afef",
+                        "surface": "#FFFFFF",
+                        "on-error-container": "#93000a",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f3f0ef",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-background": "#1b1b1c",
+                        "on-surface-variant": "#4f434c",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "inverse-primary": "#f6afef",
+                        "primary-container": "#4a154b",
+                        "on-primary": "#ffffff",
+                        "primary": "#300033",
+                        "on-tertiary-container": "#95938d",
+                        "error": "#D91E18",
+                        "on-surface": "#1b1b1c",
+                        "outline": "#80737d",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-container": "#f0eded",
+                        "tertiary": "#181814",
+                        "outline-variant": "#d2c2cd",
+                        "on-tertiary-fixed": "#1c1c18",
+                        "on-primary-fixed": "#370139",
+                        "on-primary-fixed-variant": "#693168",
+                        "on-tertiary-fixed-variant": "#484742",
+                        "success": "#2D8A56",
+                        "secondary-container": "#ffb145",
+                        "inverse-surface": "#303030",
+                        "surface-container-high": "#eae7e7",
+                        "surface-bright": "#fcf9f8",
+                        "on-secondary-container": "#6f4600",
+                        "tertiary-fixed-dim": "#c9c6c0",
+                        "secondary-fixed": "#ffddb7",
+                        "surface-tint": "#844981",
+                        "background": "#fcf9f8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "48px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "margin-mobile": "16px",
+                        "md": "16px",
+                        "xxl": "64px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "caption": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .input-focus-ring:focus-within { border-color: #300033; ring: 1px; ring-color: #300033; }
+        
+        /* Ambient shadow for level 1 */
+        .ambient-shadow { box-shadow: 0 4px 20px rgba(48, 0, 51, 0.08); }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col antialiased">
+<!-- Top Navigation (Shell suppressed as per intent logic, but keeping minimal header for 'Close/Back' pattern) -->
+<header class="bg-surface shadow-sm border-b border-surface-variant z-10 w-full px-lg py-md flex items-center justify-between">
+<div class="flex items-center gap-md">
+<button aria-label="Go back" class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center p-sm rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider">Course Creation</span>
+<h1 class="font-headline-md text-headline-md text-primary m-0">Basic Info</h1>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<span class="font-label-md text-label-md text-on-surface-variant mr-md hidden md:inline-block">Draft saved just now</span>
+<button class="px-lg py-sm bg-surface-container-low text-primary font-label-md text-label-md rounded-lg hover:bg-surface-container-high transition-colors">
+                Save as Draft
+            </button>
+<button class="px-lg py-sm bg-primary text-on-primary font-label-md text-label-md rounded-lg shadow-sm hover:bg-primary-container transition-colors flex items-center gap-sm">
+                Next <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto px-margin-mobile md:px-margin-desktop py-xl max-w-4xl mx-auto w-full">
+<!-- Progress Indicator -->
+<div class="mb-xl">
+<div class="flex justify-between items-center mb-sm">
+<span class="font-label-md text-label-md text-primary">Step 1 of 4</span>
+<span class="font-label-md text-label-md text-on-surface-variant">25% Complete</span>
+</div>
+<div class="h-3 w-full bg-surface-container-high rounded-full overflow-hidden relative">
+<div class="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-warning rounded-full" style="width: 25%;"></div>
+<!-- Rocket head for progress -->
+<div class="absolute top-1/2 -translate-y-1/2 flex items-center justify-center text-on-primary" style="left: calc(25% - 12px);">
+<span class="material-symbols-outlined text-[16px] drop-shadow-sm" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+</div>
+</div>
+<form class="space-y-lg">
+<!-- Section 1: Core Identity -->
+<section class="bg-surface rounded-2xl p-lg ambient-shadow">
+<h2 class="font-headline-md text-headline-md text-primary mb-md pb-sm border-b border-surface-container">Course Identity</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Title Input -->
+<div class="md:col-span-2 space-y-xs group">
+<label class="block font-label-md text-label-md text-on-surface" for="courseTitle">Course Title <span class="text-error">*</span></label>
+<div class="relative flex items-center input-focus-ring bg-surface-container-lowest border-2 border-surface-container rounded-lg overflow-hidden transition-colors">
+<input class="w-full bg-transparent border-none py-sm px-md text-body-md font-body-md text-on-surface placeholder:text-outline focus:ring-0 focus:outline-none" id="courseTitle" placeholder="e.g., Complete UI/UX Design Masterclass" type="text"/>
+<div class="absolute right-md text-caption font-caption text-outline">0/60</div>
+</div>
+<p class="font-caption text-caption text-on-surface-variant">A catchy title will attract more students.</p>
+</div>
+<!-- Slug Input -->
+<div class="md:col-span-2 space-y-xs group">
+<label class="block font-label-md text-label-md text-on-surface" for="courseSlug">Course Slug <span class="text-error">*</span></label>
+<div class="flex items-center input-focus-ring bg-surface-container-lowest border-2 border-surface-container rounded-lg overflow-hidden transition-colors">
+<span class="bg-surface-container-low px-md py-sm border-r border-surface-container text-on-surface-variant font-body-md text-body-md whitespace-nowrap">belajarkuy.com/course/</span>
+<input class="w-full bg-transparent border-none py-sm px-md text-body-md font-body-md text-on-surface placeholder:text-outline focus:ring-0 focus:outline-none" id="courseSlug" placeholder="complete-ui-ux-design" type="text"/>
+</div>
+<p class="font-caption text-caption text-on-surface-variant">Used for the course URL. Only lowercase letters, numbers, and hyphens allowed.</p>
+</div>
+<!-- Category -->
+<div class="space-y-xs group">
+<label class="block font-label-md text-label-md text-on-surface" for="courseCategory">Category <span class="text-error">*</span></label>
+<div class="relative">
+<select class="w-full appearance-none bg-surface-container-lowest border-2 border-surface-container rounded-lg py-sm pl-md pr-xl text-body-md font-body-md text-on-surface focus:border-primary focus:ring-0 focus:outline-none transition-colors" id="courseCategory">
+<option disabled="" selected="" value="">Select a category</option>
+<option value="design">Design</option>
+<option value="development">Development</option>
+<option value="marketing">Marketing</option>
+<option value="business">Business</option>
+</select>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Sub-category -->
+<div class="space-y-xs group">
+<label class="block font-label-md text-label-md text-on-surface" for="courseSubCategory">Sub-category</label>
+<div class="relative">
+<select class="w-full appearance-none bg-surface-container-lowest border-2 border-surface-container rounded-lg py-sm pl-md pr-xl text-body-md font-body-md text-on-surface focus:border-primary focus:ring-0 focus:outline-none transition-colors disabled:opacity-50 disabled:bg-surface-container" id="courseSubCategory">
+<option disabled="" selected="" value="">Select category first</option>
+<option value="ui-ux">UI/UX Design</option>
+<option value="graphic">Graphic Design</option>
+<option value="web">Web Design</option>
+</select>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Details & Description -->
+<section class="bg-surface rounded-2xl p-lg ambient-shadow">
+<h2 class="font-headline-md text-headline-md text-primary mb-md pb-sm border-b border-surface-container">Course Description</h2>
+<div class="space-y-xs group">
+<div class="flex justify-between items-end mb-xs">
+<label class="block font-label-md text-label-md text-on-surface" for="courseDescription">Detailed Description <span class="text-error">*</span></label>
+<!-- Simple Rich Text Toolbar mock -->
+<div class="flex gap-xs bg-surface-container-low p-xs rounded border border-surface-container">
+<button class="p-1 hover:bg-surface-container-high rounded text-on-surface-variant" type="button"><span class="material-symbols-outlined text-[18px]">format_bold</span></button>
+<button class="p-1 hover:bg-surface-container-high rounded text-on-surface-variant" type="button"><span class="material-symbols-outlined text-[18px]">format_italic</span></button>
+<div class="w-px h-4 bg-outline-variant mx-1 self-center"></div>
+<button class="p-1 hover:bg-surface-container-high rounded text-on-surface-variant" type="button"><span class="material-symbols-outlined text-[18px]">format_list_bulleted</span></button>
+<button class="p-1 hover:bg-surface-container-high rounded text-on-surface-variant" type="button"><span class="material-symbols-outlined text-[18px]">format_list_numbered</span></button>
+</div>
+</div>
+<div class="input-focus-ring bg-surface-container-lowest border-2 border-surface-container rounded-lg overflow-hidden transition-colors">
+<textarea class="w-full bg-transparent border-none py-sm px-md text-body-md font-body-md text-on-surface placeholder:text-outline focus:ring-0 focus:outline-none resize-y" id="courseDescription" placeholder="Describe what students will learn, who this course is for, and prerequisites..." rows="6"></textarea>
+</div>
+<div class="flex justify-between mt-1">
+<p class="font-caption text-caption text-on-surface-variant">Minimum 200 words recommended.</p>
+<p class="font-caption text-caption text-outline">0 words</p>
+</div>
+</div>
+</section>
+<!-- Section 3: Media -->
+<section class="bg-surface rounded-2xl p-lg ambient-shadow">
+<h2 class="font-headline-md text-headline-md text-primary mb-md pb-sm border-b border-surface-container">Course Media</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Thumbnail Upload -->
+<div class="space-y-xs">
+<label class="block font-label-md text-label-md text-on-surface">Course Thumbnail <span class="text-error">*</span></label>
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-lg flex flex-col items-center justify-center text-center hover:border-primary hover:bg-surface-container-low transition-all cursor-pointer group h-48 relative overflow-hidden bg-surface-bright">
+<!-- Placeholder Icon/Text -->
+<div class="flex flex-col items-center z-10">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center mb-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">image</span>
+</div>
+<span class="font-label-md text-label-md text-primary mb-xs">Click to upload</span>
+<span class="font-caption text-caption text-on-surface-variant">or drag and drop</span>
+<span class="font-caption text-caption text-outline mt-sm">JPG, PNG, WebP (16:9, min 1280x720)</span>
+</div>
+<input accept="image/png, image/jpeg, image/webp" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" type="file"/>
+</div>
+</div>
+<!-- Preview Video -->
+<div class="space-y-lg flex flex-col">
+<div class="space-y-xs group">
+<label class="block font-label-md text-label-md text-on-surface" for="previewVideoUrl">Preview Video URL</label>
+<div class="flex items-center input-focus-ring bg-surface-container-lowest border-2 border-surface-container rounded-lg overflow-hidden transition-colors">
+<span class="pl-md pr-sm text-on-surface-variant flex items-center">
+<span class="material-symbols-outlined text-[20px]">link</span>
+</span>
+<input class="w-full bg-transparent border-none py-sm pr-md pl-0 text-body-md font-body-md text-on-surface placeholder:text-outline focus:ring-0 focus:outline-none" id="previewVideoUrl" placeholder="https://youtube.com/watch?v=..." type="url"/>
+</div>
+<p class="font-caption text-caption text-on-surface-variant">A short promotional video increases conversion rates.</p>
+</div>
+<!-- Empty State for Video Preview -->
+<div class="flex-1 bg-surface-container-low rounded-xl border border-surface-container flex flex-col items-center justify-center p-md text-center min-h-[120px]">
+<span class="material-symbols-outlined text-outline-variant text-[32px] mb-xs">play_circle</span>
+<p class="font-caption text-caption text-on-surface-variant">Video preview will appear here</p>
+</div>
+</div>
+</div>
+</section>
+</form>
+</main>
+</body></html>

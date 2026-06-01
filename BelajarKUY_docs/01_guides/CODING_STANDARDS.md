@@ -1,4 +1,4 @@
-# 📏 BelajarKUY — Coding Standards (Laravel 12)
+# 📏 BelajarKUY — Coding Standards (Laravel `^13.7` + React/Inertia)
 
 > Standar penulisan kode untuk seluruh tim BelajarKUY. Wajib diikuti oleh semua anggota dan AI agent.
 
@@ -17,7 +17,9 @@
 | Form Request | PascalCase + `Request` | `StoreCourseRequest` |
 | Middleware | PascalCase | `RoleMiddleware` |
 | Route name | dot notation | `admin.course.index` |
-| View file | kebab-case | `course-detail.blade.php` |
+| React page (Inertia) | PascalCase under `Pages/` | `Courses/Show.jsx` |
+| React component | PascalCase under `Components/` | `CourseCard.jsx` |
+| Root view (Blade, tunggal) | lowercase | `app.blade.php` |
 | Config key | snake_case | `midtrans.server_key` |
 | DB table | snake_case, plural | `courses`, `course_sections` |
 | DB column | snake_case | `course_id`, `created_at` |
@@ -204,56 +206,59 @@ return new class extends Migration
 
 ---
 
-## 2. Blade / Frontend Standards
+## 2. React + Inertia / Frontend Standards
 
-### 2.1 Layout Template
+> Lapisan presentasi memakai **React via Inertia** (`ADR-008`). Halaman di `resources/js/Pages` (PascalCase, mis. `Courses/Show.jsx`), komponen reusable di `resources/js/Components`. Root view Blade tunggal `resources/views/app.blade.php` (`HandleInertiaRequests::$rootView = 'app'`) — **bukan** layout `@extends`.
+
+### 2.1 Root View & Entry Point
 
 ```blade
-{{-- layouts/app.blade.php --}}
+{{-- resources/views/app.blade.php — satu-satunya Blade root view --}}
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'BelajarKUY — Belajar Online Kapan Saja')</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @stack('styles')
+    @viteReactRefresh
+    @vite(['resources/css/app.css', 'resources/js/app.jsx'])
+    @inertiaHead
 </head>
 <body class="bg-gray-50 min-h-screen">
-    <x-navbar />
-
-    <main>
-        @yield('content')
-    </main>
-
-    <x-footer />
-
-    @stack('scripts')
+    @inertia
 </body>
 </html>
 ```
 
-### 2.2 Component Usage
+### 2.2 Halaman & Komponen (JSX)
 
-```blade
-{{-- Gunakan anonymous Blade components --}}
-<x-course-card :course="$course" />
-<x-category-card :category="$category" />
-<x-alert type="success" :message="session('success')" />
+```jsx
+// resources/js/Pages/Courses/Show.jsx — props dari Inertia::render('Courses/Show', [...])
+import CourseCard from '@/Components/CourseCard';
+
+export default function Show({ course }) {
+  return <CourseCard course={course} />;
+}
 ```
 
-### 2.3 Flash Messages
+- Nama halaman & komponen: **PascalCase**.
+- Navigasi antar halaman: gunakan `<Link href={route('course.detail', course.slug)} />` dari `@inertiajs/react` (bukan `<a href>` biasa).
+- Ikon: `lucide-react`; komponen aksesibel: `@headlessui/react`.
 
-```blade
-{{-- Selalu handle flash messages --}}
-@if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-@endif
+### 2.3 Flash Messages (shared props)
 
-@if(session('error'))
-    <div class="alert alert-danger">{{ session('error') }}</div>
-@endif
+```jsx
+// Flash dibagikan global via HandleInertiaRequests::share() → usePage().props.flash
+import { usePage } from '@inertiajs/react';
+import { useEffect } from 'react';
+import Swal from 'sweetalert2';
+
+export default function useFlashToast() {
+  const { flash } = usePage().props; // { success, error, info, warning }
+  useEffect(() => {
+    if (flash.success) Swal.fire({ icon: 'success', title: flash.success });
+    if (flash.error) Swal.fire({ icon: 'error', title: flash.error });
+  }, [flash]);
+}
 ```
 
 ---

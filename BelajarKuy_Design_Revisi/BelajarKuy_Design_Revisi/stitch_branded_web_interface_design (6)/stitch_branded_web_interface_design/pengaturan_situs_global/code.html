@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Site Settings - BelajarKUY Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-container": "#2d2c28",
+                    "on-secondary": "#ffffff",
+                    "background-subtle": "#F8F5F2",
+                    "on-surface-variant": "#4f434c",
+                    "tertiary-fixed-dim": "#c9c6c0",
+                    "secondary-fixed-dim": "#ffb95c",
+                    "on-primary-container": "#be7db9",
+                    "success": "#2D8A56",
+                    "surface-variant": "#e5e2e1",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed": "#e6e2db",
+                    "secondary": "#855400",
+                    "secondary-container": "#ffb145",
+                    "tertiary": "#181814",
+                    "inverse-on-surface": "#f3f0ef",
+                    "surface": "#FFFFFF",
+                    "secondary-fixed": "#ffddb7",
+                    "on-primary-fixed-variant": "#693168",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface": "#1b1b1c",
+                    "primary": "#300033",
+                    "surface-tint": "#844981",
+                    "warning": "#E67E22",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "on-primary-fixed": "#370139",
+                    "surface-container": "#f0eded",
+                    "on-tertiary-container": "#95938d",
+                    "on-background": "#1b1b1c",
+                    "surface-container-highest": "#e5e2e1",
+                    "primary-fixed": "#ffd6f8",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#f6afef",
+                    "surface-container-high": "#eae7e7",
+                    "outline-variant": "#d2c2cd",
+                    "on-error-container": "#93000a",
+                    "error-container": "#ffdad6",
+                    "error": "#D91E18",
+                    "surface-bright": "#fcf9f8",
+                    "inverse-surface": "#303030",
+                    "background": "#fcf9f8",
+                    "primary-container": "#4a154b",
+                    "on-tertiary-fixed": "#1c1c18",
+                    "on-tertiary-fixed-variant": "#484742",
+                    "on-error": "#ffffff",
+                    "surface-dim": "#dcd9d9",
+                    "inverse-primary": "#f6afef",
+                    "on-secondary-container": "#6f4600",
+                    "outline": "#80737d",
+                    "on-secondary-fixed": "#2a1700",
+                    "surface-container-low": "#f6f3f2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "xxl": "64px",
+                    "margin-desktop": "48px",
+                    "xs": "4px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "lg": "24px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "xl": "32px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "label-md": ["Plus Jakarta Sans"],
+                    "caption": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fcf9f8; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .fill-icon { font-variation-settings: 'FILL' 1; }
+        
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d2c2cd; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #80737d; }
+    </style>
+</head>
+<body class="bg-background text-on-background flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<nav class="bg-surface shadow-sm fixed left-0 top-0 h-full w-64 flex flex-col py-md px-sm transition-all duration-200 ease-in-out z-20">
+<div class="mb-xl px-sm flex items-center gap-3">
+<span class="material-symbols-outlined fill-icon text-warning text-3xl">rocket_launch</span>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">BelajarKUY</h1>
+<p class="font-caption text-caption text-on-surface-variant">Admin Console</p>
+</div>
+</div>
+<button class="bg-warning text-primary font-label-md text-label-md rounded-lg py-3 px-4 mb-lg hover:bg-secondary-container transition-colors shadow-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add</span>
+            New Announcement
+        </button>
+<div class="flex-1 overflow-y-auto">
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-primary hover:bg-background-subtle transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-primary hover:bg-background-subtle transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="font-label-md text-label-md">Courses</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-primary hover:bg-background-subtle transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="rate_review">rate_review</span>
+<span class="font-label-md text-label-md">Reviews</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-primary hover:bg-background-subtle transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+<span class="font-label-md text-label-md">Categories</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-4 border-primary bg-background-subtle" href="#">
+<span class="material-symbols-outlined fill-icon" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="pt-4 border-t border-surface-variant mt-auto">
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-primary hover:bg-background-subtle transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-md text-label-md">Support</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-error hover:bg-error-container transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col ml-64 min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface flex justify-between items-center h-16 px-lg sticky top-0 z-10 flat no shadows">
+<div>
+<h2 class="font-headline-md text-headline-md font-black text-primary">Admin Portal</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="bg-background-subtle border-none rounded-full py-2 pl-10 pr-4 text-body-md font-body-md text-on-surface focus:ring-2 focus:ring-primary focus:bg-surface w-64 transition-all" placeholder="Search..." type="text"/>
+</div>
+<button class="text-on-surface-variant hover:text-secondary scale-95 active:scale-100 transition-transform p-2 rounded-full hover:bg-background-subtle">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-secondary scale-95 active:scale-100 transition-transform p-2 rounded-full hover:bg-background-subtle">
+<span class="material-symbols-outlined text-3xl" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop bg-background">
+<div class="max-w-4xl mx-auto">
+<div class="mb-lg">
+<h2 class="font-display-lg text-display-lg text-primary mb-2">Site Settings</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Manage global configuration for the BelajarKUY platform.</p>
+</div>
+<form class="space-y-xl">
+<!-- General Settings Card -->
+<div class="bg-surface rounded-2xl p-lg shadow-sm border border-primary/10">
+<div class="flex items-center gap-3 mb-md border-b border-surface-variant pb-4">
+<div class="bg-primary-container p-2 rounded-lg text-on-primary-container">
+<span class="material-symbols-outlined">language</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-primary">General Configuration</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-2 col-span-1 md:col-span-2">
+<label class="font-label-md text-label-md text-on-surface block" for="siteName">Site Name</label>
+<input class="w-full bg-background-subtle border-2 border-transparent focus:border-primary rounded-lg py-3 px-4 font-body-md text-body-md text-on-surface outline-none transition-colors" id="siteName" type="text" value="BelajarKUY"/>
+<p class="font-caption text-caption text-on-surface-variant">The main brand name displayed across the platform.</p>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface block" for="contactEmail">Contact Email</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">mail</span>
+<input class="w-full bg-background-subtle border-2 border-transparent focus:border-primary rounded-lg py-3 pl-10 pr-4 font-body-md text-body-md text-on-surface outline-none transition-colors" id="contactEmail" type="email" value="support@belajarkuy.edu"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface block" for="supportPhone">Support Phone</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">call</span>
+<input class="w-full bg-background-subtle border-2 border-transparent focus:border-primary rounded-lg py-3 pl-10 pr-4 font-body-md text-body-md text-on-surface outline-none transition-colors" id="supportPhone" type="tel" value="+62 812 3456 7890"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Social Media Card -->
+<div class="bg-surface rounded-2xl p-lg shadow-sm border border-primary/10">
+<div class="flex items-center gap-3 mb-md border-b border-surface-variant pb-4">
+<div class="bg-secondary-container p-2 rounded-lg text-secondary">
+<span class="material-symbols-outlined">share</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-primary">Social Connections</h3>
+</div>
+<div class="space-y-4">
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface block" for="facebookUrl">Facebook URL</label>
+<input class="w-full bg-background-subtle border-2 border-transparent focus:border-primary rounded-lg py-3 px-4 font-body-md text-body-md text-on-surface outline-none transition-colors" id="facebookUrl" type="url" value="https://facebook.com/belajarkuy"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface block" for="instagramUrl">Instagram URL</label>
+<input class="w-full bg-background-subtle border-2 border-transparent focus:border-primary rounded-lg py-3 px-4 font-body-md text-body-md text-on-surface outline-none transition-colors" id="instagramUrl" type="url" value="https://instagram.com/belajarkuy.official"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface block" for="linkedinUrl">LinkedIn URL</label>
+<input class="w-full bg-background-subtle border-2 border-transparent focus:border-primary rounded-lg py-3 px-4 font-body-md text-body-md text-on-surface outline-none transition-colors" id="linkedinUrl" type="url" value="https://linkedin.com/company/belajarkuy"/>
+</div>
+</div>
+</div>
+<!-- System Status Card -->
+<div class="bg-surface rounded-2xl p-lg shadow-sm border border-primary/10">
+<div class="flex items-center gap-3 mb-md border-b border-surface-variant pb-4">
+<div class="bg-error-container p-2 rounded-lg text-error">
+<span class="material-symbols-outlined">build</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-primary">System Status</h3>
+</div>
+<div class="flex items-center justify-between p-4 bg-background-subtle rounded-xl border border-outline-variant">
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface text-lg">Maintenance Mode</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">When enabled, students will see a friendly "Under Construction" page. Admin access remains active.</p>
+</div>
+<!-- Toggle Switch -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-14 h-7 bg-surface-dim peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+<!-- Form Actions -->
+<div class="flex justify-end gap-4 pt-4">
+<button class="px-6 py-3 rounded-lg font-label-md text-label-md text-primary bg-surface border border-primary hover:bg-background-subtle transition-colors" type="button">
+                            Discard Changes
+                        </button>
+<button class="px-6 py-3 rounded-lg font-label-md text-label-md text-white bg-primary hover:bg-surface-tint transition-colors shadow-sm flex items-center gap-2" type="submit">
+<span class="material-symbols-outlined">save</span>
+                            Save Changes
+                        </button>
+</div>
+</form>
+</div>
+</main>
+</div>
+</body></html>

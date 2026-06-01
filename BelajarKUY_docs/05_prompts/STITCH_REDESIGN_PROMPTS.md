@@ -2,7 +2,7 @@
 
 > Tujuan dokumen: kumpulan **prompt siap-tempel** untuk [Google Stitch](https://stitch.withgoogle.com) yang mendesain ulang (redesign total) seluruh halaman BelajarKUY.
 > **Prinsip utama:** output desain Stitch **wajib selaras dengan atribut nyata proyek** — token warna Tailwind, font, komponen, struktur data (field DB), penamaan peran, dan copy Bahasa Indonesia.
-> **Sumber atribut:** `tailwind.config.js`, `resources/views/**`, `02_architecture/DATABASE_SCHEMA.md`, `01_guides/UI_UX_GUIDELINES.md`, `PRD_BelajarKUY.md`.
+> **Sumber atribut:** `tailwind.config.js`, `resources/js/Pages/**` & `resources/js/Components/**`, `02_architecture/DATABASE_SCHEMA.md`, `01_guides/UI_UX_GUIDELINES.md`, `04_plans/SCREEN_MAPPING_STITCH_REACT.md`, `PRD_BelajarKUY.md`.
 > **Versi:** 1.0 | **Dibuat:** 28 Mei 2026
 
 ---
@@ -14,9 +14,9 @@ Google Stitch mendesain **satu layar per prompt** (mode Standard untuk iterasi c
 1. **Tempel dulu "PROMPT FONDASI" (Bagian 2)** sebagai pesan pertama / project context. Ini mengunci design system (warna, font, komponen, bahasa). Stitch akan mengingatnya dalam sesi.
 2. Untuk tiap layar, **tempel prompt layar terkait** dari Bagian 4. Setiap prompt sudah self-contained (menyebut warna, layout, konten data nyata, state, responsif).
 3. Iterasi dengan kalimat singkat ("buat hero lebih tinggi", "ganti grid jadi 3 kolom", "tambah dark mode").
-4. **Export** → "Copy code" / "Paste to Figma". Lalu konversi ke Blade + Tailwind sesuai `UI_UX_GUIDELINES.md` (Layouts → Components → utility classes → Alpine.js untuk interaktif).
+4. **Export** → "Copy code" / "Paste to Figma". Lalu konversi ke **komponen React + Inertia** + Tailwind sesuai `UI_UX_GUIDELINES.md` (Pages → Components → utility classes → React state/`@headlessui/react` untuk interaktif).
 
-> ⚠️ Stitch tidak terhubung ke DB. Semua angka/teks di mockup hanya placeholder; saat implementasi, ganti dengan data dari model (Cloudinary URL, Eloquent). Jangan hardcode gambar di Blade.
+> ⚠️ Stitch tidak terhubung ke DB. Semua angka/teks di mockup hanya placeholder; saat implementasi, ganti dengan data dari props Inertia (Cloudinary URL, Eloquent). Jangan hardcode gambar di komponen.
 
 > 💡 Tips kualitas: sebut **platform**, **bahasa**, **warna hex**, **nama font**, **gaya komponen (radius, shadow)**, dan **konten konkret** di tiap prompt. Stitch lebih akurat saat diberi detail spesifik daripada instruksi umum.
 
@@ -241,7 +241,7 @@ Desain halaman BUAT/EDIT COURSE untuk instruktur BelajarKUY (form panjang, multi
 4) "Apa yang dipelajari" (Course Goals): list input dinamis (tambah/hapus baris).
 5) "Kurikulum": daftar SECTION (kartu rounded-2xl, judul + drag handle + sort) yang berisi LECTURE (judul, URL video YouTube, durasi, konten teks, tombol hapus); tombol "Tambah Section" & "Tambah Lecture".
 6) Bar bawah sticky: status kursus (Draft / Kirim untuk Review) + tombol "Simpan" (indigo) & "Pratinjau".
-Form interaktif (Alpine.js style). Bahasa Indonesia, Rupiah. Gaya design system.
+Form interaktif (React state / komponen terkontrol). Bahasa Indonesia, Rupiah. Gaya design system.
 ```
 
 ### 4.18 Instruktur — Kupon  *(Konteks A)*
@@ -306,15 +306,15 @@ Validasi tiap mockup terhadap atribut proyek:
 
 ---
 
-## 6. Setelah Export dari Stitch → Implementasi Laravel
+## 6. Setelah Export dari Stitch → Implementasi React + Inertia
 
-Ikuti `01_guides/UI_UX_GUIDELINES.md`:
-1. Pecah jadi **Layout** (`layouts/app.blade.php`, `layouts/admin.blade.php`) + **Components** (`<x-navbar/>`, `<x-footer/>`, `<x-course-card/>`).
+Ikuti `01_guides/UI_UX_GUIDELINES.md` & `04_plans/SCREEN_MAPPING_STITCH_REACT.md`:
+1. Pecah jadi **halaman** (`resources/js/Pages/**`, mis. `Home.jsx`, `Admin/Dashboard.jsx`) + **komponen** (`<AppHeader/>`, `<AppFooter/>`, `<CourseCard/>` di `resources/js/Components`). Halaman dirender controller via `Inertia::render('Nama/Halaman', $props)`.
 2. Terjemahkan ke **utility class Tailwind** (hindari custom CSS). Pastikan token di `tailwind.config.js` (`primary`, `secondary`, `brand-*`) dipakai, tambahkan token baru bila perlu agar warna Stitch match.
-3. Interaktivitas (dropdown, accordion, modal, tab, slider, mark-complete) pakai **Alpine.js**, notifikasi pakai **SweetAlert2** — bukan jQuery.
-4. Ganti semua data dummy dengan data Eloquent; gambar dari Cloudinary; video dari `course_lectures.url`.
-5. Jaga **dua konteks desain** tetap konsisten dengan layout masing-masing (app vs admin).
+3. Interaktivitas (dropdown, accordion, modal, tab, slider, mark-complete) pakai **React state + `@headlessui/react`**, ikon `lucide-react`, notifikasi pakai **SweetAlert2** (shared prop `flash`) — bukan Alpine.js/jQuery.
+4. Ganti semua data dummy dengan props Inertia (Eloquent); gambar dari Cloudinary; video dari `course_lectures.url`.
+5. Jaga **dua konteks desain** tetap konsisten dengan layout masing-masing (`AppLayout` vs `AdminLayout`).
 
 ---
 
-*Naskah ini dirancang agar output Google Stitch langsung selaras dengan identitas & struktur data BelajarKUY, sehingga konversi ke Blade + Tailwind minim penyesuaian.*
+*Naskah ini dirancang agar output Google Stitch langsung selaras dengan identitas & struktur data BelajarKUY, sehingga konversi ke komponen React + Inertia + Tailwind minim penyesuaian.*

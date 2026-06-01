@@ -32,37 +32,44 @@ Tidak perlu mendesain semuanya di awal. Fokuslah pada halaman-halaman utama (MVP
 
 ---
 
-## 🚀 2. Workflow Menerapkan Desain ke Project Laravel
+## 🚀 2. Workflow Menerapkan Desain ke Project (React + Inertia)
 
-Proyek BelajarKUY menggunakan stack modern: **Laravel 12 + TailwindCSS v4 + Alpine.js**. Berikut adalah langkah teknis (*workflow*) untuk memindahkan desain dari Figma ke *codebase*:
+Proyek BelajarKUY menggunakan stack modern: **Laravel `^13.7` + React `^19.2.6` (via Inertia.js) + TailwindCSS `^3.1.0`**. Berikut adalah langkah teknis (*workflow*) untuk memindahkan desain dari aset Stitch/Figma ke *codebase* (lihat `SCREEN_MAPPING_STITCH_REACT.md` untuk peta layar). Bahasa desain **Konteks_A** (Frontend & Student) dan **Konteks_B** (Admin) tetap dipertahankan tanpa perubahan.
 
-### Langkah 1: Ekstrak Desain ke Komponen *Reusable* (Blade)
+### Langkah 1: Ekstrak Desain ke Komponen React *Reusable*
 Desain halaman tidak boleh dibuat sebagai satu kesatuan kode yang panjang (monolitik).
-*   **Layouts:** Pisahkan kerangka utama (contoh: Navbar + Area Konten + Footer) menjadi file layout seperti `resources/views/layouts/app.blade.php`.
-*   **Components:** Identifikasi bagian desain yang diulang-ulang (seperti *Card Course*, *Tombol*, *Input Form*) dan buat menjadi Blade Components (contoh: `<x-course-card />`).
+*   **Halaman:** Setiap layar menjadi halaman React di `resources/js/Pages` (mis. `Courses/Show.jsx`), dirender controller via `Inertia::render('Courses/Show', $props)`.
+*   **Components:** Identifikasi bagian desain yang diulang-ulang (seperti *CourseCard*, *Button*, *Input Form*) dan buat menjadi komponen React di `resources/js/Components` (mis. `<CourseCard course={course} />`).
 
 ### Langkah 2: Gunakan Tailwind CSS untuk Styling (Tanpa Custom CSS)
 **DILARANG keras menulis custom CSS** di file `app.css` kecuali sangat mendesak dan spesifik.
-*   Terjemahkan desain UI secara langsung ke elemen HTML menggunakan *utility classes* bawaan TailwindCSS.
-*   *Contoh:* Untuk tombol berwarna biru melengkung: `<button class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2">Tombol</button>`.
+*   Terjemahkan desain UI secara langsung ke elemen JSX menggunakan *utility classes* bawaan TailwindCSS.
+*   *Contoh:* Untuk tombol berwarna biru melengkung: `<button className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2">Tombol</button>`.
 
-### Langkah 3: Gunakan Alpine.js untuk Interaktivitas UI
-Jika desain memuat elemen interaktif seperti **Dropdown, Modal (Pop-up), Tab, Accordion, atau Sidebar Toggle**, JANGAN gunakan jQuery. Gunakan **Alpine.js**.
-*   *Contoh implementasi Dropdown dengan Alpine.js:*
-    ```html
-    <div x-data="{ open: false }" class="relative">
-        <button @click="open = !open" class="btn">Buka Menu</button>
-        <div x-show="open" @click.away="open = false" class="absolute bg-white shadow-md">
-            Isi Menu Dropdown
+### Langkah 3: Interaktivitas UI dengan React + Headless UI
+Untuk elemen interaktif seperti **Dropdown, Modal (Pop-up), Tab, Accordion, atau Sidebar Toggle**, gunakan state React (`useState`) dan komponen aksesibel `@headlessui/react` (`^2.2.10`) + ikon `lucide-react` (`^1.17.0`). Alpine.js **tidak** lagi dipakai untuk lapisan presentasi.
+*   *Contoh implementasi Dropdown dengan React:*
+    ```jsx
+    import { useState } from 'react';
+
+    function Dropdown() {
+      const [open, setOpen] = useState(false);
+      return (
+        <div className="relative">
+          <button onClick={() => setOpen(!open)} className="btn">Buka Menu</button>
+          {open && (
+            <div className="absolute bg-white shadow-md">Isi Menu Dropdown</div>
+          )}
         </div>
-    </div>
+      );
+    }
     ```
 
 ### Langkah 4: Manfaatkan AI untuk "Image to Code"
 Untuk mempercepat konversi *wireframe/mockup* menjadi kode jadi:
-1. Export/ambil *screenshot* dari desain UI yang sudah dibuat (misalnya di Figma).
-2. Lampirkan gambar tersebut ke AI (Agent) dan berikan instruksi. *Contoh: "Tolong buatkan kode Laravel Blade dengan TailwindCSS dan Alpine.js untuk desain halaman ini."*
-3. Salin (*copy*) kode yang dihasilkan AI ke dalam file `.blade.php` di dalam proyek.
+1. Export/ambil *screenshot* dari desain UI (aset Stitch `BelajarKuy_Design_Revisi/` atau Figma).
+2. Lampirkan gambar tersebut ke AI (Agent) dan berikan instruksi. *Contoh: "Tolong buatkan komponen React (JSX) dengan TailwindCSS untuk desain halaman ini, sesuai halaman Inertia di `resources/js/Pages`."*
+3. Salin (*copy*) kode yang dihasilkan AI ke dalam file `.jsx` di dalam `resources/js/Pages` atau `resources/js/Components`.
 
 ---
 *Dokumen ini dibuat untuk menjadi panduan tim UI/UX (Quinsha Ilmi) dan Frontend (Vascha U).*

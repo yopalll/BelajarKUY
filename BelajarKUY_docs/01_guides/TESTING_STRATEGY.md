@@ -61,7 +61,7 @@ tests/
 
 ## Framework
 
-**Pest** (default Laravel 12) — modern, expressive syntax.
+**Pest** (default Laravel `^13.7`) — modern, expressive syntax.
 
 Jika tim belum familiar Pest, PHPUnit classic juga OK. Jangan mix — pilih satu.
 

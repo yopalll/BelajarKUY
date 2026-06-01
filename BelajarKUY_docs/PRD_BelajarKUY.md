@@ -18,10 +18,10 @@
 - Admin butuh kontrol untuk mengelola katalog, kategori, transaksi, dan konten landing page.
 
 ### Solusi
-Aplikasi web SSR (Laravel 12 + Blade + TailwindCSS v4 + Alpine.js) dengan tiga panel berbasis peran, alur belanja lengkap (cart → checkout → Midtrans → enrollment otomatis), course player dengan pelacakan progres, serta panel admin untuk manajemen platform.
+Aplikasi web (Laravel `^13.7` + React `^19.2.6` via Inertia + TailwindCSS `^3.1.0`) dengan tiga panel berbasis peran, alur belanja lengkap (cart → checkout → Midtrans → enrollment otomatis), course player dengan pelacakan progres, serta panel admin untuk manajemen platform.
 
 ### Nilai Inti
-- **Cepat & ringan** (stack TALL, tanpa SPA berat).
+- **Cepat & responsif** (navigasi gaya SPA via Inertia, tanpa API layer terpisah).
 - **Indonesia-first** (locale `id`, Rupiah, copy Bahasa Indonesia).
 - **Bebas biaya untuk dibangun** (semua layanan eksternal punya free tier / sandbox).
 
@@ -94,23 +94,24 @@ Sistem memakai **satu tabel `users`** dengan kolom `role` enum: `user | instruct
 
 | Lapisan | Teknologi |
 |---------|-----------|
-| Framework | Laravel 12.x (PHP 8.3+) |
+| Framework | Laravel `^13.7` (PHP `^8.3`) |
 | Database | MySQL 8.x (default dev: SQLite) |
-| Frontend | Blade + TailwindCSS v4 + Alpine.js v3 (TALL, tanpa Livewire — ADR-002) |
-| **Admin Panel** | **Filament v5.x** (Livewire-based admin panel builder) |
-| Build | Vite |
+| Frontend | React `^19.2.6` via Inertia (`@inertiajs/react ^3.3.0`, `inertiajs/inertia-laravel ^3.1`) — ADR-008 |
+| Styling | TailwindCSS (`tailwindcss ^3.1.0` + `@tailwindcss/vite ^4.0.0`) |
+| **Admin Panel** | **Halaman React + Inertia** (`resources/js/Pages/Admin/*`) — tanpa Filament |
+| Build | Vite `^8.0.0` (`@vitejs/plugin-react ^6.0.2`) |
 | Pembayaran | Midtrans Snap v2 (sandbox — ADR-001, ADR-004) |
 | Media | Cloudinary (CDN, auto-compress) |
 | Video | YouTube unlisted (embed via `course_lectures.url`) |
 | Search | Meilisearch + Laravel Scout |
 | Real-time | Laravel Reverb (WebSocket) + Laravel Echo |
 | Email | Resend (prod) / Mailtrap (dev) |
-| Auth | Laravel Breeze + Socialite (Google) |
-| UI utils | SweetAlert2 (toast/konfirmasi), Lucide & Heroicons (ikon) |
+| Auth | Laravel Breeze + Socialite (Google) — halaman auth React via Inertia |
+| UI utils | SweetAlert2 (toast/konfirmasi), `lucide-react` (ikon), `@headlessui/react` |
 
 > Detail versi & env vars: `02_architecture/TECH_STACK.md`.
 >
-> **Catatan:** Filament menggunakan Livewire secara internal untuk admin panel, tapi halaman publik tetap menggunakan Blade + Alpine.js (ADR-002).
+> **Catatan:** Lapisan presentasi adalah React via Inertia (ADR-008, men-supersede ADR-002). `composer.json` **tidak** memuat Filament; admin panel dibangun sebagai halaman React+Inertia. Alpine.js (`^3.15.12`) masih tercatat di `devDependencies` namun diturunkan dari lapisan presentasi utama.
 
 ---
 
@@ -168,26 +169,25 @@ URL utama berasal dari `routes/web.php`, F08, dan F13. **Dualitas peran:** prefi
 | My Orders (sales) | `/instructor/orders` |
 | Profile / Settings | `/instructor/profile`, `/instructor/setting` |
 
-### 6.6 Panel Admin — Filament (`role:admin`, prefix `/admin`)
+### 6.6 Panel Admin — React + Inertia (`role:admin`, prefix `/admin`)
 
-> **Implementasi:** Panel admin dibangun menggunakan **Filament v5** sebagai admin panel builder. Filament menyediakan UI modern dengan fitur CRUD otomatis, form builder, table builder, dan dashboard widgets. Akses dikontrol via `FilamentUser` interface pada model `User` (`canAccessPanel()` mengecek `role === 'admin'`).
+> **Implementasi:** Panel admin dibangun sebagai **halaman React + Inertia** di `resources/js/Pages/Admin/*` (ADR-008). **Tanpa Filament** — `composer.json` tidak memuat paket `filament/*`. Akses dikontrol via `RoleMiddleware` (`role:admin`) yang sudah ada. Route dikutip dari `routes/web.php`.
 
-| Halaman | Route | Implementasi |
+| Halaman | Route (`name`) | Halaman React |
 |---------|-------|--------------|
-| Dashboard | `/admin` | Filament Dashboard (auto-generated) |
-| Login Admin | `/admin/login` | Filament Login Page (built-in) |
-| User Management (CRUD) | `/admin/users/*` | `UserResource` (Filament Resource) |
-| Product Management (CRUD) | `/admin/products/*` | `ProductResource` (Filament Resource) |
-| Categories (CRUD) | `admin.categories.*` | Custom Blade / Filament Resource (TBD) |
-| Sub Categories (CRUD) | `admin.sub-categories.*` | Custom Blade / Filament Resource (TBD) |
-| Sliders (CRUD) | `admin.sliders.*` | Custom Blade / Filament Resource (TBD) |
-| Info Boxes (CRUD) | `admin.info-boxes.*` | Custom Blade / Filament Resource (TBD) |
-| Partners (CRUD) | `admin.partners.*` | Custom Blade / Filament Resource (TBD) |
-| Course Management (lihat + ubah status) | `admin.courses.index/show`, `admin.courses.update-status` | Custom Blade / Filament Resource (TBD) |
-| Instructors (lihat) | `admin.instructors.index/show` | Custom Blade / Filament Resource (TBD) |
-| Order Management (lihat) | `admin.orders.index/show` | Custom Blade / Filament Resource (TBD) |
-| Reviews (moderasi) | `admin.reviews.index`, `admin.reviews.update-status` | Custom Blade / Filament Resource (TBD) |
-| Site Settings | `admin.settings.index/update` | Custom Blade / Filament Resource (TBD) |
+| Dashboard | `admin.dashboard` → `/admin/dashboard` | `Admin/Dashboard.jsx` |
+| Login Admin | `admin.login.page` → `/admin/login` | `Admin/Login.jsx` |
+| User Management (lihat) | `admin.users.index` → `/admin/users` | `Admin/Users/Index.jsx` |
+| Categories (CRUD) | `admin.categories.*` | `Admin/Categories/Index.jsx` |
+| Sub Categories (CRUD) | `admin.sub-categories.*` | `Admin/SubCategories/Index.jsx` |
+| Sliders (CRUD) | `admin.sliders.*` | `Admin/Sliders/Index.jsx` |
+| Info Boxes (CRUD) | `admin.info-boxes.*` | `Admin/InfoBoxes/Index.jsx` |
+| Partners (CRUD) | `admin.partners.*` | `Admin/Partners/Index.jsx` |
+| Course Management (lihat + ubah status) | `admin.courses.index/show`, `admin.courses.update-status` | `Admin/Courses/Index.jsx` |
+| Instructors (lihat) | `admin.instructors.index/show` | `Admin/Instructors/Index.jsx` |
+| Order Management (lihat) | `admin.orders.index/show` | `Admin/Orders/Index.jsx` |
+| Reviews (moderasi) | `admin.reviews.index`, `admin.reviews.update-status` | `Admin/Reviews/Index.jsx` |
+| Site Settings | `admin.settings.index/update` | `Admin/Settings/Index.jsx` |
 
 ---
 
@@ -227,14 +227,14 @@ Format: user story + kriteria penerimaan ringkas. Spesifikasi penuh ada di `03_f
 - Dukungan **coupon** (potongan) tersimpan sebagai snapshot di order (`original_price`, `discount_amount`, `final_price`).
 - **Acceptance:** akses kursus = ada row `enrollments`; halaman success/failed sesuai hasil; sandbox only.
 
-### F07 — Admin Panel (Filament v5)
-- **Dibangun menggunakan Filament v5** sebagai panel builder — menyediakan UI admin modern, form builder, table builder, dan dashboard widgets out-of-the-box.
-- Akses panel dikontrol via `FilamentUser` interface: hanya `role='admin'` yang bisa masuk (`canAccessPanel()`).
-- **Filament Resources** sudah dibuat: `UserResource` (CRUD user) dan `ProductResource` (CRUD product) dengan halaman List, Create, Edit, dan View.
-- Dashboard statistik platform; CRUD konten (kategori, slider, info box, partner, settings) — akan di-migrate ke Filament Resources.
+### F07 — Admin Panel (React + Inertia)
+- **Dibangun sebagai halaman React + Inertia** di `resources/js/Pages/Admin/*` (ADR-008) — **bukan** Filament (`composer.json` tidak memuat paket `filament/*`).
+- Akses panel dikontrol via `RoleMiddleware` (`role:admin`) yang sudah ada: hanya `role='admin'` yang bisa masuk grup `/admin`.
+- Halaman admin: Dashboard, Categories, SubCategories, Courses, Instructors, Orders, Users, Sliders, InfoBoxes, Partners, Reviews, Settings (lihat `F07_ADMIN_PANEL.md`).
+- Dashboard statistik platform; CRUD konten (kategori, slider, info box, partner, settings) via halaman React yang memakai route `admin.*`.
 - Moderasi: **approve/reject course** (`pending_review`→`active`/`inactive`), **approve/reject review** (`status` boolean).
 - View-only: user, instruktur, order.
-- **Acceptance:** aksi status mengubah DB & memberi flash message; tidak ada fitur block user / payout; panel admin accessible di `/admin`.
+- **Acceptance:** aksi status mengubah DB & memberi flash message; tidak ada fitur block user / payout; panel admin accessible di `/admin/dashboard`.
 
 ### F08 — Instructor Panel
 - Dashboard: total courses, total students, revenue (gross). Manajemen course/section/lecture/coupon; riwayat penjualan (`/instructor/orders`).
@@ -352,12 +352,12 @@ Instruktur submit course → status pending_review
 
 | Phase | Cakupan | Status (per docs) |
 |-------|---------|-------------------|
-| P0 Setup | Laravel 12 + Tailwind + Vite | ✅ Done |
+| P0 Setup | Laravel `^13.7` + Tailwind + Vite + React/Inertia | ✅ Done |
 | P1 Database | 19 migrations + 19 models | ✅ Done |
 | P1b Seeders/Factories | ~896 records | ✅ Done |
 | P2 Auth + Frontend base | Breeze + Role + Google + landing/detail | 🔄 Berjalan (UI sudah ada di repo) |
 | P3 Commerce | Cart, wishlist, Midtrans, coupon | 🔜 Sebagian placeholder route |
-| P4 Panels & Player | Student/Instructor/Admin + Course Player | 🔄 Berjalan — **Admin panel: Filament v5 terinstall** (User & Product Resources sudah di-generate). Student & Instructor panel sebagian. |
+| P4 Panels & Player | Student/Instructor/Admin + Course Player | 🔄 Berjalan — **Admin panel: halaman React + Inertia** (`Pages/Admin/*`, tanpa Filament). Student & Instructor panel sebagian. |
 | P5 Polish | Review, settings, testing, deploy | 🔴 Pending |
 
 > Tracking aktual: `06_reports/PROGRESS_TRACKER.md`.
