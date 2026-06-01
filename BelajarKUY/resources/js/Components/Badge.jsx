@@ -19,10 +19,46 @@ export default function Badge({ children, variant = 'indigo', size = 'sm', class
         lg:  'px-4 py-1.5 text-sm',
     };
 
-    // Gunakan Object.hasOwn() agar hanya own properties yang bisa diakses,
-    // mencegah akses ke prototype chain (__proto__, constructor, toString, dll).
-    const variantClass = Object.hasOwn(variants, variant) ? variants[variant] : variants.indigo;
-    const sizeClass    = Object.hasOwn(sizes, size)       ? sizes[size]       : sizes.sm;
+    let variantClass = variants.indigo;
+    switch (variant) {
+        case 'purple':
+            variantClass = variants.purple;
+            break;
+        case 'amber':
+            variantClass = variants.amber;
+            break;
+        case 'orange':
+            variantClass = variants.orange;
+            break;
+        case 'emerald':
+            variantClass = variants.emerald;
+            break;
+        case 'red':
+            variantClass = variants.red;
+            break;
+        case 'gray':
+            variantClass = variants.gray;
+            break;
+        case 'featured':
+            variantClass = variants.featured;
+            break;
+        case 'indigo':
+        default:
+            variantClass = variants.indigo;
+    }
+
+    let sizeClass = sizes.sm;
+    switch (size) {
+        case 'md':
+            sizeClass = sizes.md;
+            break;
+        case 'lg':
+            sizeClass = sizes.lg;
+            break;
+        case 'sm':
+        default:
+            sizeClass = sizes.sm;
+    }
 
     return (
         <span
