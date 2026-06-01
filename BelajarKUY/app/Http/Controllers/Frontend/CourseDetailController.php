@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CourseDetailController extends Controller
 {
@@ -24,6 +25,7 @@ class CourseDetailController extends Controller
                 },
                 'reviews.user'
             ])
+            ->withCount('enrollments')
             ->firstOrFail();
 
         // 2. Fetch related courses (same category, excluding this one)
@@ -49,7 +51,8 @@ class CourseDetailController extends Controller
             $showReviewForm = $canReview && !$alreadyReviewed;
         }
 
-        return view('frontend.course-detail', compact('course', 'relatedCourses', 'showReviewForm'));
+        // Fase 1 migrasi React+Inertia (ADR-008): ganti view() → Inertia::render()
+        return Inertia::render('Courses/Show', compact('course', 'relatedCourses', 'showReviewForm'));
     }
 
     /**

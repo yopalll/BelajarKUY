@@ -1,4 +1,5 @@
 import { Head } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import AppLayout from '@/Layouts/AppLayout';
 import CourseCard from '@/Components/CourseCard';
 
@@ -13,6 +14,8 @@ export default function Home({
     filteredCourses = [],
     isSearchingOrFiltering = false,
 }) {
+    const { t } = useTranslation();
+
     const Section = ({ label, title, courses }) =>
         courses.length > 0 && (
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -32,22 +35,22 @@ export default function Home({
 
     return (
         <AppLayout>
-            <Head title="Katalog Kursus" />
+            <Head title={t('home.title')} />
 
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
-                <h1 className="text-3xl font-extrabold text-gray-900">Katalog Kursus</h1>
-                <p className="text-gray-500 mt-1">Temukan kursus yang cocok untukmu.</p>
+                <h1 className="text-3xl font-extrabold text-gray-900">{t('home.title')}</h1>
+                <p className="text-gray-500 mt-1">{t('home.subtitle')}</p>
             </section>
 
             {/* Kategori populer */}
             {categories.length > 0 && (
                 <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                    <h2 className="text-xl font-bold text-gray-900 mb-4">Kategori Terpopuler</h2>
+                    <h2 className="text-xl font-bold text-gray-900 mb-4">{t('home.popular_categories')}</h2>
                     <div className="grid gap-4 grid-cols-2 sm:grid-cols-4">
                         {categories.map((cat) => (
                             <div key={cat.id} className="bg-white rounded-3xl border border-gray-100 p-5 hover:shadow-md transition">
                                 <p className="font-bold text-gray-900">{cat.name}</p>
-                                <p className="text-sm text-gray-400">{cat.courses_count ?? 0} Kursus</p>
+                                <p className="text-sm text-gray-400">{t('home.courses_count', { count: cat.courses_count ?? 0 })}</p>
                             </div>
                         ))}
                     </div>
@@ -55,11 +58,11 @@ export default function Home({
             )}
 
             {isSearchingOrFiltering ? (
-                <Section title="Hasil Pencarian" courses={filteredCourses} />
+                <Section title={t('home.search_results')} courses={filteredCourses} />
             ) : (
                 <>
-                    <Section label="Pilihan Terbaik" title="Kursus Unggulan" courses={featuredCourses} />
-                    <Section label="Sangat Populer" title="Kursus Terlaris" courses={bestsellerCourses} />
+                    <Section label={t('home.featured_label')} title={t('home.featured_title')} courses={featuredCourses} />
+                    <Section label={t('home.bestseller_label')} title={t('home.bestseller_title')} courses={bestsellerCourses} />
                 </>
             )}
         </AppLayout>
