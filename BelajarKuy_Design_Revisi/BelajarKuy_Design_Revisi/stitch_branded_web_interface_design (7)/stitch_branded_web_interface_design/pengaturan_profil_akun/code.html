@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pengaturan Profil - BelajarKUY</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#4a154b",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#370139",
+                        "outline": "#80737d",
+                        "tertiary-fixed-dim": "#c9c6c0",
+                        "surface-variant": "#e5e2e1",
+                        "on-primary-fixed-variant": "#693168",
+                        "tertiary-container": "#2d2c28",
+                        "surface-container": "#f0eded",
+                        "primary-fixed": "#ffd6f8",
+                        "error": "#D91E18",
+                        "on-tertiary-fixed-variant": "#484742",
+                        "on-surface-variant": "#4f434c",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-surface": "#1b1b1c",
+                        "tertiary-fixed": "#e6e2db",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#2a1700",
+                        "primary": "#300033",
+                        "on-background": "#1b1b1c",
+                        "surface-tint": "#844981",
+                        "secondary-fixed": "#ffddb7",
+                        "on-secondary-container": "#6f4600",
+                        "primary-fixed-dim": "#f6afef",
+                        "outline-variant": "#d2c2cd",
+                        "surface-bright": "#fcf9f8",
+                        "inverse-primary": "#f6afef",
+                        "secondary-container": "#ffb145",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "secondary-fixed-dim": "#ffb95c",
+                        "surface": "#FFFFFF",
+                        "on-tertiary-container": "#95938d",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-low": "#f6f3f2",
+                        "on-tertiary-fixed": "#1c1c18",
+                        "secondary": "#855400",
+                        "surface-container-high": "#eae7e7",
+                        "tertiary": "#181814",
+                        "warning": "#E67E22",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "background": "#fcf9f8",
+                        "on-error": "#ffffff",
+                        "background-subtle": "#F8F5F2",
+                        "on-primary-container": "#be7db9",
+                        "success": "#2D8A56",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-highest": "#e5e2e1",
+                        "inverse-surface": "#303030",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xxl": "64px",
+                        "xl": "32px",
+                        "margin-desktop": "48px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "margin-mobile": "16px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "caption": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .custom-shadow { box-shadow: 0 4px 20px rgba(48, 0, 51, 0.08); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md flex min-h-screen antialiased selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- Mobile Header Fallback -->
+<header class="md:hidden flex items-center justify-between p-margin-mobile bg-surface shadow-sm sticky top-0 z-50">
+<div class="font-display-lg text-headline-md font-extrabold text-primary flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary-container" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+            BelajarKUY
+        </div>
+<button class="text-on-surface p-sm" id="mobile-menu-btn">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</header>
+<!-- SideNavBar (Shared Component) -->
+<!-- Applying Exact Styles from JSON -->
+<nav class="fixed left-0 top-0 h-full z-40 flex flex-col pt-xxl bg-surface shadow-md docked full-height left-0 w-64 transform -translate-x-full md:translate-x-0 transition-transform duration-300" id="sidebar">
+<!-- Brand / Header -->
+<div class="px-lg mb-xl flex flex-col items-center text-center">
+<div class="font-display-lg text-headline-md text-primary font-extrabold mb-lg flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary-container" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+                BelajarKUY
+            </div>
+<div class="w-20 h-20 rounded-full overflow-hidden mb-sm border-2 border-primary-fixed-dim">
+<img alt="Avatar" class="w-full h-full object-cover" data-alt="A professional headshot of an energetic young male student smiling confidently against a soft, well-lit white studio background. The lighting is bright and modern, creating a clean aesthetic. Subtle purple and orange gradient lighting accents hint at a creative, dynamic tech environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIu0iNU5iHqx91liTFAAYoeRyCZfCQSbnb3-LO-uELAN9_ZQBFvSltp1zi4AHxFuhkWdT1gcdZS0tU0V7v1AZUMARyMCHMOSr4eZUpQH5uRemQqXv5GUN6xOqPAdGf7hLY8os2NVnkcx1jyfNYpFRVhXtpxT4TFMvZJHR4Vpmyz1XPBry_sDkqidNsM-ns-YhDDXILuMrKUyPXARXPDlN9smiUoAGLpFbuOD9rVyuYeZrT_8Oi9230HelkUb7qNOHMzU419W-XNg"/>
+</div>
+<h2 class="font-label-md text-label-md text-on-surface mb-xs">Budi Santoso</h2>
+<p class="font-caption text-caption text-on-surface-variant">Active Learner</p>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 flex flex-col gap-sm px-sm overflow-y-auto">
+<!-- Inactive -->
+<a class="text-on-surface-variant hover:bg-surface-container-high rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3 transition-all hover:text-primary-container group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<!-- Inactive -->
+<a class="text-on-surface-variant hover:bg-surface-container-high rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3 transition-all hover:text-primary-container group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">school</span>
+<span class="font-label-md text-label-md">My Courses</span>
+</a>
+<!-- Inactive -->
+<a class="text-on-surface-variant hover:bg-surface-container-high rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3 transition-all hover:text-primary-container group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">favorite</span>
+<span class="font-label-md text-label-md">Wishlist</span>
+</a>
+<!-- Active (CRITICAL MAPPING: Profile is the context of this page) -->
+<a class="bg-primary-container text-on-primary-container rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3 scale-98 transition-transform duration-150 relative overflow-hidden" href="#">
+<div class="absolute inset-0 bg-white/10 opacity-0 hover:opacity-100 transition-opacity"></div>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+<!-- Inactive -->
+<a class="text-on-surface-variant hover:bg-surface-container-high rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3 transition-all hover:text-primary-container group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</div>
+<!-- CTA & Footer -->
+<div class="p-lg mt-auto flex flex-col gap-md">
+<button class="w-full bg-secondary-container text-on-secondary-container font-label-md text-label-md py-sm px-md rounded-lg shadow-sm hover:brightness-105 transition-all flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+                Launch New Course
+            </button>
+<div class="w-full h-px bg-surface-container-high my-sm"></div>
+<a class="flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors px-2 font-caption text-caption" href="#">
+<span class="material-symbols-outlined text-[18px]">help</span>
+                Help Center
+            </a>
+<a class="flex items-center gap-3 text-error hover:opacity-80 transition-opacity px-2 font-caption text-caption" href="#">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+                Logout
+            </a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 flex flex-col min-h-screen relative w-full overflow-x-hidden">
+<!-- Decorative Background Element -->
+<div class="absolute top-0 right-0 w-96 h-96 bg-primary-fixed-dim rounded-full mix-blend-multiply filter blur-3xl opacity-30 -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+<div class="px-margin-mobile md:px-margin-desktop py-xl md:py-xxl max-w-5xl mx-auto w-full z-10">
+<!-- Page Header -->
+<div class="mb-xl">
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-sm">Pengaturan Profil &amp; Akun</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Kelola informasi pribadi, preferensi, dan keamanan akun Anda untuk pengalaman belajar yang lebih baik.</p>
+</div>
+<!-- Settings Layout: Sidebar Tabs (Desktop) + Content -->
+<div class="flex flex-col md:flex-row gap-gutter items-start">
+<!-- Internal Navigation Tabs -->
+<div class="w-full md:w-64 flex-shrink-0 bg-surface rounded-2xl custom-shadow p-sm sticky top-24">
+<button class="tab-btn w-full text-left px-md py-sm rounded-lg mb-xs transition-colors flex items-center gap-3 bg-primary-container/10 text-primary-container font-label-md text-label-md" data-target="tab-profile">
+<span class="material-symbols-outlined">badge</span>
+                        Informasi Pribadi
+                    </button>
+<button class="tab-btn w-full text-left px-md py-sm rounded-lg mb-xs transition-colors flex items-center gap-3 text-on-surface-variant hover:bg-surface-container font-label-md text-label-md" data-target="tab-security">
+<span class="material-symbols-outlined">lock</span>
+                        Keamanan &amp; Sandi
+                    </button>
+<button class="tab-btn w-full text-left px-md py-sm rounded-lg transition-colors flex items-center gap-3 text-on-surface-variant hover:bg-surface-container font-label-md text-label-md" data-target="tab-notifications">
+<span class="material-symbols-outlined">notifications</span>
+                        Notifikasi
+                    </button>
+</div>
+<!-- Content Area -->
+<div class="flex-1 w-full">
+<!-- Tab: Profil (Active) -->
+<div class="tab-content active bg-surface rounded-2xl custom-shadow p-lg md:p-xl border border-outline/10" id="tab-profile">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-lg pb-sm border-b border-surface-variant">Informasi Pribadi</h2>
+<!-- Profile Picture Section -->
+<div class="flex flex-col sm:flex-row items-center gap-lg mb-xl">
+<div class="relative group">
+<div class="w-24 h-24 rounded-full overflow-hidden border-4 border-surface shadow-sm relative">
+<img alt="Preview Profil" class="w-full h-full object-cover group-hover:brightness-75 transition-all" data-alt="A professional headshot of an energetic young male student smiling confidently against a soft, well-lit white studio background. The lighting is bright and modern, creating a clean aesthetic. Subtle purple and orange gradient lighting accents hint at a creative, dynamic tech environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4u_sr8-TT75e69mOSoI0gBhtssLcv7yvZzmDnK3-tOQhLymmUCrTnTpcgHM7BiZqpJiJnX2eyiNhT5ZYT91wmW9sbqtLD3KH7DDnbTJA2SLiOKn36U5pdUB-6kPKiZ4I6wCMTKsxMSgUp9cq4BJA5qcJ4Xggu0UEGRM_KHdiqMkW-7yXVP90igQFezxT-b-4kFJztFZP3K6BDRvZYdcEPcRWrLnjnNkVHgTvcSjMQ6PZhgDqP2krVpSfahpdrFhXjl2NF6gkG8A"/>
+</div>
+<button class="absolute bottom-0 right-0 bg-primary text-on-primary rounded-full p-2 shadow-md hover:bg-primary-container hover:text-on-primary-container transition-colors transform translate-x-1/4 translate-y-1/4">
+<span class="material-symbols-outlined text-[18px]">photo_camera</span>
+</button>
+</div>
+<div class="text-center sm:text-left">
+<h3 class="font-label-md text-label-md text-on-surface">Foto Profil</h3>
+<p class="font-caption text-caption text-on-surface-variant mb-sm mt-xs">Disarankan JPG/PNG, ukuran maksimal 2MB. Rasio 1:1.</p>
+<button class="border border-outline text-on-surface font-label-md text-label-md py-xs px-sm rounded-lg hover:bg-surface-container transition-colors">Ubah Foto</button>
+</div>
+</div>
+<!-- Form Fields Grid -->
+<form class="grid grid-cols-1 md:grid-cols-2 gap-x-gutter gap-y-md">
+<div class="flex flex-col gap-xs md:col-span-2">
+<label class="font-label-md text-label-md text-on-surface" for="fullname">Nama Lengkap</label>
+<input class="bg-surface-container border-2 border-transparent focus:border-primary focus:ring-0 rounded-lg py-sm px-md font-body-md text-body-md text-on-surface outline-none transition-all w-full placeholder:text-outline-variant" id="fullname" type="text" value="Budi Santoso"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="email">Alamat Email</label>
+<input class="bg-surface-container border-2 border-transparent focus:border-primary focus:ring-0 rounded-lg py-sm px-md font-body-md text-body-md text-on-surface outline-none transition-all w-full" id="email" type="email" value="budi.santoso@example.com"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="phone">Nomor Telepon</label>
+<input class="bg-surface-container border-2 border-transparent focus:border-primary focus:ring-0 rounded-lg py-sm px-md font-body-md text-body-md text-on-surface outline-none transition-all w-full" id="phone" type="tel" value="+62 812 3456 7890"/>
+</div>
+<div class="flex flex-col gap-xs md:col-span-2">
+<label class="font-label-md text-label-md text-on-surface" for="address">Alamat Domisili</label>
+<input class="bg-surface-container border-2 border-transparent focus:border-primary focus:ring-0 rounded-lg py-sm px-md font-body-md text-body-md text-on-surface outline-none transition-all w-full" id="address" type="text" value="Jl. Pendidikan No. 42, Jakarta Selatan"/>
+</div>
+<div class="flex flex-col gap-xs md:col-span-2">
+<label class="font-label-md text-label-md text-on-surface" for="bio">Bio Singkat</label>
+<textarea class="bg-surface-container border-2 border-transparent focus:border-primary focus:ring-0 rounded-lg py-sm px-md font-body-md text-body-md text-on-surface outline-none transition-all w-full resize-none" id="bio" rows="4">Seorang pembelajar aktif yang selalu mencari tantangan baru dalam dunia teknologi dan desain. Percaya bahwa pendidikan adalah kunci untuk meroketkan karir.</textarea>
+</div>
+<div class="md:col-span-2 flex justify-end mt-sm">
+<button class="bg-primary-container text-on-primary-container font-label-md text-label-md py-sm px-xl rounded-lg hover:brightness-95 transition-all shadow-sm" type="button">
+                                    Simpan Perubahan
+                                </button>
+</div>
+</form>
+</div>
+<!-- Tab: Keamanan (Sandi) -->
+<div class="tab-content bg-surface rounded-2xl custom-shadow p-lg md:p-xl border border-outline/10" id="tab-security">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-lg pb-sm border-b border-surface-variant flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary-container">shield_lock</span>
+                            Ubah Kata Sandi
+                        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">Pastikan akun Anda tetap aman dengan menggunakan kata sandi yang kuat dan unik.</p>
+<form class="flex flex-col gap-md max-w-md">
+<div class="flex flex-col gap-xs relative">
+<label class="font-label-md text-label-md text-on-surface" for="current-password">Kata Sandi Saat Ini</label>
+<input class="bg-surface-container border-2 border-transparent focus:border-primary focus:ring-0 rounded-lg py-sm px-md pr-xl font-body-md text-body-md text-on-surface outline-none transition-all w-full" id="current-password" placeholder="Masukkan sandi saat ini" type="password"/>
+<span class="material-symbols-outlined absolute right-3 top-[34px] text-outline cursor-pointer hover:text-on-surface">visibility_off</span>
+</div>
+<div class="flex flex-col gap-xs relative mt-sm">
+<label class="font-label-md text-label-md text-on-surface" for="new-password">Kata Sandi Baru</label>
+<input class="bg-surface-container border-2 border-transparent focus:border-primary focus:ring-0 rounded-lg py-sm px-md pr-xl font-body-md text-body-md text-on-surface outline-none transition-all w-full" id="new-password" placeholder="Minimal 8 karakter" type="password"/>
+<span class="material-symbols-outlined absolute right-3 top-[34px] text-outline cursor-pointer hover:text-on-surface">visibility_off</span>
+</div>
+<div class="flex flex-col gap-xs relative">
+<label class="font-label-md text-label-md text-on-surface" for="confirm-password">Konfirmasi Sandi Baru</label>
+<input class="bg-surface-container border-2 border-transparent focus:border-primary focus:ring-0 rounded-lg py-sm px-md pr-xl font-body-md text-body-md text-on-surface outline-none transition-all w-full" id="confirm-password" placeholder="Ketik ulang sandi baru" type="password"/>
+<span class="material-symbols-outlined absolute right-3 top-[34px] text-outline cursor-pointer hover:text-on-surface">visibility_off</span>
+</div>
+<div class="mt-lg">
+<button class="bg-primary text-on-primary font-label-md text-label-md py-sm px-lg rounded-lg hover:bg-surface-tint transition-all shadow-md" type="button">
+                                    Perbarui Sandi
+                                </button>
+</div>
+</form>
+</div>
+<!-- Placeholder for other tabs -->
+<div class="tab-content bg-surface rounded-2xl custom-shadow p-lg md:p-xl border border-outline/10 text-center py-xxl" id="tab-notifications">
+<span class="material-symbols-outlined text-[48px] text-surface-variant mb-sm">notifications_off</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Pengaturan Notifikasi</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Modul ini sedang dalam pengembangan.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Overlay for mobile sidebar -->
+<div class="fixed inset-0 bg-black/50 z-30 hidden md:hidden transition-opacity opacity-0" id="mobile-overlay"></div>
+<script>
+        // Simple Tab Switching Logic
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active styling from all buttons
+                tabBtns.forEach(b => {
+                    b.classList.remove('bg-primary-container/10', 'text-primary-container');
+                    b.classList.add('text-on-surface-variant');
+                });
+                // Add active styling to clicked button
+                btn.classList.add('bg-primary-container/10', 'text-primary-container');
+                btn.classList.remove('text-on-surface-variant');
+
+                // Hide all content
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                // Show target content
+                const targetId = btn.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+        // Mobile Menu Logic
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('mobile-overlay');
+
+        function toggleMenu() {
+            const isClosed = sidebar.classList.contains('-translate-x-full');
+            if (isClosed) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.add('opacity-100'), 10);
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.remove('opacity-100');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+    </script>
+</body></html>

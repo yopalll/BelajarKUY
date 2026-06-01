@@ -8,7 +8,7 @@
 ## PROMPT
 
 ```
-Kamu adalah senior Laravel 12 developer. Integrasikan Midtrans Snap API untuk payment di project BelajarKUY (Udemy clone Indonesia).
+Kamu adalah senior Laravel `^13.7` developer. Integrasikan Midtrans Snap API untuk payment di project BelajarKUY (Udemy clone Indonesia).
 
 ## PREREQUISITE: Baca file-file berikut terlebih dahulu:
 - BelajarKUY_docs/01_guides/AGENT_GUIDELINES.md

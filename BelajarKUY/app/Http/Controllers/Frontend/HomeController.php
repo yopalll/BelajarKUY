@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\InfoBox;
 use App\Models\Slider;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class HomeController extends Controller
 {
@@ -53,7 +54,9 @@ class HomeController extends Controller
                 ->get();
         }
 
-        return view('frontend.home', compact(
+        // Fase 1 migrasi React+Inertia (ADR-008): logika data dipertahankan;
+        // hanya respons presentasi yang berubah dari view() ke Inertia::render().
+        return Inertia::render('Home', compact(
             'sliders',
             'infoBoxes',
             'categories',

@@ -1,0 +1,358 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>BelajarKUY - Course Catalog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary-fixed-variant": "#693168",
+                        "on-tertiary-container": "#95938d",
+                        "secondary-fixed": "#ffddb7",
+                        "surface-container-high": "#eae7e7",
+                        "on-surface-variant": "#4f434c",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-surface": "#1b1b1c",
+                        "secondary": "#855400",
+                        "error": "#D91E18",
+                        "success": "#2D8A56",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#e6e2db",
+                        "tertiary-container": "#2d2c28",
+                        "on-secondary-container": "#6f4600",
+                        "primary-fixed-dim": "#f6afef",
+                        "on-tertiary": "#ffffff",
+                        "warning": "#E67E22",
+                        "on-tertiary-fixed": "#1c1c18",
+                        "primary": "#300033",
+                        "inverse-surface": "#303030",
+                        "on-secondary-fixed": "#2a1700",
+                        "surface-container-low": "#f6f3f2",
+                        "error-container": "#ffdad6",
+                        "on-background": "#1b1b1c",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#80737d",
+                        "background": "#fcf9f8",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "on-primary-fixed": "#370139",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#181814",
+                        "inverse-primary": "#f6afef",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#dcd9d9",
+                        "tertiary-fixed-dim": "#c9c6c0",
+                        "on-primary-container": "#be7db9",
+                        "on-tertiary-fixed-variant": "#484742",
+                        "primary-container": "#4a154b",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#e5e2e1",
+                        "background-subtle": "#F8F5F2",
+                        "secondary-container": "#ffb145",
+                        "outline-variant": "#d2c2cd",
+                        "surface-bright": "#fcf9f8",
+                        "primary-fixed": "#ffd6f8",
+                        "surface-tint": "#844981",
+                        "surface": "#FFFFFF",
+                        "secondary-fixed-dim": "#ffb95c",
+                        "surface-variant": "#e5e2e1",
+                        "surface-container": "#f0eded"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1rem"
+                    },
+                    spacing: {
+                        "xxl": "64px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "margin-mobile": "16px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "margin-desktop": "48px",
+                        "gutter": "24px",
+                        "xl": "32px",
+                        "lg": "24px"
+                    },
+                    fontFamily: {
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "caption": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"]
+                    },
+                    fontSize: {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #FCF8F1; } /* Level 0 Background Cream */
+        .card-shadow { box-shadow: 0 4px 24px rgba(48, 0, 51, 0.08); } /* Diffused shadow tinted with Primary */
+    </style>
+</head>
+<body class="text-on-background font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="bg-surface shadow-sm docked full-width top-0 z-50 sticky border-b border-outline-variant">
+<div class="flex justify-between items-center w-full px-md md:px-margin-desktop py-md max-w-7xl mx-auto">
+<!-- Brand & Search -->
+<div class="flex items-center gap-lg flex-1">
+<a class="flex items-center gap-sm" href="#"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT3KH1r1c7ZmumLRrzMRaea-4Nub7I_QpCPtNqeNeBIi2383fGN4Fas2Sr8Q5gyyTLWAYvu6nBaUKyA_JUp7iND1keVnFigeLE2lL9sK2pR-4nQPAOA-jKhXnt4aez_iN1DdO89SSgF3iERm47auSmMMH8mdBw9-TuXaeGpQL6WKefcdzQFOxfjSiYNBLbn_rT3ENy7qVrVFSx3LLE6eTrawoLg85uqnIflQScuqw9XX55A70eqkI2WB7WC3rkFuD4WvQYQ--FYw" alt="BelajarKUY! Logo" class="h-10 w-auto"></a>
+<div class="hidden md:flex flex-1 max-w-md relative ml-lg">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-low border-2 border-transparent focus:border-primary focus:ring-0 rounded-full py-2 pl-10 pr-4 text-body-md transition-colors placeholder:text-outline outline-none" placeholder="Search for courses, skills, or instructors..." type="text">
+</div>
+</div>
+<!-- Navigation Links & Actions -->
+<div class="hidden md:flex items-center gap-gutter">
+<ul class="flex gap-lg">
+<li class=""><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary-container transition-colors" href="#">Categories</a></li>
+<li class=""><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary-container transition-colors" href="#">Become Instructor</a></li><li class=""><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary-container transition-colors" href="#">My Learning</a></li><li class=""><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary-container transition-colors" href="#">Instructors</a></li>
+</ul>
+<div class="flex gap-sm">
+<button class="font-label-md text-label-md px-4 py-2 rounded-lg bg-surface border-2 border-primary text-primary hover:bg-surface-container-low transition-colors">Login</button>
+<button class="font-label-md text-label-md px-4 py-2 rounded-lg bg-primary text-white hover:opacity-90 transition-opacity">Register</button>
+</div>
+</div>
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden text-primary p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-xl space-y-xxl">
+<!-- Hero Slider (Static Rep) -->
+<section class="relative rounded-2xl overflow-hidden bg-primary text-white h-[400px] flex items-center">
+<div class="absolute inset-0 z-0">
+<img alt="Students collaborating" class="w-full h-full object-cover opacity-20" data-alt="A diverse group of university students collaborating enthusiastically around a modern table with laptops. The scene is brightly lit with natural light creating a warm, energetic atmosphere. The color palette incorporates deep purples and bright orange accents in their clothing and accessories, matching a modern, professional, and scholarly brand identity. The mood is highly optimistic and focused on personal growth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuABHERBZVqNd6dr0sXXGohmGWDRJwzQMjUML-MNc7rAM77o2cN86MVaMxhXwqLIafjhQLv2c9Ufr0UHP3Gk3iFnNjoemAAnHsZYmlQ9B4fYQ8S-S23Xm_F409qbmtkCp9mxLCBnwEVlSM7oV6RaInwmfngXH8NYNVzCG8D8KKoWiSxU430ghou-gn6wUMrhCxRdIyGrTfye4oei70Y4XgDxc0_zu-6_651Kl0sVgjjykjDDdIC72gdMWlYecLl_zR9Tj0yJ_JX3Vg">
+</div>
+<div class="relative z-10 px-lg md:px-xxl max-w-2xl">
+<span class="inline-block px-3 py-1 bg-secondary-container/20 text-secondary-container rounded-full font-label-md text-label-md mb-md backdrop-blur-sm">🚀 Launch Your Career</span>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg mb-md leading-tight">Master Future-Ready Skills with Top Industry Experts</h1>
+<p class="font-body-lg text-body-lg opacity-90 mb-lg">Join over 50,000 learners accelerating their careers through our curated, high-impact courses.</p>
+<button class="bg-secondary-container text-primary font-label-md text-label-md px-6 py-3 rounded-lg hover:opacity-90 transition-opacity inline-flex items-center gap-2">
+                    Explore Catalog <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- USP Info Box Row -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="bg-surface rounded-2xl p-lg card-shadow flex items-start gap-md">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+<div>
+<h3 class="font-headline-md text-body-lg font-bold text-on-surface mb-xs">Expert Instructors</h3>
+<p class="font-body-md text-on-surface-variant text-sm">Learn from industry leaders and certified professionals.</p>
+</div>
+</div>
+<div class="bg-surface rounded-2xl p-lg card-shadow flex items-start gap-md">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">schedule</span>
+</div>
+<div>
+<h3 class="font-headline-md text-body-lg font-bold text-on-surface mb-xs">Lifetime Access</h3>
+<p class="font-body-md text-on-surface-variant text-sm">Learn at your own pace with unlimited access to materials.</p>
+</div>
+</div>
+<div class="bg-surface rounded-2xl p-lg card-shadow flex items-start gap-md">
+<div class="w-12 h-12 rounded-full bg-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-error-container" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+<div>
+<h3 class="font-headline-md text-body-lg font-bold text-on-surface mb-xs">Practical Projects</h3>
+<p class="font-body-md text-on-surface-variant text-sm">Build a real-world portfolio with hands-on assignments.</p>
+</div>
+</div>
+</section>
+<!-- Category Grid -->
+<section>
+<div class="flex justify-between items-end mb-lg">
+<h2 class="font-headline-md text-headline-md text-on-surface">Top Categories</h2>
+<a class="font-label-md text-label-md text-primary hover:text-primary-container transition-colors" href="#">View All</a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-md">
+<a class="bg-surface rounded-2xl p-md flex flex-col items-center justify-center text-center gap-sm card-shadow hover:-translate-y-1 transition-transform border border-transparent hover:border-primary/10" href="#"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT3KH1r1c7ZmumLRrzMRaea-4Nub7I_QpCPtNqeNeBIi2383fGN4Fas2Sr8Q5gyyTLWAYvu6nBaUKyA_JUp7iND1keVnFigeLE2lL9sK2pR-4nQPAOA-jKhXnt4aez_iN1DdO89SSgF3iERm47auSmMMH8mdBw9-TuXaeGpQL6WKefcdzQFOxfjSiYNBLbn_rT3ENy7qVrVFSx3LLE6eTrawoLg85uqnIflQScuqw9XX55A70eqkI2WB7WC3rkFuD4WvQYQ--FYw" alt="BelajarKUY! Logo" class="h-10 w-auto"></a>
+<a class="bg-surface rounded-2xl p-md flex flex-col items-center justify-center text-center gap-sm card-shadow hover:-translate-y-1 transition-transform border border-transparent hover:border-primary/10" href="#"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT3KH1r1c7ZmumLRrzMRaea-4Nub7I_QpCPtNqeNeBIi2383fGN4Fas2Sr8Q5gyyTLWAYvu6nBaUKyA_JUp7iND1keVnFigeLE2lL9sK2pR-4nQPAOA-jKhXnt4aez_iN1DdO89SSgF3iERm47auSmMMH8mdBw9-TuXaeGpQL6WKefcdzQFOxfjSiYNBLbn_rT3ENy7qVrVFSx3LLE6eTrawoLg85uqnIflQScuqw9XX55A70eqkI2WB7WC3rkFuD4WvQYQ--FYw" alt="BelajarKUY! Logo" class="h-10 w-auto"></a>
+<a class="bg-surface rounded-2xl p-md flex flex-col items-center justify-center text-center gap-sm card-shadow hover:-translate-y-1 transition-transform border border-transparent hover:border-primary/10" href="#"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT3KH1r1c7ZmumLRrzMRaea-4Nub7I_QpCPtNqeNeBIi2383fGN4Fas2Sr8Q5gyyTLWAYvu6nBaUKyA_JUp7iND1keVnFigeLE2lL9sK2pR-4nQPAOA-jKhXnt4aez_iN1DdO89SSgF3iERm47auSmMMH8mdBw9-TuXaeGpQL6WKefcdzQFOxfjSiYNBLbn_rT3ENy7qVrVFSx3LLE6eTrawoLg85uqnIflQScuqw9XX55A70eqkI2WB7WC3rkFuD4WvQYQ--FYw" alt="BelajarKUY! Logo" class="h-10 w-auto"></a>
+<a class="bg-surface rounded-2xl p-md flex flex-col items-center justify-center text-center gap-sm card-shadow hover:-translate-y-1 transition-transform border border-transparent hover:border-primary/10" href="#"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT3KH1r1c7ZmumLRrzMRaea-4Nub7I_QpCPtNqeNeBIi2383fGN4Fas2Sr8Q5gyyTLWAYvu6nBaUKyA_JUp7iND1keVnFigeLE2lL9sK2pR-4nQPAOA-jKhXnt4aez_iN1DdO89SSgF3iERm47auSmMMH8mdBw9-TuXaeGpQL6WKefcdzQFOxfjSiYNBLbn_rT3ENy7qVrVFSx3LLE6eTrawoLg85uqnIflQScuqw9XX55A70eqkI2WB7WC3rkFuD4WvQYQ--FYw" alt="BelajarKUY! Logo" class="h-10 w-auto"></a>
+<a class="bg-surface rounded-2xl p-md flex flex-col items-center justify-center text-center gap-sm card-shadow hover:-translate-y-1 transition-transform border border-transparent hover:border-primary/10" href="#"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT3KH1r1c7ZmumLRrzMRaea-4Nub7I_QpCPtNqeNeBIi2383fGN4Fas2Sr8Q5gyyTLWAYvu6nBaUKyA_JUp7iND1keVnFigeLE2lL9sK2pR-4nQPAOA-jKhXnt4aez_iN1DdO89SSgF3iERm47auSmMMH8mdBw9-TuXaeGpQL6WKefcdzQFOxfjSiYNBLbn_rT3ENy7qVrVFSx3LLE6eTrawoLg85uqnIflQScuqw9XX55A70eqkI2WB7WC3rkFuD4WvQYQ--FYw" alt="BelajarKUY! Logo" class="h-10 w-auto"></a>
+<a class="bg-surface rounded-2xl p-md flex flex-col items-center justify-center text-center gap-sm card-shadow hover:-translate-y-1 transition-transform border border-transparent hover:border-primary/10" href="#"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT3KH1r1c7ZmumLRrzMRaea-4Nub7I_QpCPtNqeNeBIi2383fGN4Fas2Sr8Q5gyyTLWAYvu6nBaUKyA_JUp7iND1keVnFigeLE2lL9sK2pR-4nQPAOA-jKhXnt4aez_iN1DdO89SSgF3iERm47auSmMMH8mdBw9-TuXaeGpQL6WKefcdzQFOxfjSiYNBLbn_rT3ENy7qVrVFSx3LLE6eTrawoLg85uqnIflQScuqw9XX55A70eqkI2WB7WC3rkFuD4WvQYQ--FYw" alt="BelajarKUY! Logo" class="h-10 w-auto"></a>
+<a class="bg-surface rounded-2xl p-md flex flex-col items-center justify-center text-center gap-sm card-shadow hover:-translate-y-1 transition-transform border border-transparent hover:border-primary/10" href="#"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT3KH1r1c7ZmumLRrzMRaea-4Nub7I_QpCPtNqeNeBIi2383fGN4Fas2Sr8Q5gyyTLWAYvu6nBaUKyA_JUp7iND1keVnFigeLE2lL9sK2pR-4nQPAOA-jKhXnt4aez_iN1DdO89SSgF3iERm47auSmMMH8mdBw9-TuXaeGpQL6WKefcdzQFOxfjSiYNBLbn_rT3ENy7qVrVFSx3LLE6eTrawoLg85uqnIflQScuqw9XX55A70eqkI2WB7WC3rkFuD4WvQYQ--FYw" alt="BelajarKUY! Logo" class="h-10 w-auto"></a>
+<a class="bg-surface rounded-2xl p-md flex flex-col items-center justify-center text-center gap-sm card-shadow hover:-translate-y-1 transition-transform border border-transparent hover:border-primary/10" href="#"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT3KH1r1c7ZmumLRrzMRaea-4Nub7I_QpCPtNqeNeBIi2383fGN4Fas2Sr8Q5gyyTLWAYvu6nBaUKyA_JUp7iND1keVnFigeLE2lL9sK2pR-4nQPAOA-jKhXnt4aez_iN1DdO89SSgF3iERm47auSmMMH8mdBw9-TuXaeGpQL6WKefcdzQFOxfjSiYNBLbn_rT3ENy7qVrVFSx3LLE6eTrawoLg85uqnIflQScuqw9XX55A70eqkI2WB7WC3rkFuD4WvQYQ--FYw" alt="BelajarKUY! Logo" class="h-10 w-auto"></a>
+</div>
+</section>
+<!-- Featured Courses -->
+<section>
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Featured Courses</h2>
+<p class="font-body-md text-on-surface-variant mt-1">Hand-picked by our experts to accelerate your learning.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Course Card 1 -->
+<div class="bg-surface rounded-2xl overflow-hidden card-shadow group flex flex-col h-full border border-transparent hover:border-primary/10 transition-colors">
+<div class="relative h-40 overflow-hidden">
+<img alt="Coding workspace" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A modern web developer's workspace featuring dual monitors displaying complex code, a mechanical keyboard, and a hot cup of coffee. The lighting is slightly moody but warm, emphasizing focus. The color palette subtlely integrates deep purple and bright orange accents in the desk accessories, reflecting a professional and energetic learning environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0l1TZoDd6MfXHZLcbDe1hVCRD3E_ox69nlv_SoAbPVCMcCi5oFPVMdSI0dYHpz32SC4NLp6ehUSfL22pAxCrxhlpJl1xlQHDPtUT4VYgtSfkAO4h_oYp76QjJM2J1CMj3pk001ZvyZ8QXoERlCpdjB9OqATugx71IMI1h00erVqv0CE_LsGqKJq56w4Tx3upjXiMTZy6kz3DFMGEqlJk0ePkApn5dazIq0OS1D-K8V5kbpSESmKPbFrmev3TQJG_CeGVujyc9Zw">
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary-container text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-caption text-caption text-on-surface font-bold">4.9</span>
+</div>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-1 bg-primary-fixed/20 text-primary rounded-full font-caption text-[10px] uppercase font-bold tracking-wider">Development</span>
+</div>
+<h3 class="font-label-md text-body-lg font-bold text-on-surface mb-xs line-clamp-2 leading-tight">Full-Stack Web Development Bootcamp 2024</h3>
+<p class="font-body-md text-sm text-on-surface-variant mb-md flex-grow">Master React, Node.js, and modern web architecture.</p>
+<div class="flex items-center gap-2 mb-md pt-3 border-t border-surface-variant">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="Instructor" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-63NPrTeG26DqRDk41dlxaiZn_LqZU96PZGhVFJZsKwbMzA7EC7sqtXrkEj56mpxYyY_blRsULd8HSJe-VoQDNsYVpc-Z0Qzw8ImLxmSC2wH_6_o_WeRiJR1Vc42uEPsdltJytiJb8wW-km8MjiivjWmTxUy3xA_fbuj_0106HE5_p1_iAH-sQG2ZUfFddVBBAuni2EkcLmqzhGVAqvINWuZyMWNIpqojSa5q6ey5AjNXX4Cx3Gw2ptFvduvNfZ0pGSRcpxSOnQ">
+</div>
+<span class="font-caption text-caption text-on-surface-variant">Dr. Sarah Chen</span>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<span class="font-headline-md text-body-lg font-bold text-primary">$89.99</span>
+<button class="text-primary hover:bg-primary-fixed/20 p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined">favorite_border</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Course Card 2 -->
+<div class="bg-surface rounded-2xl overflow-hidden card-shadow group flex flex-col h-full border border-transparent hover:border-primary/10 transition-colors">
+<div class="relative h-40 overflow-hidden">
+<img alt="Graphic Design" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A bright, minimalist graphic designer's desk with a large tablet displaying colorful vector artwork, a stylus, and color swatches. The scene is illuminated by clean, natural light. The overall aesthetic is highly modern, creative, and professional, utilizing a generous amount of white space with vibrant pops of orange and deep purple in the artwork to match the brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWOp4imGRxeFXSSVSrqJj8p619YYgQXWbOne8P452fUXHr4DQ0cRwGtd3EHBIG9fIZSGQhd96d2VizV95mGEorTg5d8vd2M1jE4kFdDmT6c_4CDdd3nWLtP8EdYzDUjX-fFFFZW60w_o3jVH4ogSks4m5MMhWTQRzCsbBaYmSHoXClSwsd__lPdgeAQeRk7IHgUXnu9VROeNuyZr76WW4LlD0D8XBMvrGka86mnYsnLyWeApTyhDAg_CWFmGFJkKEb8L3FVjHTOg">
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary-container text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-caption text-caption text-on-surface font-bold">4.8</span>
+</div>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-1 bg-secondary-container/20 text-on-secondary-container rounded-full font-caption text-[10px] uppercase font-bold tracking-wider">Design</span>
+</div>
+<h3 class="font-label-md text-body-lg font-bold text-on-surface mb-xs line-clamp-2 leading-tight">UI/UX Masterclass: From Wireframe to Prototype</h3>
+<p class="font-body-md text-sm text-on-surface-variant mb-md flex-grow">Create stunning interfaces using Figma.</p>
+<div class="flex items-center gap-2 mb-md pt-3 border-t border-surface-variant">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="Instructor" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCj7YPIqfwlE9sR_FBEgYQVGjQbJqlEQoZDIIlcESI3j6esICGBhXfSprVA7edehLG02APkqMnBTYpBwyecD2KqiqsxJlAZArZVW1um2_Y369SivNxtQNXCYaudJ__bGzECfwsV949FXicG6sb8dvgYm01e9IO5DTcHp_bFGyEJdluiQy3etuQrjXS4aB1MJ-81OBFw8tC_nijL--_pqIRV6Ir0N0MHvvqsHKpP_JfHKd---jZXCMDEiqOHZk4hPMcGK8Tn-3ZG0A">
+</div>
+<span class="font-caption text-caption text-on-surface-variant">Alex Rivera</span>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<span class="font-headline-md text-body-lg font-bold text-primary">$75.00</span>
+<button class="text-primary hover:bg-primary-fixed/20 p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined">favorite_border</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Course Card 3 -->
+<div class="bg-surface rounded-2xl overflow-hidden card-shadow group flex flex-col h-full border border-transparent hover:border-primary/10 transition-colors">
+<div class="relative h-40 overflow-hidden">
+<img alt="Data Analytics" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A clean, corporate office setting showing a laptop screen filled with complex data visualization charts and graphs. A notebook and pen rest beside it. The lighting is crisp and bright, suggesting a modern corporate environment. The data visuals incorporate the brand's deep purple and vibrant orange colors, emphasizing analytical precision and scholarly focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjkyB-gJLYC323ijhWwMukbrMSTLHkqONquFwJGS1el2jqVSYYFTOa2kbdAejnW9s3RMSvOAcSwRhWv4Jj3kc-Fr7uXyeYYBhZZAUf8DAUD5_F9F-Fhgh38-l9mtTz02AIo_Gdp_udjBhlU0TVK5Yq6zGEzea6bWbyuxJyC9JzdpKu5FYeuZCuJZCwcQ0hse2pMd65NM_JQZFPlVp26PrlQzev7roacqesmJs1nuqzFzEyYwIE8Rkb5wPlCVoSTjnHxMqnZH3ZJw">
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary-container text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-caption text-caption text-on-surface font-bold">4.7</span>
+</div>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-1 bg-success/10 text-success rounded-full font-caption text-[10px] uppercase font-bold tracking-wider">Business</span>
+</div>
+<h3 class="font-label-md text-body-lg font-bold text-on-surface mb-xs line-clamp-2 leading-tight">Data-Driven Decision Making for Managers</h3>
+<p class="font-body-md text-sm text-on-surface-variant mb-md flex-grow">Leverage analytics to drive business growth.</p>
+<div class="flex items-center gap-2 mb-md pt-3 border-t border-surface-variant">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="Instructor" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbJNIaRzvY3qODnmCWa8AZQAvSDv1urQqM41WwnSPqiMmk-J-c9ie2Lu95YB1TlIJGzyw1aGLfhqdE1FSD5j5EGR530tYpc_xULD9ignhby1m8F-aUWwE-HOeLHGvV9Svrv9DpEZOI7WJTYOw8S0qtuZlK0RpGt0oSci2wra15k4f2dy5c5cN_PypnfaARAndnsMhFOSvEmoLiuDk_PK51JNBEZTEMO4oV0fN2A9vS7CGugvXUs23q7e5wnyNQb8CwDKGR44kBMg">
+</div>
+<span class="font-caption text-caption text-on-surface-variant">James Thorne</span>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<span class="font-headline-md text-body-lg font-bold text-primary">$120.00</span>
+<button class="text-primary hover:bg-primary-fixed/20 p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined">favorite_border</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Course Card 4 -->
+<div class="bg-surface rounded-2xl overflow-hidden card-shadow group flex flex-col h-full border border-transparent hover:border-primary/10 transition-colors">
+<div class="relative h-40 overflow-hidden">
+<img alt="Marketing Strategy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A top-down view of a modern brainstorming session. A wooden table holds scattered documents, sticky notes, a tablet, and multiple hands pointing at a strategy document. The lighting is bright and energetic. The sticky notes and documents feature accents of deep purple and vibrant orange, aligning with a highly professional, optimistic, and energetic brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo1C4MU9njCshlOJyeVmua_6wSgCPRdw7omknbVkezO82bPxgnF-b4Kb2Ac8dtJYgIKMS9e0lL60juhKOUfHyrPLsf5kQIOEB1jjlsFvnyFitadUQ-HYpsTuSzi51uRZuFB5ZhOosTBTcRNPNWv6MRHJq6ZiF0jual6IaSFjNan2V_b1-RSLcFWhkg0BJFUIipzV-VGfancefQkn0yyY3Gq9BRWC98mq4qLw_dQQmxDjLu9jZ98zfAoafuk4kejjYyEUHRpvjlNg">
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary-container text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-caption text-caption text-on-surface font-bold">4.9</span>
+</div>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-1 bg-warning/10 text-warning rounded-full font-caption text-[10px] uppercase font-bold tracking-wider">Marketing</span>
+</div>
+<h3 class="font-label-md text-body-lg font-bold text-on-surface mb-xs line-clamp-2 leading-tight">Digital Marketing Strategy: The Complete Guide</h3>
+<p class="font-body-md text-sm text-on-surface-variant mb-md flex-grow">SEO, Social Media, and PPC campaigns.</p>
+<div class="flex items-center gap-2 mb-md pt-3 border-t border-surface-variant">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="Instructor" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsppN5NOCK6JFVZ3bX04Y_e9Paf8AX4P5OSBoGtPlket6p7RThF9ctOs_zjPLgj0loujG071pWl18MnsYOKmxMTv4mPfOq0qGeqAqrHx47qowZP7Zghj_BAvWpYux_OWslMWjtYSJwmU2GjQa-lu7uvYdVglEJf5dNey14IlxH86UdT_RPH-8c-YCs8ZvMRVCFfa8BvoaB6th3ScobDMjDAmg546iogtRDYNphpE2LsT5D6oZcm2kmigpgcZCw2nZvceekQXiJtQ">
+</div>
+<span class="font-caption text-caption text-on-surface-variant">Elena Rostova</span>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<span class="font-headline-md text-body-lg font-bold text-primary">$55.00</span>
+<button class="text-primary hover:bg-primary-fixed/20 p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined">favorite_border</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-tertiary dark:bg-tertiary-container w-full py-xl px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-gutter border-t border-outline-variant dark:border-on-tertiary-fixed-variant mt-xxl">
+<div class="col-span-1 md:col-span-2">
+<a class="flex items-center gap-sm mb-md" href="#"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT3KH1r1c7ZmumLRrzMRaea-4Nub7I_QpCPtNqeNeBIi2383fGN4Fas2Sr8Q5gyyTLWAYvu6nBaUKyA_JUp7iND1keVnFigeLE2lL9sK2pR-4nQPAOA-jKhXnt4aez_iN1DdO89SSgF3iERm47auSmMMH8mdBw9-TuXaeGpQL6WKefcdzQFOxfjSiYNBLbn_rT3ENy7qVrVFSx3LLE6eTrawoLg85uqnIflQScuqw9XX55A70eqkI2WB7WC3rkFuD4WvQYQ--FYw" alt="BelajarKUY! Logo" class="h-10 w-auto brightness-0 invert"></a>
+<p class="font-body-md text-body-md text-tertiary-fixed-dim opacity-80 mb-lg max-w-sm">Empowering lifelong learners with top-tier education. Launch your career to new heights.</p>
+<p class="font-body-md text-body-md text-tertiary-fixed-dim opacity-80">© 2024 BelajarKUY. Belajar skill baru, KUY!</p>
+</div>
+<div>
+<h4 class="font-headline-md text-body-lg font-bold text-tertiary-fixed mb-md">Quick Links</h4>
+<ul class="space-y-sm">
+<li class=""><a class="font-body-md text-body-md text-tertiary-fixed-dim opacity-80 hover:text-secondary-fixed transition-colors" href="#">About Us</a></li>
+<li class=""><a class="font-body-md text-body-md text-tertiary-fixed-dim opacity-80 hover:text-secondary-fixed transition-colors" href="#">Categories</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-headline-md text-body-lg font-bold text-tertiary-fixed mb-md">Support</h4>
+<ul class="space-y-sm">
+<li class=""><a class="font-body-md text-body-md text-tertiary-fixed-dim opacity-80 hover:text-secondary-fixed transition-colors" href="#">Contact</a></li>
+<li class=""><a class="font-body-md text-body-md text-tertiary-fixed-dim opacity-80 hover:text-secondary-fixed transition-colors" href="#">Privacy Policy</a></li>
+</ul>
+</div>
+</footer>
+
+
+</body></html>

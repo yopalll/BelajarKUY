@@ -5,7 +5,35 @@
 
 ---
 
+## [2026-05-31] — Adopsi React + Inertia (Lapisan Frontend)
+
+Penyelarasan dokumentasi terhadap `Kode_Nyata`: lapisan presentasi resmi adalah **React via Inertia** (bukan Blade + Alpine.js), dan **Filament tidak terpasang** pada `composer.json`.
+
+### ➕ Added
+
+- **`02_architecture/ADR/ADR-008-frontend-react-inertia.md`** — ADR adopsi React + Inertia, **men-supersede ADR-002**.
+- **`04_plans/MASTER_PLAN_REACT_INERTIA.md`** — Master plan migrasi frontend Blade → React+Inertia (fase, risiko, rollback).
+- **`02_architecture/REACT_INERTIA_BENEFITS.md`** — Dokumen keunggulan adopsi React + Inertia.
+- **`04_plans/DOCS_UPDATE_PLAN_REACT_INERTIA.md`** — Registry pembaruan seluruh `Set_Dokumentasi`.
+- **`04_plans/SCREEN_MAPPING_STITCH_REACT.md`** — Peta 41 layar Stitch → halaman/komponen React.
+
+### 🔧 Changed
+
+- **Tech stack** → React `^19.2.6` + `@inertiajs/react ^3.3.0` + `inertiajs/inertia-laravel ^3.1`; Laravel `^12.0` → `^13.7`; `tailwindcss ^3.1.0` (+ `@tailwindcss/vite ^4.0.0`); Alpine.js diturunkan dari lapisan presentasi utama. (`TECH_STACK.md`, `PRD_BelajarKUY.md`, `00_INDEX.md`, `UI_UX_GUIDELINES.md`, `TECH_STACK_EXTRAS.md`, prompt `05_prompts/*`.)
+- **`02_architecture/ADR/ADR-002-...md`** — Status → `Superseded by ADR-008`.
+- **`02_architecture/ADR/README.md`** — Tambah baris indeks ADR-008; status ADR-002 → Superseded.
+- **`03_features/F07_ADMIN_PANEL.md`** — Filament → halaman admin React + Inertia (`Pages/Admin/*`).
+
+### ⚠️ Corrected
+
+- **Filament dihapus dari tech stack** — `composer.json` `Kode_Nyata` **tidak** memuat paket `filament/*`. Klaim "Filament v5 terinstall" pada entri [2026-05-28] di bawah **tidak akurat** terhadap kode; admin panel dibangun sebagai halaman React+Inertia.
+- **Paket Cloudinary** — dokumen lama menyebut `cloudinary-labs/cloudinary-laravel ^2.0`; nilai `Kode_Nyata` adalah `cloudinary/cloudinary_php ^3.1`.
+
+---
+
 ## [2026-05-28] — Filament v5 Admin Panel Integration
+
+> ⚠️ **Koreksi (2026-05-31):** Entri di bawah **tidak akurat** terhadap `Kode_Nyata` — `composer.json` tidak memuat paket `filament/*`, dan berkas `app/Filament/**`, `app/Providers/Filament/AdminPanelProvider.php`, interface `FilamentUser` tidak ada. Lihat entri [2026-05-31] di atas. Entri ini dipertahankan sebagai catatan historis.
 
 Instalasi **Filament v5.6.6** sebagai admin panel builder untuk menggantikan custom Blade admin panel.
 

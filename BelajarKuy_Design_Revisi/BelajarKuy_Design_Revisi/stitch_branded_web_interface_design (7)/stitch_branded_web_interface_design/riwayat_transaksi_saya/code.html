@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Riwayat Transaksi - BelajarKUY</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#4a154b",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#370139",
+                        "outline": "#80737d",
+                        "tertiary-fixed-dim": "#c9c6c0",
+                        "surface-variant": "#e5e2e1",
+                        "on-primary-fixed-variant": "#693168",
+                        "tertiary-container": "#2d2c28",
+                        "surface-container": "#f0eded",
+                        "primary-fixed": "#ffd6f8",
+                        "error": "#D91E18",
+                        "on-tertiary-fixed-variant": "#484742",
+                        "on-surface-variant": "#4f434c",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-surface": "#1b1b1c",
+                        "tertiary-fixed": "#e6e2db",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#2a1700",
+                        "primary": "#300033",
+                        "on-background": "#1b1b1c",
+                        "surface-tint": "#844981",
+                        "secondary-fixed": "#ffddb7",
+                        "on-secondary-container": "#6f4600",
+                        "primary-fixed-dim": "#f6afef",
+                        "outline-variant": "#d2c2cd",
+                        "surface-bright": "#fcf9f8",
+                        "inverse-primary": "#f6afef",
+                        "secondary-container": "#ffb145",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "secondary-fixed-dim": "#ffb95c",
+                        "surface": "#FFFFFF",
+                        "on-tertiary-container": "#95938d",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-low": "#f6f3f2",
+                        "on-tertiary-fixed": "#1c1c18",
+                        "secondary": "#855400",
+                        "surface-container-high": "#eae7e7",
+                        "tertiary": "#181814",
+                        "warning": "#E67E22",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "background": "#fcf9f8",
+                        "on-error": "#ffffff",
+                        "background-subtle": "#F8F5F2",
+                        "on-primary-container": "#be7db9",
+                        "success": "#2D8A56",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-highest": "#e5e2e1",
+                        "inverse-surface": "#303030",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1rem"
+                    },
+                    "spacing": {
+                        "xxl": "64px",
+                        "xl": "32px",
+                        "margin-desktop": "48px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "margin-mobile": "16px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "caption": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col md:flex-row">
+<!-- SideNavBar (Suppressed on this page as it's a specific user transaction history, but including shell logic for completeness if it were a dashboard. We will suppress it based on the instruction: "Transaction screens... exclude navigation shell to prioritize canvas" wait, it's a student dashboard feature "Order History". Actually, "Settings, Profile, Details, and Transactional screens" might suppress FAB. Top level dashboard has SideNav. Let's assume this is a sub-page of Dashboard, but for simplicity of the prompt "Halaman Riwayat Transaksi", we'll provide a clean layout focused on the table, perhaps with a TopAppBar to navigate back.) -->
+<!-- Applying Suppression Rule: "Suppress navigation if intent is Task-Focused... Transactional". We will use a simplified TopNavBar to allow going back. -->
+<div class="flex-1 flex flex-col w-full min-h-screen">
+<!-- Simplified Header for Transaction Page -->
+<header class="bg-surface w-full shadow-sm px-margin-mobile md:px-margin-desktop py-md flex items-center justify-between sticky top-0 z-50 border-b border-surface-variant">
+<div class="flex items-center gap-md">
+<a class="text-on-surface hover:text-primary transition-colors flex items-center justify-center p-sm rounded-full hover:bg-surface-container" href="#">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</a>
+<h1 class="font-headline-md text-headline-md text-primary">Riwayat Transaksi</h1>
+</div>
+<div class="flex items-center gap-sm">
+<span class="font-label-md text-label-md text-on-surface-variant hidden md:block">Bantuan</span>
+<span class="material-symbols-outlined text-outline" data-icon="help_outline">help_outline</span>
+</div>
+</header>
+<main class="flex-1 px-margin-mobile md:px-margin-desktop py-lg md:py-xl max-w-7xl mx-auto w-full">
+<!-- Page Title & Filters -->
+<div class="mb-lg flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">Semua Pesanan Anda</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Kelola dan pantau riwayat pembelian kursus Anda di BelajarKUY.</p>
+</div>
+<div class="flex items-center gap-sm">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 transform -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="pl-[36px] pr-sm py-sm rounded-lg border-2 border-surface-variant bg-surface-container-lowest focus:border-primary focus:ring-0 font-body-md text-body-md w-full md:w-64 transition-colors" placeholder="Cari No. Order..." type="text"/>
+</div>
+<button class="bg-surface-container-high hover:bg-surface-dim text-on-surface p-sm rounded-lg border border-surface-variant transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Transaction List Canvas -->
+<div class="bg-surface rounded-2xl shadow-[0_4px_24px_rgba(48,0,51,0.04)] border border-[rgba(48,0,51,0.05)] overflow-hidden">
+<!-- Desktop Table View -->
+<div class="hidden md:block w-full overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-surface-variant">
+<th class="py-md px-lg font-label-md text-label-md text-on-surface-variant">No. Order / Tanggal</th>
+<th class="py-md px-lg font-label-md text-label-md text-on-surface-variant">Detail Kursus</th>
+<th class="py-md px-lg font-label-md text-label-md text-on-surface-variant">Total Harga</th>
+<th class="py-md px-lg font-label-md text-label-md text-on-surface-variant">Status</th>
+<th class="py-md px-lg font-label-md text-label-md text-on-surface-variant text-right">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-variant">
+<!-- Row 1: Berhasil -->
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="py-md px-lg">
+<div class="font-label-md text-label-md text-on-surface">ORD-2024-8891</div>
+<div class="font-caption text-caption text-on-surface-variant mt-xs">12 Okt 2024, 14:30</div>
+</td>
+<td class="py-md px-lg">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container shrink-0">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface line-clamp-1">Mastering UI/UX Design with Figma</div>
+<div class="font-caption text-caption text-on-surface-variant mt-xs">Kategori: Design</div>
+</div>
+</div>
+</td>
+<td class="py-md px-lg font-label-md text-label-md text-on-surface">Rp 450.000</td>
+<td class="py-md px-lg">
+<span class="inline-flex items-center gap-xs px-3 py-1 rounded-full bg-[#E8F5E9] text-success font-caption text-caption border border-[#C8E6C9]">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle">check_circle</span>
+                                        Berhasil
+                                    </span>
+</td>
+<td class="py-md px-lg text-right">
+<button class="bg-surface border-2 border-outline-variant text-on-surface hover:border-primary hover:text-primary font-label-md text-label-md py-sm px-md rounded-lg transition-colors inline-flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="receipt_long">receipt_long</span>
+                                        Kuitansi
+                                    </button>
+</td>
+</tr>
+<!-- Row 2: Menunggu -->
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="py-md px-lg">
+<div class="font-label-md text-label-md text-on-surface">ORD-2024-8902</div>
+<div class="font-caption text-caption text-on-surface-variant mt-xs">14 Okt 2024, 09:15</div>
+</td>
+<td class="py-md px-lg">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-secondary-container flex items-center justify-center text-on-secondary-container shrink-0">
+<span class="material-symbols-outlined" data-icon="code">code</span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface line-clamp-1">Fullstack Web Development Bootcamp</div>
+<div class="font-caption text-caption text-on-surface-variant mt-xs">Kategori: Programming</div>
+</div>
+</div>
+</td>
+<td class="py-md px-lg font-label-md text-label-md text-on-surface">Rp 1.200.000</td>
+<td class="py-md px-lg">
+<span class="inline-flex items-center gap-xs px-3 py-1 rounded-full bg-[#FFF3E0] text-warning font-caption text-caption border border-[#FFE0B2]">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
+                                        Menunggu
+                                    </span>
+</td>
+<td class="py-md px-lg text-right">
+<button class="bg-primary text-on-primary hover:bg-on-primary-fixed-variant font-label-md text-label-md py-sm px-md rounded-lg transition-colors inline-flex items-center gap-sm shadow-sm">
+                                        Bayar
+                                    </button>
+</td>
+</tr>
+<!-- Row 3: Dibatalkan -->
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="py-md px-lg">
+<div class="font-label-md text-label-md text-on-surface">ORD-2024-8755</div>
+<div class="font-caption text-caption text-on-surface-variant mt-xs">01 Okt 2024, 18:45</div>
+</td>
+<td class="py-md px-lg">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface line-clamp-1">Digital Marketing for Beginners</div>
+<div class="font-caption text-caption text-on-surface-variant mt-xs">Kategori: Marketing</div>
+</div>
+</div>
+</td>
+<td class="py-md px-lg font-label-md text-label-md text-on-surface">Rp 300.000</td>
+<td class="py-md px-lg">
+<span class="inline-flex items-center gap-xs px-3 py-1 rounded-full bg-error-container text-on-error-container font-caption text-caption border border-[#FFCDD2]">
+<span class="material-symbols-outlined text-[14px]" data-icon="cancel">cancel</span>
+                                        Dibatalkan
+                                    </span>
+</td>
+<td class="py-md px-lg text-right">
+<button class="bg-transparent border border-transparent text-on-surface-variant hover:text-primary font-label-md text-label-md py-sm px-md rounded-lg transition-colors">
+                                        Detail
+                                    </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Mobile Card View -->
+<div class="md:hidden flex flex-col divide-y divide-surface-variant">
+<!-- Card 1 -->
+<div class="p-md flex flex-col gap-sm">
+<div class="flex justify-between items-start">
+<div>
+<div class="font-label-md text-label-md text-on-surface">ORD-2024-8891</div>
+<div class="font-caption text-caption text-on-surface-variant">12 Okt 2024</div>
+</div>
+<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-[#E8F5E9] text-success font-caption text-caption">
+                                Berhasil
+                            </span>
+</div>
+<div class="flex items-center gap-md mt-xs">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="rocket_launch">rocket_launch</span>
+</div>
+<div class="font-label-md text-label-md text-on-surface line-clamp-2">Mastering UI/UX Design with Figma</div>
+</div>
+<div class="flex justify-between items-center mt-sm pt-sm border-t border-surface-variant border-dashed">
+<div class="font-label-md text-label-md text-primary">Rp 450.000</div>
+<button class="bg-surface border border-outline-variant text-on-surface font-label-md text-label-md py-[6px] px-sm rounded-lg">Kuitansi</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="p-md flex flex-col gap-sm">
+<div class="flex justify-between items-start">
+<div>
+<div class="font-label-md text-label-md text-on-surface">ORD-2024-8902</div>
+<div class="font-caption text-caption text-on-surface-variant">14 Okt 2024</div>
+</div>
+<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full bg-[#FFF3E0] text-warning font-caption text-caption">
+                                Menunggu
+                            </span>
+</div>
+<div class="flex items-center gap-md mt-xs">
+<div class="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center text-on-secondary-container shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="code">code</span>
+</div>
+<div class="font-label-md text-label-md text-on-surface line-clamp-2">Fullstack Web Development Bootcamp</div>
+</div>
+<div class="flex justify-between items-center mt-sm pt-sm border-t border-surface-variant border-dashed">
+<div class="font-label-md text-label-md text-primary">Rp 1.200.000</div>
+<button class="bg-primary text-on-primary font-label-md text-label-md py-[6px] px-sm rounded-lg shadow-sm">Bayar</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-lg flex justify-center items-center gap-sm">
+<button class="w-10 h-10 rounded-lg flex items-center justify-center text-outline hover:bg-surface-container hover:text-primary transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-lg flex items-center justify-center bg-primary text-on-primary font-label-md text-label-md shadow-sm">1</button>
+<button class="w-10 h-10 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors font-label-md text-label-md">2</button>
+<button class="w-10 h-10 rounded-lg flex items-center justify-center text-outline hover:bg-surface-container hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</main>
+</div>
+</body></html>

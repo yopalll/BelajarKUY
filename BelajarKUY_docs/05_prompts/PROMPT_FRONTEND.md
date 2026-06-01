@@ -8,49 +8,47 @@
 ## PROMPT
 
 ```
-Kamu adalah senior Laravel + TailwindCSS developer. Bangun halaman-halaman frontend untuk project BelajarKUY (Udemy clone Indonesia).
+Kamu adalah senior React + Inertia + TailwindCSS developer. Bangun halaman-halaman frontend untuk project BelajarKUY (Udemy clone Indonesia).
 
 ## PREREQUISITE: Baca file-file berikut terlebih dahulu:
 - BelajarKUY_docs/01_guides/AGENT_GUIDELINES.md
-- BelajarKUY_docs/01_guides/CODING_STANDARDS.md (section Blade/Frontend)
+- BelajarKUY_docs/01_guides/CODING_STANDARDS.md (section React + Inertia / Frontend)
 - BelajarKUY_docs/03_features/F02_LANDING_PAGE.md
+- BelajarKUY_docs/04_plans/SCREEN_MAPPING_STITCH_REACT.md
 
 ## CONTEXT:
-- Laravel 12 + Blade + TailwindCSS v4
-- Alpine.js tersedia untuk interactivity
-- SweetAlert2 tersedia untuk notifications
+- Laravel `^13.7` + React `^19.2.6` via Inertia (`@inertiajs/react ^3.3.0`, `inertiajs/inertia-laravel ^3.1`)
+- TailwindCSS `^3.1.0` untuk styling; `@headlessui/react` + `lucide-react` untuk komponen & ikon
+- SweetAlert2 tersedia untuk notifications (konsumsi shared prop `flash`)
+- Halaman di `resources/js/Pages`, komponen reusable di `resources/js/Components`, root view `app`
 - Semua model dan relationship sudah ada
 - Database sudah terisi data (seeder)
 
 ## TASKS:
 
-### 1. Main Layout (resources/views/layouts/app.blade.php)
-- HTML5 boilerplate, lang="id"
-- Vite CSS/JS includes
-- CSRF meta tag
-- @yield('title'), @yield('content')
-- @stack('styles'), @stack('scripts')
-- Include <x-navbar /> dan <x-footer />
+### 1. Root view & layout React (`resources/views/app.blade.php` + `resources/js/Layouts/AppLayout.jsx`)
+- Root view `app.blade.php`: HTML5 boilerplate lang="id", `@viteReactRefresh`, `@vite([...])`, `@inertiaHead`, `@inertia`
+- `AppLayout.jsx`: komponen layout React (header + konten + footer), dipakai oleh halaman publik
 - Modern, clean design — terinspirasi dari Udemy
 
-### 2. Navbar Component (resources/views/components/navbar.blade.php)
+### 2. Navbar Component (`resources/js/Components/AppHeader.jsx`)
 - Logo "BelajarKUY" di kiri
-- Menu: Beranda, Kategori (dropdown), Kursus
+- Menu: Beranda, Kategori (dropdown via `@headlessui/react`), Kursus
 - Search bar di tengah
-- Kanan: Cart icon (dengan badge count), Wishlist icon
-- Jika guest: tombol "Masuk" dan "Daftar"
-- Jika auth: dropdown user (nama, foto, Dashboard, Profile, Logout)
-- Responsive (hamburger menu di mobile)
-- **Search bar dengan live search** (Alpine.js + Meilisearch API — lihat `07_extras/MODERN_TECH_STACK_RECOMMENDATIONS.md` section 4)
+- Kanan: Cart icon (dengan badge count), Wishlist icon (`lucide-react`)
+- Jika guest: tombol "Masuk" dan "Daftar" (`<Link>`)
+- Jika auth: dropdown user (nama, foto, Dashboard, Profile, Logout) — dari shared prop `auth.user`
+- Responsive (hamburger menu di mobile, state React)
+- **Search bar dengan live search** (React state + Meilisearch API)
 
-### 3. Footer Component (resources/views/components/footer.blade.php)
+### 3. Footer Component (`resources/js/Components/AppFooter.jsx`)
 - 4 kolom: About, Links, Kategori Populer, Kontak
 - Social media icons
 - Copyright text
-- Data dari SiteInfo model
+- Data dari props (SiteInfo)
 
-### 4. Course Card Component (resources/views/components/course-card.blade.php)
-- Props: $course
+### 4. Course Card Component (`resources/js/Components/CourseCard.jsx`)
+- Props: `course`
 - Thumbnail image
 - Category badge
 - Title (truncated)
@@ -60,7 +58,7 @@ Kamu adalah senior Laravel + TailwindCSS developer. Bangun halaman-halaman front
 - Bestseller badge (jika applicable)
 - Hover effect (shadow + scale)
 
-### 5. Landing Page (resources/views/frontend/home.blade.php)
+### 5. Landing Page (`resources/js/Pages/Home.jsx`)
 Section 1: Hero Slider (dari tabel sliders)
 Section 2: Kategori Populer (grid 4x2 cards)
 Section 3: Kursus Unggulan (carousel/grid course cards, featured=true)
@@ -68,11 +66,11 @@ Section 4: Kursus Best Seller (carousel/grid, bestseller=true)
 Section 5: Mengapa BelajarKUY? (info boxes)
 Section 6: Partner Kami (logo carousel)
 
-### 6. Course Detail Page (resources/views/frontend/course-detail.blade.php)
+### 6. Course Detail Page (`resources/js/Pages/Courses/Show.jsx`)
 - Hero section: thumbnail, title, description, rating, students count, instructor
 - Sidebar: price, buy button, add to cart, add to wishlist
 - Tabs: Deskripsi, Kurikulum (sections + lectures), Review
-- Kurikulum: accordion sections → list lectures
+- Kurikulum: accordion sections → list lectures (`@headlessui/react` Disclosure)
 - Review: list reviews + form (jika eligible)
 - Related courses section
 
@@ -89,7 +87,8 @@ public function index()
     $infoBoxes = InfoBox::orderBy('order')->get();
     $partners = Partner::where('status', true)->orderBy('order')->get();
 
-    return view('frontend.home', compact(
+    // Logika backend tidak berubah; hanya respons presentasi → Inertia::render
+    return Inertia::render('Home', compact(
         'sliders', 'categories', 'featuredCourses',
         'bestsellerCourses', 'infoBoxes', 'partners'
     ));
@@ -107,20 +106,21 @@ public function index()
 
 ## CONSTRAINT:
 - HANYA TailwindCSS (jangan tambah CSS custom kecuali sangat perlu)
-- Alpine.js untuk dropdown, accordion, slider
+- React state + `@headlessui/react` untuk dropdown, accordion, slider (BUKAN Alpine.js)
 - Text UI dalam Bahasa Indonesia
-- Gunakan @extends('layouts.app'), @section('content')
-- Gunakan <x-component /> syntax untuk reusable components
+- Halaman = komponen React di `resources/js/Pages`; controller me-render `Inertia::render('Nama/Halaman', $props)`
+- Navigasi antar halaman pakai `<Link>` dari `@inertiajs/react` (bukan `<a href>` biasa)
+- Komponen reusable di `resources/js/Components` (`<CourseCard course={...} />`)
 - Semua gambar dari database (URL Cloudinary), jangan hardcode
 - Video kursus embed dari YouTube (URL di `course_lectures.url`)
-- Gunakan live search component di navbar (Alpine.js + Meilisearch API — lihat `07_extras/`)
+- Live search di navbar (React state + Meilisearch API)
 
 ## OUTPUT:
-- Layout file
-- Semua component files
-- Home page view
-- Course detail page view
-- HomeController
-- CourseDetailController
-- Route additions
+- Root view `app.blade.php` + entry `resources/js/app.jsx`
+- Layout & component files React (`resources/js/Components/*`, `resources/js/Layouts/*`)
+- Home page (`Pages/Home.jsx`)
+- Course detail page (`Pages/Courses/Show.jsx`)
+- HomeController (me-render `Inertia::render`)
+- CourseDetailController (me-render `Inertia::render`)
+- Route additions (jika perlu)
 ```

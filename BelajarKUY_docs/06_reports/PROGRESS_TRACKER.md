@@ -4,112 +4,97 @@
 
 ---
 
-> **Update terakhir:** 19 Mei 2026 — 22:21 WIB oleh Antigravity (AI Agent)
+> **Update terakhir:** 1 Juni 2026 — oleh Claude (AI Agent) — sinkronisasi tracker terhadap kondisi kode nyata
+>
+> ⚠️ **Catatan:** Entri 19 Mei 2026 (overall 30%) sudah usang. Tabel di bawah disusun ulang dari inspeksi langsung `app/Http/Controllers`, `resources/views`, `resources/js`, dan `routes/web.php`. **Persentase = estimasi** berdasarkan keberadaan controller/view/route nyata.
 
 ---
 
 ## Summary
 
+> Stack saat ini: lapisan presentasi **masih Blade**; scaffolding React+Inertia (ADR-008) terpasang tetapi **migrasi belum dimulai di kode** (`resources/js` hanya `app.js`+`bootstrap.js`, belum ada `Pages/`/`Components/`).
+
 | Modul | Progress | Status |
 |-------|----------|--------|
-| Project Setup | 100% | 🟢 Selesai |
-| Database (Migrations + Models) | 100% | 🟢 Selesai |
-| Auth System | 100% | 🟢 Selesai |
-| Landing Page | 0% | 🔴 Belum |
-| Category CRUD | 0% | 🔴 Belum |
-| Course CRUD (Instructor) | 0% | 🔴 Belum |
-| Cart & Wishlist | 0% | 🔴 Belum |
-| Payment (Midtrans) | 0% | 🔴 Belum |
-| Student Dashboard | 0% | 🔴 Belum |
-| Admin Panel | 0% | 🔴 Belum |
-| Review & Rating | 0% | 🔴 Belum |
-| Coupon System | 0% | 🔴 Belum |
-| Site Settings | 0% | 🔴 Belum |
-| **OVERALL** | **30%** | **🟡 On Progress** |
+| Project Setup (Laravel `^13.7` + React/Inertia scaffolding) | 100% | 🟢 Selesai |
+| Database (Migrations + Models + Seeders) | 100% | 🟢 Selesai |
+| Auth System (Breeze + Role + Google) | 100% | 🟢 Selesai |
+| Landing Page (Blade) | 90% | 🟢 Hampir selesai (route detail masih placeholder) |
+| Category & SubCategory CRUD (admin) | 100% | 🟢 Selesai |
+| Admin Panel (CRUD lengkap, Blade) | 90% | 🟢 Hampir selesai |
+| Site Settings (admin) | 100% | 🟢 Selesai |
+| Student Panel (dashboard/my-courses/wishlist/profile/setting, Blade) | 85% | 🟢 Hampir selesai |
+| Review & Rating | 50% | 🟡 Moderasi admin ✅, submit review siswa ❌ |
+| Payment (Midtrans) | 25% | 🟡 Service + CheckoutController ada; view placeholder, callback ❌ |
+| Cart & Wishlist | 15% | 🔴 Tampilan wishlist siswa ada; cart & add-to-wishlist ❌ |
+| Notifications (F14) | 10% | 🔴 Hanya `WelcomeMail`; event/broadcast/mail lain ❌ |
+| Course CRUD (Instructor) | 0% | 🔴 Belum (hanya DashboardController) |
+| Coupon System | 0% | 🔴 Belum (hanya model) |
+| Course Player (F13) | 0% | 🔴 Belum |
+| **Migrasi Frontend React + Inertia (ADR-008)** | 0% | 🔴 Belum dimulai di kode |
+| **OVERALL** | **~55%** | **🟡 On Progress** |
 
 ---
 
 ## 🟢 SELESAI
 
-- Init Laravel 12 project
-- Setup TailwindCSS + Vite
-- Semua 19 database migrations (Schema v2) — termasuk enrollments & lecture_completions baru
-- ERD HTML interaktif di BelajarKUY_docs/07_extras/ERD_BelajarKUY.html
-- Semua 19 Eloquent models dengan relationships, scopes, casts, accessors (verified 19/19 pass)
-- Semua 19 factories + 5 seeders orchestrated (verified `migrate:fresh --seed` end-to-end PASS — 17 users, 15 courses, 360 lectures, 13 enrollments, 157 completions)
+**Fondasi (Yosua):**
+- Init Laravel `^13.7` + setup TailwindCSS + Vite (scaffolding React+Inertia terpasang: `HandleInertiaRequests.php`, `resources/views/app.blade.php`)
+- 19 database migrations (Schema v2) + ERD HTML + 19 Eloquent models (verified 19/19)
+- 19 factories + 5 seeders (verified `migrate:fresh --seed` end-to-end)
+- `MidtransService.php` & `CloudinaryService.php` (stub layanan)
+
+**Auth (Albariqi):**
+- Breeze terinstall + scaffolded; `RoleMiddleware` (alias `role`); Google OAuth; redirect per role; role selection di register; halaman `/admin/login` terpisah
+
+**Admin Panel — Blade (Quinsha):**
+- Controller + view CRUD: Category, SubCategory, Course (index/show + update-status), Instructor (view-only), Order, User, Slider, InfoBox, Partner, Review (moderasi), SiteSetting/Settings — `resources/views/admin/*`
+
+**Frontend & Student — Blade (Vascha):**
+- `HomeController` + `frontend/home.blade.php`, komponen `navbar`/`footer`/`course-card`, layout `app`/`admin`/`guest`
+- Student panel views: dashboard, my_courses, wishlist, profile, setting
 
 ---
 
 ## 🔄 SEDANG DIKERJAKAN
 
-- Phase 2: Core Features — Landing page, layout utama, komponen
+- Penyelarasan dokumentasi ke React+Inertia (ADR-008) — **selesai** (lihat `04_plans/DOCS_UPDATE_PLAN_REACT_INERTIA.md`)
+- Belum ada fitur kode aktif yang sedang dikerjakan — menunggu kickoff Fase 1 migrasi React/Inertia
 
 ---
 
 ## 🔴 BELUM DIKERJAKAN
 
-### Phase 1: Foundation
-- [x] Init Laravel 12 project
-- [x] Setup TailwindCSS + Vite
-- [x] Create all database migrations (19 tables — Schema v2)
-- [x] ERD HTML di BelajarKUY_docs
-- [x] Create all Eloquent models (19 models dengan relationships + scopes)
-- [x] Create database seeders & factories (19 factories + 5 seeders, verified end-to-end)
-- [x] Install & configure Breeze (sudah terinstall + scaffolded)
-- [x] Implement RoleMiddleware (alias 'role', registered di bootstrap/app.php)
-- [x] Google OAuth setup
-- [x] Post-login redirect logic (match role → dashboard)
-- [x] Post-register redirect logic (match role → dashboard)
-- [x] Role selection di form register (Student / Instructor)
-- [x] Separate login pages per role (`/admin/login` dengan tampilan khusus)
-- [ ] Course CRUD (instructor) — Phase P5
+### Commerce (Ray) — gap terbesar
+- [ ] Cart: controller + add/remove + halaman (route `cart.add` masih placeholder `back()`)
+- [ ] Wishlist add/remove publik (route `wishlist.add` placeholder)
+- [ ] Midtrans: Snap token nyata, payment callback/notification handler, pembuatan Order setelah bayar (checkout/payment masih render view statis)
+- [ ] Coupon CRUD + apply di checkout (baru ada model `Coupon`)
 
-### Phase 2: Core Features
-- [ ] Main layout (app.blade.php)
-- [ ] Navbar component
-- [ ] Footer component
-- [ ] Course card component
-- [ ] Category card component
-- [ ] Landing page (full)
-- [ ] Course detail page
-- [ ] Category CRUD (admin)
-- [ ] SubCategory CRUD (admin)
-- [ ] Course CRUD (instructor)
+### Course & Instructor (Albariqi)
+- [ ] Course CRUD instruktur (controller + form)
 - [ ] Course Section & Lecture CRUD
+- [ ] Submit-for-review flow (draft → pending_review)
+- [ ] Course Player (F13) — controller, halaman, lecture completion tracking
+- [ ] Email: CourseApproved / CourseRejected / NewSale (baru `WelcomeMail`)
 
-### Phase 3: Commerce
-- [ ] Wishlist system (AJAX)
-- [ ] Cart system (AJAX)
-- [ ] Cart page UI
-- [ ] Checkout page
-- [ ] Midtrans Snap integration
-- [ ] Payment callback handler
-- [ ] Order creation after payment
-- [ ] Coupon system
+### Frontend (Vascha)
+- [ ] Course detail page nyata (route `course.detail` masih placeholder render view statis)
+- [ ] Live search (Meilisearch) + listener notifikasi (Reverb/Echo)
+- [ ] Course Player frontend
 
-### Phase 4: Panels
-- [ ] Student dashboard
-- [ ] Student enrolled courses
-- [ ] Student profile & settings
-- [ ] Admin dashboard (stats)
-- [ ] Admin course management
-- [ ] Admin instructor management
-- [ ] Admin order management
-- [ ] Admin user management
-- [ ] Admin slider/info/partner CRUD
-- [ ] Admin settings pages
-- [ ] Instructor dashboard
-- [ ] Instructor profile & settings
+### Review & Notifications
+- [ ] Submit review oleh siswa (route `course.review.store` placeholder; moderasi admin sudah ada)
+- [ ] Event `PaymentSuccessful` + broadcasting Reverb (F14)
 
-### Phase 5: Polish
-- [ ] Review & rating system
-- [ ] Admin review management
-- [ ] Site settings CRUD
-- [ ] Responsive design check
-- [ ] Bug fixing
-- [ ] Performance optimization
-- [ ] Final testing
-- [ ] Documentation
+### Migrasi Frontend React + Inertia (ADR-008) — LINTAS TIM, belum mulai di kode
+- [ ] **Fase 1 — Fondasi & Publik:** `app.jsx` entry, port `Welcome`/`Home`/`Courses/Show` ke `Pages/`, komponen `AppHeader`/`CourseCard`/`FlashToast`
+- [ ] **Fase 2 — Auth & Student:** halaman `Pages/Auth/*` (Breeze React) + `Pages/Student/*`
+- [ ] **Fase 3 — Instructor & Admin:** `Pages/Instructor/*` + `Pages/Admin/*`; deaktivasi view Blade lama
+- [ ] (Detail fase, exit criteria, rollback: `04_plans/MASTER_PLAN_REACT_INERTIA.md` & `MASTER_ROADMAP.md` Phase 6)
+
+### Polish (semua)
+- [ ] Responsive check, bug fixing, performance, final testing, dokumentasi akhir
 
 ---
 
@@ -201,11 +186,22 @@
 - Next: Phase 2 — Landing page, layout utama, komponen (Navbar, Footer, Course Card)
 - Report: `06_reports/REPORT_2026-05-19_PHASE1_COMPLETION.md`
 
+### Session 9 — 1 Juni 2026 (Claude) — Pivot React+Inertia + sinkronisasi tracker
+- Spec: `react-inertia-redesign` — dibuat D1–D5 (Master Plan, Benefits, Docs Update Plan, Screen Mapping, ADR-008) + ADR-002 di-supersede.
+- Diselaraskan 24 dokumen ke `Kode_Nyata`: Laravel `^12.0`→`^13.7`, Filament dihapus (tidak ada di `composer.json`), Tailwind v4→`tailwindcss ^3.1.0` (+`@tailwindcss/vite ^4.0.0`), frontend Blade→React+Inertia, paket `cloudinary-labs/cloudinary-laravel`→`cloudinary/cloudinary_php ^3.1`.
+- **Audit progres nyata vs tracker**: ditemukan tracker 19 Mei (30%) jauh tertinggal dari kode (admin CRUD, landing, student panel sudah dibangun di Blade). Tracker disusun ulang → estimasi overall **~55%**.
+- Temuan kunci: **migrasi React+Inertia belum dimulai di kode** (`resources/js` belum punya `Pages/`/`Components/`), meski dependensi & scaffolding terpasang.
+- Backend tidak diubah (0 diff); seluruh perubahan hanya berkas `.md` di `BelajarKUY_docs/`.
+- Next: kickoff Fase 1 migrasi (port halaman publik ke `resources/js/Pages`).
+
 ---
 
 ## ⚠️ Known Issues
 
-_(Belum ada known issues)_
+- **Frontend masih Blade**, padahal tech stack resmi sudah React+Inertia (ADR-008). Migrasi 3-fase belum dimulai di kode — ini pekerjaan terbesar yang tersisa.
+- **Cart, Wishlist (add), Coupon, Course Player belum ada controller**; route `cart.add`/`wishlist.add`/`course.review.store` masih placeholder (`back()->with('info', '... belum tersedia')`).
+- **Payment Midtrans** belum berfungsi end-to-end (checkout/payment masih render view statis; belum ada callback handler & pembuatan Order).
+- Course detail (`course.detail`) masih placeholder yang merender view statis tanpa data dinamis.
 
 ---
 
