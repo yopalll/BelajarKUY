@@ -105,10 +105,9 @@ Route::get('/auth/google-callback', [GoogleController::class, 'callback'])->name
 // Landing page & katalog kursus (Phase 2)
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-// Course detail page (Phase 2)
-Route::get('/courses/{slug}', function ($slug) {
-    return view('frontend.course-detail');
-})->name('course.detail');
+// Course detail page — Fase 1 migrasi React+Inertia (ADR-008)
+use App\Http\Controllers\Frontend\CourseDetailController;
+Route::get('/courses/{slug}', [CourseDetailController::class, 'show'])->name('course.detail');
 
 // Cart (Phase 3)
 Route::get('/cart', function () {
