@@ -82,7 +82,8 @@ BelajarKUY_docs/
 │   ├── MASTER_PLAN_REACT_INERTIA.md     🆕 Master plan migrasi Blade → React+Inertia
 │   ├── DOCS_UPDATE_PLAN_REACT_INERTIA.md 🆕 Rencana pembaruan seluruh dokumentasi
 │   ├── SCREEN_MAPPING_STITCH_REACT.md   🆕 Peta layar Stitch → halaman React
-│   └── MIGRATION_SCHEDULE_REACT_INERTIA.md 🆕 Jadwal & push per bagian (per anggota)
+│   ├── MIGRATION_SCHEDULE_REACT_INERTIA.md 🆕 Jadwal & push per bagian (per anggota)
+│   └── URUTAN_KERJA_TIM_REACT_INERTIA.md 🆕 Estafet langkah demi langkah (untuk diajarkan ke tim)
 │
 ├── 05_prompts/                          🤖 AI Prompt Templates
 │   ├── PROMPT_SETUP_PROJECT.md          Init Laravel ^13.7 + React/Inertia project
@@ -162,6 +163,7 @@ Lihat `06_reports/PROGRESS_TRACKER.md` untuk detail live.
 - [🏛️ ADR Index](./02_architecture/ADR/README.md) — Decision records
 - [🏛️ ADR-008](./02_architecture/ADR/ADR-008-frontend-react-inertia.md) — Adopsi React + Inertia (supersede ADR-002)
 - [🚀 Master Plan React+Inertia](./04_plans/MASTER_PLAN_REACT_INERTIA.md) — Migrasi frontend bertahap
+- [🧭 Urutan Kerja Tim](./04_plans/URUTAN_KERJA_TIM_REACT_INERTIA.md) — Estafet langkah demi langkah (siapa mulai dari mana)
 - [🚀 React+Inertia Benefits](./02_architecture/REACT_INERTIA_BENEFITS.md) — Justifikasi adopsi
 - [🗂️ Docs Update Plan](./04_plans/DOCS_UPDATE_PLAN_REACT_INERTIA.md) — Rencana pembaruan dokumentasi
 - [🖼️ Screen Mapping](./04_plans/SCREEN_MAPPING_STITCH_REACT.md) — Layar Stitch → halaman React
