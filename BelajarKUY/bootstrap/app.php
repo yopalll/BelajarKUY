@@ -21,6 +21,18 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // Semua HTTP error → React error pages via Inertia
+        $exceptions->respond(function (\Symfony\Component\HttpFoundation\Response $response, \Throwable $e, \Illuminate\Http\Request $request) {
+            $status  = $response->getStatusCode();
+            $handled = [403, 404, 419, 429, 500, 503];
+
+            if (in_array($status, $handled)) {
+                return \Inertia\Inertia::render("Errors/{$status}")
+                    ->toResponse($request)
+                    ->setStatusCode($status);
+            }
+
+            return $response;
+        });
     })
     ->create();
