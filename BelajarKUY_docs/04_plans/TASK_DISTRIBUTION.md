@@ -70,17 +70,18 @@ Lead:
 ### 3. Ray Nathan (Backend — Commerce)
 
 ```
-☐ Wishlist add/remove (AJAX controller)
-☐ Wishlist page UI
-☐ Cart system — add, remove, fetch (AJAX)
-☐ Cart page UI with pricing
-☐ Checkout page
-☐ Midtrans Snap integration (frontend JS)
-☐ Payment controller (create snap token)
-☐ Payment callback handler (notification URL)
-☐ Order creation after successful payment
-☐ Coupon CRUD (instructor)
-☐ Coupon apply logic at checkout
+✅ Wishlist add/remove — WishlistController@toggle (POST /wishlist/{course}), route wishlist.add — L3 Ray
+✅ Wishlist remove by ID — WishlistController@remove (DELETE /student/wishlist/{id}) — L3 Ray
+✅ Tombol wishlist & cart di CourseCard.jsx terhubung router.post Inertia (visual state inWishlist/inCart) — L3 Ray
+☐ Cart system — add, remove, fetch (CartController) — L4
+☐ Cart page UI — Pages/Cart/Index.jsx — L4
+☐ Checkout page — Pages/Checkout/Index.jsx — L9
+☐ Midtrans Snap integration (frontend JS) — L9
+☐ Payment controller (create snap token) — L9
+☐ Payment callback handler (notification URL) — L9
+☐ Order creation after successful payment — L9
+☐ Coupon CRUD (instructor) — L8
+☐ Coupon apply logic at checkout — L8
 ```
 
 ### 4. Vascha U (Frontend Lead)
@@ -144,6 +145,12 @@ Fase 1 — Fondasi & Publik (Vascha & Quinsha + Yosua)
 ✅ Komponen baru: AppFooter, Badge, EmptyState — L1 Vascha
 ✅ Setup i18n: react-i18next, id.json, en.json — L1 Vascha
 🔄 Fase 1 selesai untuk Vascha. Menunggu Albariqi L2 (Auth React) sebelum L5 Student panel.
+
+Fase 2 — Commerce (Ray)
+✅ Wishlist toggle & remove — WishlistController, route wishlist.add, CourseCard.jsx — L3 Ray
+☐ Cart system — CartController, Pages/Cart/Index.jsx — L4 Ray
+☐ Coupon CRUD & apply — CouponController — L8 Ray
+☐ Checkout + Midtrans Snap — CheckoutController (update), Pages/Checkout/Index.jsx — L9 Ray
 
 Fase 2 — Auth & Student (Albariqi + Vascha)
 ☐ Halaman auth React (Pages/Auth/*) via Breeze + Inertia — L2 Albariqi
@@ -227,4 +234,4 @@ docs: update progress tracker and task distribution session 7
 ---
 
 *Pembagian tugas ini bisa berubah sesuai progress. Update jika ada perubahan.*
-*Last updated: 1 Juni 2026 — Session 10 — Antigravity (AI Agent) untuk Vascha U — L1 Selesai*
+*Last updated: 2 Juni 2026 — Session 11 — Antigravity (AI Agent) untuk Ray Nathan — L3 Wishlist Selesai*

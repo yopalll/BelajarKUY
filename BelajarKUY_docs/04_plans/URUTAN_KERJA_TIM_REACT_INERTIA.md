@@ -44,7 +44,7 @@ Yang sudah jadi dan **jangan diubah** (ini pondasi bersama):
   + komponen dasar        (Login/Register)            (jalan mandiri)
         │                              │                              │
         ▼                              │                              ▼
-  L3 Ray: Wishlist  ◄── butuh CourseCard dari L1        L7 Albariqi: Section/Lecture
+  L3 Ray: Wishlist ✅ ◄── butuh CourseCard dari L1        L7 Albariqi: Section/Lecture
         │                                                              │
         ▼                                                              │
   L4 Ray: Cart                                                         │
@@ -108,13 +108,20 @@ Yang sudah jadi dan **jangan diubah** (ini pondasi bersama):
 
 ---
 
-### LANGKAH 3 — Ray · Wishlist (R1)
+### LANGKAH 3 — Ray · Wishlist (R1) ✅ SELESAI
 - **Apa:** add/remove wishlist (ganti placeholder route `wishlist.add`).
 - **Mulai setelah:** Langkah 1 (butuh `CourseCard` + tombol wishlist).
 - **File utama:** `WishlistController`, route wishlist, tombol di `CourseCard`.
 - **Selesai bila:** siswa bisa tambah/hapus wishlist, data tersimpan di tabel `wishlists`, halaman wishlist menampilkannya.
 - **Branch:** `feature/wishlist`.
 - **Kenapa duluan untuk Ray:** kecil → pemanasan pola "controller + aksi Inertia" sebelum Cart.
+- **Status implementasi (2 Jun 2026):**
+  - ✅ `app/Http/Controllers/Frontend/WishlistController.php` — toggle add/remove + remove by ID.
+  - ✅ `routes/web.php` — `wishlist.add` (POST `/wishlist/{course}`) → `WishlistController@toggle`; `student.wishlist.remove` (DELETE) → `WishlistController@remove`.
+  - ✅ `resources/js/Components/CourseCard.jsx` — tombol ❤️ dan 🛒 terhubung ke `router.post` Inertia; visual state `inWishlist` / `inCart`.
+  - ✅ `resources/js/Components/AppHeader.jsx` — link wishlist → `/student/wishlist`; link cart → `/cart`.
+  - ✅ `npm run build` PASS.
+  - ⚠️ Flash message muncul via `FlashToast` (sudah ada di AppLayout); halaman Blade student.wishlist tetap jalan (koeksistensi OK).
 
 ### LANGKAH 4 — Ray · Cart (R2)
 - **Apa:** add/remove cart + halaman `Pages/Cart/Index` (ganti placeholder `cart.*`).

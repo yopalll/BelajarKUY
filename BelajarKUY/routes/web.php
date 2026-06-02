@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\AdminPartnerController;
 use App\Http\Controllers\Admin\AdminSiteSettingController;
 use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\WishlistController;
 use Inertia\Inertia;
 
 // --- Public Routes ---
@@ -86,7 +87,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('student')->name('s
     Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
     Route::get('/my-courses', [StudentDashboardController::class, 'myCourses'])->name('my-courses');
     Route::get('/wishlist', [StudentDashboardController::class, 'wishlist'])->name('wishlist');
-    Route::delete('/wishlist/{id}', [StudentDashboardController::class, 'wishlistRemove'])->name('wishlist.remove');
+    Route::delete('/wishlist/{id}', [WishlistController::class, 'remove'])->name('wishlist.remove');
     Route::get('/profile', [StudentDashboardController::class, 'profile'])->name('profile');
     Route::post('/profile', [StudentDashboardController::class, 'profileUpdate'])->name('profile.update');
     Route::get('/setting', [StudentDashboardController::class, 'setting'])->name('setting');
@@ -141,10 +142,10 @@ Route::post('/courses/{course}/reviews', function () {
     return back()->with('info', 'Fitur review belum tersedia.');
 })->middleware('auth')->name('course.review.store');
 
-// Wishlist toggle (Phase 3)
-Route::post('/wishlist/{course}', function () {
-    return back()->with('info', 'Fitur wishlist belum tersedia.');
-})->middleware('auth')->name('wishlist.add');
+// Wishlist toggle (Phase 3 → L3 Ray: IMPLEMENTED)
+Route::post('/wishlist/{course}', [WishlistController::class, 'toggle'])
+    ->middleware('auth')
+    ->name('wishlist.add');
 
 // Admin review actions (alias untuk update-status)
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {

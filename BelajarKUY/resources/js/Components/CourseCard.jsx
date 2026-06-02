@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { Star, ShoppingCart, Heart } from 'lucide-react';
 
 const rupiah = (n) => 'Rp ' + Number(n ?? 0).toLocaleString('id-ID');
@@ -6,10 +6,25 @@ const rupiah = (n) => 'Rp ' + Number(n ?? 0).toLocaleString('id-ID');
 // Komponen reusable (≥2 layar). Field mengikuti model Course pada Kode_Nyata:
 // title, slug, thumbnail, category.name, instructor.{name,photo},
 // bestseller, featured, price, discount, discounted_price, average_rating, reviews.
-export default function CourseCard({ course }) {
+// Props opsional: inWishlist (bool), inCart (bool) — untuk state awal dari server.
+export default function CourseCard({ course, inWishlist = false, inCart = false }) {
     const rating = Number(course.average_rating ?? 0);
     const reviewCount = course.reviews?.length ?? course.reviews_count ?? 0;
     const hasDiscount = (course.discount ?? 0) > 0;
+
+    const handleWishlist = (e) => {
+        e.preventDefault();
+        router.post(`/wishlist/${course.id}`, {}, {
+            preserveScroll: true,
+        });
+    };
+
+    const handleCart = (e) => {
+        e.preventDefault();
+        router.post(`/cart/${course.id}`, {}, {
+            preserveScroll: true,
+        });
+    };
 
     return (
         <div className="group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col h-full relative">
@@ -22,8 +37,17 @@ export default function CourseCard({ course }) {
                 )}
             </div>
 
-            <button className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/90 border border-gray-100 flex items-center justify-center text-gray-500 hover:text-red-500" aria-label="Wishlist">
-                <Heart className="w-5 h-5" />
+            <button
+                onClick={handleWishlist}
+                className={`absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/90 border flex items-center justify-center transition-all duration-200 ${
+                    inWishlist
+                        ? 'border-red-300 text-red-500 bg-red-50'
+                        : 'border-gray-100 text-gray-500 hover:text-red-500'
+                }`}
+                aria-label={inWishlist ? 'Hapus dari Wishlist' : 'Tambah ke Wishlist'}
+                title={inWishlist ? 'Hapus dari Wishlist' : 'Tambah ke Wishlist'}
+            >
+                <Heart className={`w-5 h-5 ${inWishlist ? 'fill-current' : ''}`} />
             </button>
 
             <Link href={`/courses/${course.slug}`} className="block overflow-hidden bg-gray-50 aspect-video">
@@ -74,7 +98,16 @@ export default function CourseCard({ course }) {
                             <span className="text-lg font-extrabold text-gray-900">{rupiah(course.price)}</span>
                         )}
                     </div>
-                    <button className="p-2.5 rounded-2xl bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all" aria-label="Tambah ke Keranjang">
+                    <button
+                        onClick={handleCart}
+                        className={`p-2.5 rounded-2xl transition-all ${
+                            inCart
+                                ? 'bg-indigo-600 text-white'
+                                : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white'
+                        }`}
+                        aria-label={inCart ? 'Sudah di Keranjang' : 'Tambah ke Keranjang'}
+                        title={inCart ? 'Sudah di Keranjang' : 'Tambah ke Keranjang'}
+                    >
                         <ShoppingCart className="w-5 h-5" />
                     </button>
                 </div>
