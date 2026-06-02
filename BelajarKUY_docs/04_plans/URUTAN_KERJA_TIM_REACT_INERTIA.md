@@ -44,10 +44,10 @@ Yang sudah jadi dan **jangan diubah** (ini pondasi bersama):
   + komponen dasar        (Login/Register)            (jalan mandiri)
         │                              │                              │
         ▼                              │                              ▼
-  L3 Ray: Wishlist  ◄── butuh CourseCard dari L1        L7 Albariqi: Section/Lecture
+  L3 Ray ✅ Wishlist ◄── butuh CourseCard dari L1        L7 Albariqi: Section/Lecture
         │                                                              │
         ▼                                                              │
-  L4 Ray: Cart                                                         │
+  L4 Ray ✅ Cart                                                       │
         │                                                              │
         ▼                              ▼                               │
   L8 Ray: Coupon              L5 Vascha: Student panel                 │
