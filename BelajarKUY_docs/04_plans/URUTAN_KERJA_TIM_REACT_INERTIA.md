@@ -50,7 +50,8 @@ Yang sudah jadi dan **jangan diubah** (ini pondasi bersama):
   L4 Ray ✅ Cart                                                       │
         │                                                              │
         ▼                              ▼                               │
-  L8 Ray: Coupon              L5 Vascha ✅ Student panel               │
+  L8 Ray ✅ Coupon                                                     │
+                              L5 Vascha ✅ Student panel               │
         │                     (butuh L1 + L2)                          │
         ▼                                                              │
   ┌──────────────────────────────────────────────┐                    │
@@ -188,12 +189,20 @@ Yang sudah jadi dan **jangan diubah** (ini pondasi bersama):
 - **Selesai bila:** instruktur bisa susun kurikulum & ajukan review; status kursus berubah benar.
 - **Branch:** `feature/instructor-curriculum`.
 
-### LANGKAH 8 — Ray · Coupon (R3)
+### LANGKAH 8 — Ray · Coupon (R3) ✅ SELESAI (2026-06-04)
 - **Apa:** Coupon CRUD (instruktur) + terapkan kupon di checkout.
 - **Mulai setelah:** Langkah 4 (cart sudah ada).
 - **File utama:** `CouponController`, integrasi diskon di cart/checkout.
-- **Selesai bila:** kupon valid mengurangi total; kupon invalid/kedaluwarsa ditolak.
-- **Branch:** `feature/coupon`.
+- **Selesai bila:** kupon valid mengurangi total; kupon invalid/kedaluwarsa ditolak. ✅
+- **Branch:** `feature/coupon`. ✅
+- **Hasil implementasi:**
+  - `Backend/Instructor/CouponController.php` — CRUD kupon instruktur (index, store, update, destroy, toggle status on/off, generate-code)
+  - `Frontend/CouponController.php` — apply kupon di cart (POST /coupon/apply), validasi 4-layer (status, expired, quota, course scope), pesan error spesifik
+  - `Http/Requests/Instructor/StoreCouponRequest.php` — validasi form kupon (unique code, date, 1-100%, dll)
+  - `Pages/Instructor/Coupons/Index.jsx` — halaman React CRUD kupon: table data, modal create/edit, toggle aktif/nonaktif, hapus, stats card (total/aktif/expired), empty state
+  - `Pages/Cart/Index.jsx` — `CouponPanel` aktif (ganti placeholder): input kode → POST /coupon/apply → diskon tampil real-time, kupon bisa dibatalkan
+  - `routes/web.php` — route instructor coupon CRUD (`/instructor/coupons`, `toggle`, `generate-code`), `/coupon/apply`, `/coupon/remove`
+  - `npm run build` PASS ✅ (2388 modules)
 
 ### LANGKAH 9 — Ray · Checkout + Midtrans + Enrollment (R4) ⭐ TONGGAK KUNCI
 - **Apa:** checkout end-to-end: buat Snap token asli, halaman pembayaran, **callback/notification handler** Midtrans, buat `Order` + `Payment`, dan **auto-enroll** (isi tabel `Enrollment`) saat status settlement.
@@ -282,7 +291,7 @@ Yang **tidak boleh** ditukar urutannya: L1→L3 (CourseCard), L9→L10/L11 (Enro
 | **Yosua** (PM) | L0 ✅ (selesai) | review tiap PR (L2-jalan terus) | L16 matikan Blade, L17 deploy |
 | **Vascha** | **L1** ✅ (selesai) | **L5** ✅ student panel selesai | komponen jadi acuan tim |
 | **Albariqi** | **L2** ✅ auth & error **&** L6 instructor CRUD | L7 kurikulum → L10 player → L11 email | L10 butuh Enrollment Ray |
-| **Ray** | **L3** ✅ wishlist · **L4** ✅ cart | L8 coupon → **L9** payment | **L9** membuka pekerjaan Albariqi |
+| **Ray** | **L3** ✅ wishlist · **L4** ✅ cart · **L8** ✅ coupon | **L9** payment | **L9** membuka pekerjaan Albariqi |
 | **Quinsha** | **L12** admin shell | L13 → L14 admin pages | L15 arsip Blade admin |
 
 Cara ngajarinnya singkat: *"Vascha & Albariqi start duluan dari fondasi. Vascha bikin halaman publik + komponen; begitu CourseCard jadi, Ray mulai wishlist → cart → kupon → bayar. Pas Ray selesai bayar (Enrollment jadi), Albariqi lanjut bikin Course Player + email. Quinsha garap admin paralel. Terakhir Yosua matiin Blade lama, lalu kita semua polish & deploy."*

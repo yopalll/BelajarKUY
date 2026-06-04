@@ -4,7 +4,7 @@
 
 ---
 
-> **Update terakhir:** 4 Juni 2026 oleh Vascha U (Antigravity AI Agent) — Session 13 (L5 Student Panel React selesai)
+> **Update terakhir:** 4 Juni 2026 — 00:30 WIB oleh Ray Nathan — Session 13 (L8 Coupon React+Inertia selesai)
 >
 > ⚠️ **Catatan:** Entri 19 Mei 2026 (overall 30%) sudah usang. Tabel di bawah disusun ulang dari inspeksi langsung `app/Http/Controllers`, `resources/views`, `resources/js`, dan `routes/web.php`. **Persentase = estimasi** berdasarkan keberadaan controller/view/route nyata.
 
@@ -26,12 +26,14 @@
 | Student Panel React (Pages/Student/*) | 100% | 🟢 Selesai — L5 Vascha (Dashboard, MyCourses, Wishlist, Profile, Notifications) |
 | Review & Rating | 50% | 🟡 Moderasi admin ✅, submit review siswa ❌ |
 | Payment (Midtrans) | 25% | 🟡 Service + CheckoutController ada; view placeholder, callback ❌ |
-| Cart & Wishlist | 80% | 🟢 Wishlist ✅, Cart halaman+add+remove+move-to-wishlist ✅; Coupon ❌ |
+| Cart & Wishlist | 100% | 🟢 Wishlist ✅, Cart ✅, Coupon apply di Cart ✅ |
 | Notifications (F14) | 10% | 🔴 Hanya `WelcomeMail`; event/broadcast/mail lain ❌ |
-| Course CRUD (Instructor) | 0% | 🔴 Belum (hanya DashboardController) |
-| Coupon System | 0% | 🔴 Belum (hanya model) |
+| Course CRUD (Instructor) | 85% | 🟡 L6 Albariqi index+CRUD selesai; L7 kurikulum belum |
+| Coupon System | 80% | 🟡 Instructor CRUD ✅, apply di cart ✅; increment used_count saat settlement dikerjakan di L9 |
 | Course Player (F13) | 0% | 🔴 Belum |
 | **Migrasi Frontend React + Inertia (ADR-008) — Fase 1** | **100%** | **🟢 Fase 1 SELESAI (Vascha L1)** |
+| **Migrasi Frontend React + Inertia (ADR-008) — Fase 2+3** | **30%** | **🟡 L2 Auth ✅ + L3 Wishlist ✅ + L4 Cart ✅ + L6 Instructor CRUD ✅ + L8 Coupon ✅ — menunggu L5 Vascha + L7 Albariqi** |
+| **OVERALL** | **~70%** | **🟡 On Progress** |
 | **Migrasi Frontend React + Inertia (ADR-008) — Fase 2+3** | **55%** | **🟡 L2 Auth ✅ + L3 Wishlist ✅ + L4 Cart ✅ + L5 Student Panel ✅ — menunggu L8 Coupon, L9 Checkout** |
 | **OVERALL** | **~72%** | **🟡 On Progress** |
 
@@ -87,7 +89,7 @@
 - [x] Wishlist toggle add/remove ✅ (`WishlistController` — `feature/wishlist`)
 - [x] Halaman wishlist siswa React (`Pages/Student/Wishlist.jsx`) ✅
 - [x] Cart: `CartController` + `Pages/Cart/Index.jsx` ✅ (`feature/cart`)
-- [ ] Coupon CRUD + apply di checkout (baru ada model `Coupon`)
+- [x] Coupon CRUD instructor + apply di Cart ✅ (`InstructorCouponController`, `FrontendCouponController`, `Pages/Instructor/Coupons/Index.jsx`, `CouponPanel` di Cart) — `feature/coupon`
 - [ ] Midtrans: Snap token nyata, payment callback/notification handler, pembuatan Order setelah bayar
 
 ### Course & Instructor (Albariqi)
@@ -279,9 +281,28 @@
   - [x] Hapus item & pindah ke wishlist berfungsi
   - [x] Skema DB tidak berubah
   - [x] `npm run build` sukses
-- Next: L8 Ray (Coupon) — setelah L5 Vascha student panel
+- Next: L8 Ray (Coupon) ✅ selesai di Session 13
 - Report: `06_reports/REPORT_2026-06-02_L4_RAY_CART.md`
 
+### Session 13 — 4 Juni 2026 (Antigravity) — Ray Nathan — L8 Coupon React+Inertia
+- Created: `Backend/Instructor/CouponController.php` — CRUD kupon instruktur (index, store, update, destroy, toggle status, generate-code) via Inertia
+- Created: `Frontend/CouponController.php` — apply kupon di cart (POST /coupon/apply), validasi 4-layer dengan pesan error spesifik, + remove endpoint
+- Created: `Http/Requests/Instructor/StoreCouponRequest.php` — validasi buat/edit kupon (unique code, date after_or_equal:today, dll)
+- Created: `Pages/Instructor/Coupons/Index.jsx` — halaman React CRUD kupon: table + modal form create/edit, toggle status, hapus, stats card, empty state
+- Updated: `Pages/Cart/Index.jsx` — CouponPanel aktif (ganti placeholder); input kode → POST /coupon/apply → diskon tampil real-time di OrderSummary; kupon bisa dibatalkan (X button)
+- Updated: `routes/web.php` — route instructor coupon CRUD (`/instructor/coupons`, `/toggle`), `/coupon/apply`, `/coupon/remove`
+- Branch: `feature/coupon`
+- Build: `npm run build` ✅ — 2388 modules
+- Commit: `80e407a` feat(coupon): L8 Ray - Instructor CouponController CRUD + CouponPanel di Cart (Inertia)
+- Status: **L8 Ray Coupon SELESAI 100%** ✅
+- DoD:
+  - [x] Instructor bisa create/edit/hapus/toggle kupon via halaman React ✅
+  - [x] Kode kupon bisa di-apply di halaman cart (diskon tampil real-time) ✅
+  - [x] Validasi 4-layer: status, valid_until, max_usage, course_id scope ✅
+  - [x] Skema DB tidak berubah ✅
+  - [x] `npm run build` sukses ✅
+- Next: L9 Ray (Checkout + Midtrans + Enrollment) — `feature/payment-midtrans`
+- Report: `06_reports/REPORT_2026-06-04_L8_RAY_COUPON.md`
 ### Session 13 — 4 Juni 2026 (Antigravity) — Vascha U — L5 Student Panel React+Inertia
 - Created: `Layouts/StudentLayout.jsx` — shared sidebar layout (desktop + mobile burger + bottom nav bar), flash messages
 - Created: `Pages/Student/Dashboard.jsx` — stat cards (3), lanjutkan belajar, SVG circular progress, empty state CTA
@@ -309,6 +330,9 @@
 
 ## ⚠️ Known Issues
 
+- **Frontend masih sebagian Blade** untuk student panel (menunggu L5 Vascha) dan admin panel (L12-L14 Quinsha).
+- **Checkout/Payment Midtrans** belum end-to-end (view placeholder; belum ada callback handler & pembuatan Order) — dikerjakan di L9 Ray.
+- **`used_count` increment kupon** dikerjakan di L9 saat payment settlement.
 - **Frontend admin/instructor panel** masih Blade, menunggu L12 Quinsha dan L7 Albariqi.
 - **Checkout/Payment Midtrans** belum end-to-end (view placeholder; belum ada callback handler & pembuatan Order).
 - **Kupon belum ada** — placeholder kode kupon di `Cart/Index.jsx` (diaktifkan di L8).

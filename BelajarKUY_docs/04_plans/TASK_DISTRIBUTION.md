@@ -80,8 +80,8 @@ Lead:
 ☐ Payment controller (create snap token)
 ☐ Payment callback handler (notification URL)
 ☐ Order creation after successful payment
-☐ Coupon CRUD (instructor)
-☐ Coupon apply logic at checkout
+✅ Coupon CRUD (instructor) — Pages/Instructor/Coupons/Index.jsx + InstructorCouponController — L8
+✅ Coupon apply logic at checkout — CouponPanel aktif di Cart + FrontendCouponController — L8
 ```
 
 ### 4. Vascha U (Frontend Lead)
@@ -228,4 +228,5 @@ docs: update progress tracker and task distribution session 7
 ---
 
 *Pembagian tugas ini bisa berubah sesuai progress. Update jika ada perubahan.*
+*Last updated: 4 Juni 2026 — 00:30 WIB — Session 13 — Antigravity (AI Agent) untuk Ray Nathan — L8 Coupon Selesai*
 *Last updated: 4 Juni 2026 — Session 13 — Antigravity (AI Agent) untuk Vascha U — L5 Student Panel React Selesai*
