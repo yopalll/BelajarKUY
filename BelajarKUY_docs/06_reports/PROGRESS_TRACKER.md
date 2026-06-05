@@ -4,7 +4,7 @@
 
 ---
 
-> **Update terakhir:** 5 Juni 2026 — 22:25 WIB oleh Albariqi (co-author: Yosua Valentino) — Session 14 (L9 Checkout, L10 Player, L12-14 Admin Panel React selesai)
+> **Update terakhir:** 5 Juni 2026 — 22:45 WIB oleh Yosua Valentino — Session 15 (L11 Email Notifications merged, conflict resolved, docs updated)
 >
 > ⚠️ **Catatan:** Entri 19 Mei 2026 (overall 30%) sudah usang. Tabel di bawah disusun ulang dari inspeksi langsung `app/Http/Controllers`, `resources/views`, `resources/js`, dan `routes/web.php`. **Persentase = estimasi** berdasarkan keberadaan controller/view/route nyata.
 
@@ -27,14 +27,14 @@
 | Review & Rating | 50% | 🟡 Moderasi admin ✅, submit review siswa ❌ |
 | Payment (Midtrans) | 100% | 🟢 CheckoutController Inertia ✅, Snap token ✅, callback handler ✅, auto-enroll ✅, Pages/Checkout & Payment React ✅ |
 | Cart & Wishlist | 100% | 🟢 Wishlist ✅, Cart ✅, Coupon apply di Cart ✅ |
-| Notifications (F14) | 10% | 🔴 Hanya `WelcomeMail`; event/broadcast/mail lain ❌ |
+| Notifications (F14) | 100% | 🟢 Selesai — WelcomeMail ✅, CourseApprovedMail ✅, CourseRejectedMail ✅, NewSaleMail ✅ (L11) |
 | Course CRUD (Instructor) | 100% | 🟢 Selesai — Course & Curriculum CRUD (L6 + L7) |
 | Coupon System | 80% | 🟡 Instructor CRUD ✅, apply di cart ✅; increment used_count saat settlement dikerjakan di L9 |
 | Course Player (F13) | 100% | 🟢 Selesai — CoursePlayerController + Pages/Courses/Player (L10) |
 | **Migrasi Frontend React + Inertia (ADR-008) — Fase 1** | **100%** | **🟢 Fase 1 SELESAI (Vascha L1)** |
 | Admin Panel React (L12+L13+L14 Quinsha) | 100% | 🟢 Selesai — AdminLayout + 13 halaman React (Dashboard, Categories, SubCategories, Courses, Reviews, Orders, Users, Sliders, InfoBoxes, Partners, Settings) |
-| **Migrasi Frontend React + Inertia (ADR-008) — Fase 2+3** | **90%** | **🟡 L2 Auth ✅ + L3 Wishlist ✅ + L4 Cart ✅ + L5 Student Panel ✅ + L6 Instructor CRUD ✅ + L7 Kurikulum ✅ + L8 Coupon ✅ + L9 Checkout ✅ + L10 Player ✅ + L12-14 Admin React ✅ — menunggu L11 Email** |
-| **OVERALL** | **~90%** | **🟡 On Progress** |
+| **Migrasi Frontend React + Inertia (ADR-008) — Fase 2+3** | **100%** | **🟢 L2 Auth ✅ + L3 Wishlist ✅ + L4 Cart ✅ + L5 Student Panel ✅ + L6 Instructor CRUD ✅ + L7 Kurikulum ✅ + L8 Coupon ✅ + L9 Checkout ✅ + L10 Player ✅ + L11 Email ✅ + L12-14 Admin React ✅** |
+| **OVERALL** | **~95%** | **🟡 On Progress** |
 
 ---
 
@@ -77,8 +77,8 @@
 
 ## 🔄 SEDANG DIKERJAKAN
 
-- L10 Albariqi: Course Player (butuh Enrollment dari L9 ✅)
-- L11 Albariqi: Email notifikasi NewSale (dipicu callback L9 ✅)
+- L15 Quinsha: Arsipkan Blade admin lama
+- L16 Yosua: Matikan Blade/Alpine lama
 
 ---
 
@@ -92,11 +92,11 @@
 - [x] Midtrans: Snap token nyata ✅, payment callback/notification handler ✅, pembuatan Order setelah bayar ✅ (L9 Yosua/Ray)
 
 ### Course & Instructor (Albariqi)
-- [ ] Course CRUD instruktur (controller + form)
-- [ ] Course Section & Lecture CRUD
-- [ ] Submit-for-review flow (draft → pending_review)
-- [ ] Course Player (F13) — controller, halaman, lecture completion tracking
-- [ ] Email: CourseApproved / CourseRejected / NewSale (baru `WelcomeMail`)
+- [x] Course CRUD instruktur (controller + form) ✅
+- [x] Course Section & Lecture CRUD ✅
+- [x] Submit-for-review flow (draft → pending_review) ✅
+- [x] Course Player (F13) — controller, halaman, lecture completion tracking ✅ (L10)
+- [x] Email: CourseApproved / CourseRejected / NewSale (L11) ✅
 
 ### Frontend (Vascha)
 - [x] Student panel React (`Pages/Student/*`) — L5 ✅ 4 Jun 2026
@@ -113,7 +113,7 @@
 
 ### Review & Notifications
 - [ ] Submit review oleh siswa (route `course.review.store` placeholder; moderasi admin sudah ada)
-- [ ] Event `PaymentSuccessful` + broadcasting Reverb (F14)
+- [x] Event `PaymentSuccessful` + broadcasting Reverb (F14) ✅ (Email NewSale dipicu callback L9)
 
 ### Migrasi Frontend React + Inertia (ADR-008)
 - [x] **Fase 1 — Fondasi & Publik (L0 Yosua + L1 Vascha): SELESAI ✅**
@@ -123,7 +123,7 @@
   - `AppFooter.jsx`, `Badge.jsx`, `EmptyState.jsx` (L1 Vascha) ✅
   - i18n: `react-i18next`, `id.json`, `en.json` (L1 Vascha) ✅
 - [x] **Fase 2 — Auth & Student:** `Pages/Auth/*` ✅ (Albariqi L2) + `Pages/Student/Wishlist.jsx` ✅ (Ray L3) + `Pages/Cart/Index.jsx` ✅ (Ray L4) + `Pages/Student/*` ✅ (Vascha L5)
-- [ ] **Fase 3 — Instructor & Admin:** `Pages/Instructor/*` + `Pages/Admin/*`; deaktivasi view Blade lama
+- [x] **Fase 3 — Instructor & Admin:** `Pages/Instructor/*` + `Pages/Admin/*` ✅ (Instructor Course/Curriculum/Coupon L6-L8, Course Player L10, Email L11, Admin React L12-L14)
 - [x] **Error Pages:** Hapus legacy blade dan ganti ke halaman error React (404, 500, etc) ✅
 
 ### Polish (semua)
@@ -385,12 +385,22 @@
 - Next: L15 Quinsha (Arsipkan Blade admin lama); L10 Albariqi (Course Player)
 - Report: `06_reports/REPORT_2026-06-05_L12-14_QUINSHA_ADMIN_REACT.md`
 
+### Session 15 — 5 Juni 2026 (Antigravity) — Yosua Valentino — L11 Email Notifications Merged
+- Merged: `feature/course-emails` into `main`
+- Resolved: Import merge conflicts in `AdminCourseController.php`
+- Updated: `URUTAN_KERJA_TIM_REACT_INERTIA.md` and `PROGRESS_TRACKER.md` to mark L10 and L11 as 100% complete
+- Status: **L11 Email Notifications SELESAI 100%** ✅
+- DoD:
+  - [x] Merge L11 branch, resolve conflicts ✅
+  - [x] Update documentation (Urutan Kerja & Progress Tracker) ✅
+  - [x] npm run build passes successfully ✅
+- Next: L15 Quinsha (Arsipkan Blade admin lama)
+
 ---
 
 
 ## ⚠️ Known Issues
 
-- **Email notifikasi (F14)** belum dimulai — menunggu L11 Albariqi.
 - **L15 Quinsha** (arsip Blade admin lama) belum dikerjakan — menunggu verifikasi L12-14.
 
 ---
