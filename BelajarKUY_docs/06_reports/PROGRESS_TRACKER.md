@@ -88,12 +88,12 @@
 - [x] Wishlist toggle add/remove ✅ (`WishlistController` — `feature/wishlist`)
 - [x] Halaman wishlist siswa React (`Pages/Student/Wishlist.jsx`) ✅
 - [x] Cart: `CartController` + `Pages/Cart/Index.jsx` ✅ (`feature/cart`)
-- [x] Coupon CRUD instructor + apply di Cart ✅ (`InstructorCouponController`, `FrontendCouponController`, `Pages/Instructor/Coupons/Index.jsx`, `CouponPanel` di Cart) — `feature/coupon`
+- [x] Coupon CRUD instructor + apply di Cart + bulk JSON dataset seeder ✅ (`InstructorCouponController`, `FrontendCouponController`, `BulkCouponSeeder`, `Pages/Instructor/Coupons/Index.jsx`, `CouponPanel` di Cart) — `feature/coupon`
 - [x] Midtrans: Snap token nyata ✅, payment callback/notification handler ✅, pembuatan Order setelah bayar ✅ (L9 Yosua/Ray)
 
 ### Course & Instructor (Albariqi)
 - [x] Course CRUD instruktur (controller + form) ✅
-- [x] Course Section & Lecture CRUD ✅
+- [x] Course Section & Lecture CRUD + bulk curriculum import dataset seeder ✅ (`BulkCurriculumSeeder`)
 - [x] Submit-for-review flow (draft → pending_review) ✅
 - [x] Course Player (F13) — controller, halaman, lecture completion tracking ✅ (L10)
 - [x] Email: CourseApproved / CourseRejected / NewSale (L11) ✅
@@ -121,7 +121,7 @@
   - `Pages/Welcome.jsx`, `Pages/Home.jsx` (L0 Yosua) ✅
   - `Pages/Courses/Show.jsx` + `CourseDetailController` Inertia (L1 Vascha) ✅
   - `AppFooter.jsx`, `Badge.jsx`, `EmptyState.jsx` (L1 Vascha) ✅
-  - i18n: `react-i18next`, `id.json`, `en.json` (L1 Vascha) ✅
+  - i18n: `react-i18next`, `id.json`, `en.json`, `faq_id.json`, `faq_en.json` (L1 & L5 Vascha) ✅
 - [x] **Fase 2 — Auth & Student:** `Pages/Auth/*` ✅ (Albariqi L2) + `Pages/Student/Wishlist.jsx` ✅ (Ray L3) + `Pages/Cart/Index.jsx` ✅ (Ray L4) + `Pages/Student/*` ✅ (Vascha L5)
 - [x] **Fase 3 — Instructor & Admin:** `Pages/Instructor/*` + `Pages/Admin/*` ✅ (Instructor Course/Curriculum/Coupon L6-L8, Course Player L10, Email L11, Admin React L12-L14)
 - [x] **Error Pages:** Hapus legacy blade dan ganti ke halaman error React (404, 500, etc) ✅
