@@ -7,6 +7,7 @@ use App\Models\Partner;
 use App\Http\Requests\Admin\StorePartnerRequest;
 use App\Http\Requests\Admin\UpdatePartnerRequest;
 use App\Services\CloudinaryService;
+use Inertia\Inertia;
 
 class AdminPartnerController extends Controller
 {
@@ -20,12 +21,12 @@ class AdminPartnerController extends Controller
     public function index()
     {
         $partners = Partner::orderBy('order_position')->paginate(15);
-        return view('admin.partners.index', compact('partners'));
+        return Inertia::render('Admin/Partners/Index', compact('partners'));
     }
 
     public function create()
     {
-        return view('admin.partners.create');
+        return redirect()->route('admin.partners.index');
     }
 
     public function store(StorePartnerRequest $request)
@@ -50,7 +51,11 @@ class AdminPartnerController extends Controller
 
     public function edit(Partner $partner)
     {
-        return view('admin.partners.edit', compact('partner'));
+        $partners = Partner::orderBy('order_position')->paginate(15);
+        return Inertia::render('Admin/Partners/Index', [
+            'partners'    => $partners,
+            'editPartner' => $partner,
+        ]);
     }
 
     public function update(UpdatePartnerRequest $request, Partner $partner)

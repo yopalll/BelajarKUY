@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\StoreSubCategoryRequest;
 use App\Http\Requests\Admin\UpdateSubCategoryRequest;
 use App\Models\Category;
 use App\Models\SubCategory;
+use Inertia\Inertia;
 
 class SubCategoryController extends Controller
 {
@@ -16,8 +17,9 @@ class SubCategoryController extends Controller
     public function index()
     {
         $subCategories = SubCategory::with('category')->latest()->paginate(15);
+        $categories    = Category::orderBy('name')->get();
         
-        return view('admin.sub_categories.index', compact('subCategories'));
+        return Inertia::render('Admin/SubCategories/Index', compact('subCategories', 'categories'));
     }
 
     /**
@@ -25,8 +27,7 @@ class SubCategoryController extends Controller
      */
     public function create()
     {
-        $categories = Category::orderBy('name')->get();
-        return view('admin.sub_categories.create', compact('categories'));
+        return redirect()->route('admin.sub-categories.index');
     }
 
     /**
@@ -47,8 +48,9 @@ class SubCategoryController extends Controller
      */
     public function edit(SubCategory $subCategory)
     {
-        $categories = Category::orderBy('name')->get();
-        return view('admin.sub_categories.edit', compact('subCategory', 'categories'));
+        $categories    = Category::orderBy('name')->get();
+        $subCategories = SubCategory::with('category')->latest()->paginate(15);
+        return Inertia::render('Admin/SubCategories/Index', compact('subCategory', 'categories', 'subCategories'));
     }
 
     /**

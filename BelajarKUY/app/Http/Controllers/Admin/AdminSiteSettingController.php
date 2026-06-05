@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SiteInfo;
 use App\Http\Requests\Admin\UpdateSiteSettingRequest;
 use App\Services\CloudinaryService;
+use Inertia\Inertia;
 
 class AdminSiteSettingController extends Controller
 {
@@ -19,7 +20,7 @@ class AdminSiteSettingController extends Controller
     public function index()
     {
         $settings = SiteInfo::pluck('value', 'key')->toArray();
-        return view('admin.settings.index', compact('settings'));
+        return Inertia::render('Admin/Settings/Index', compact('settings'));
     }
 
     public function update(UpdateSiteSettingRequest $request)

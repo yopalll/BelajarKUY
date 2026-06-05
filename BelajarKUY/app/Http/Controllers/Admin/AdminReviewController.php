@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AdminReviewController extends Controller
 {
@@ -14,7 +15,7 @@ class AdminReviewController extends Controller
     public function index()
     {
         $reviews = Review::with(['user', 'course'])->latest()->paginate(15);
-        return view('admin.reviews.index', compact('reviews'));
+        return Inertia::render('Admin/Reviews/Index', compact('reviews'));
     }
 
     /**

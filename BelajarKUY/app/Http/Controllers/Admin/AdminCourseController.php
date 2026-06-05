@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AdminCourseController extends Controller
 {
@@ -17,7 +18,7 @@ class AdminCourseController extends Controller
             ->latest()
             ->paginate(15);
             
-        return view('admin.courses.index', compact('courses'));
+        return Inertia::render('Admin/Courses/Index', compact('courses'));
     }
 
     /**
@@ -27,7 +28,7 @@ class AdminCourseController extends Controller
     {
         $course->load(['instructor', 'category', 'subCategory']);
         
-        return view('admin.courses.show', compact('course'));
+        return Inertia::render('Admin/Courses/Show', compact('course'));
     }
 
     /**

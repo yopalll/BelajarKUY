@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\StoreCategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Services\CloudinaryService;
+use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
@@ -21,7 +22,7 @@ class CategoryController extends Controller
     {
         $categories = Category::latest()->paginate(15);
         
-        return view('admin.categories.index', compact('categories'));
+        return Inertia::render('Admin/Categories/Index', compact('categories'));
     }
 
     /**
@@ -29,7 +30,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        return redirect()->route('admin.categories.index');
     }
 
     /**
@@ -60,7 +61,10 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('admin.categories.edit', compact('category'));
+        return Inertia::render('Admin/Categories/Index', [
+            'categories'    => Category::latest()->paginate(15),
+            'editCategory'  => $category,
+        ]);
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Models\Slider;
 use App\Http\Requests\Admin\StoreSliderRequest;
 use App\Http\Requests\Admin\UpdateSliderRequest;
 use App\Services\CloudinaryService;
+use Inertia\Inertia;
 
 class AdminSliderController extends Controller
 {
@@ -23,7 +24,7 @@ class AdminSliderController extends Controller
     public function index()
     {
         $sliders = Slider::orderBy('order_position')->paginate(15);
-        return view('admin.sliders.index', compact('sliders'));
+        return Inertia::render('Admin/Sliders/Index', compact('sliders'));
     }
 
     /**
@@ -31,7 +32,7 @@ class AdminSliderController extends Controller
      */
     public function create()
     {
-        return view('admin.sliders.create');
+        return redirect()->route('admin.sliders.index');
     }
 
     /**
@@ -62,7 +63,11 @@ class AdminSliderController extends Controller
      */
     public function edit(Slider $slider)
     {
-        return view('admin.sliders.edit', compact('slider'));
+        $sliders = Slider::orderBy('order_position')->paginate(15);
+        return Inertia::render('Admin/Sliders/Index', [
+            'sliders'     => $sliders,
+            'editSlider'  => $slider,
+        ]);
     }
 
     /**

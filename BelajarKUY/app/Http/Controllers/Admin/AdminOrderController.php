@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AdminOrderController extends Controller
 {
@@ -23,7 +24,7 @@ class AdminOrderController extends Controller
 
         $orders = $query->paginate(15)->withQueryString();
 
-        return view('admin.orders.index', compact('orders', 'status'));
+        return Inertia::render('Admin/Orders/Index', compact('orders', 'status'));
     }
 
     /**
@@ -33,6 +34,6 @@ class AdminOrderController extends Controller
     {
         $order->load(['user', 'course', 'instructor', 'payment', 'coupon']);
 
-        return view('admin.orders.show', compact('order'));
+        return Inertia::render('Admin/Orders/Show', compact('order'));
     }
 }

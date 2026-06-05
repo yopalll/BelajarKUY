@@ -6,18 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\InfoBox;
 use App\Http\Requests\Admin\StoreInfoBoxRequest;
 use App\Http\Requests\Admin\UpdateInfoBoxRequest;
+use Inertia\Inertia;
 
 class AdminInfoBoxController extends Controller
 {
     public function index()
     {
         $infoBoxes = InfoBox::orderBy('order_position')->paginate(15);
-        return view('admin.info_boxes.index', compact('infoBoxes'));
+        return Inertia::render('Admin/InfoBoxes/Index', compact('infoBoxes'));
     }
 
     public function create()
     {
-        return view('admin.info_boxes.create');
+        return redirect()->route('admin.info-boxes.index');
     }
 
     public function store(StoreInfoBoxRequest $request)
@@ -29,7 +30,11 @@ class AdminInfoBoxController extends Controller
 
     public function edit(InfoBox $infoBox)
     {
-        return view('admin.info_boxes.edit', compact('infoBox'));
+        $infoBoxes = InfoBox::orderBy('order_position')->paginate(15);
+        return Inertia::render('Admin/InfoBoxes/Index', [
+            'infoBoxes'   => $infoBoxes,
+            'editInfoBox' => $infoBox,
+        ]);
     }
 
     public function update(UpdateInfoBoxRequest $request, InfoBox $infoBox)

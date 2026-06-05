@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Inertia\Inertia;
 
 class AdminUserController extends Controller
 {
@@ -14,6 +15,6 @@ class AdminUserController extends Controller
     {
         $users = User::latest()->paginate(15);
             
-        return view('admin.users.index', compact('users'));
+        return Inertia::render('Admin/Users/Index', compact('users'));
     }
 }
