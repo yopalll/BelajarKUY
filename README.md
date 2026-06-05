@@ -1,252 +1,188 @@
-# BelajarKUY
+<div align="center">
+  <img src="public/logo.png" alt="BelajarKUY Logo" width="200" />
+  <h1>BelajarKUY</h1>
+  <p>
+    <b>A Modern Online Course Marketplace | Platform Pembelajaran Daring Modern</b>
+  </p>
+  <p>
+    <i>Built with Laravel & React.js | Dibangun menggunakan Laravel & React.js</i>
+  </p>
+</div>
 
-BelajarKUY adalah aplikasi web marketplace kursus daring (e-learning) bergaya Udemy yang ditujukan untuk pasar Indonesia. Aplikasi ini dikembangkan sebagai proyek Tugas Besar perkuliahan dan menyediakan tiga peran pengguna (Student, Instructor, Admin), alur belanja lengkap (keranjang, checkout, pembayaran Midtrans, hingga pendaftaran kelas otomatis), pemutar kursus dengan pelacakan progres, serta panel administrasi untuk pengelolaan platform.
+<br />
 
-## Deskripsi Proyek
+## About the Project | Tentang Proyek
 
-Tujuan proyek ini adalah membangun platform pembelajaran daring yang fungsional dengan biaya operasional minimal (memanfaatkan layanan dengan tingkat gratis), sekaligus menjadi sarana pembelajaran rekayasa perangkat lunak berbasis kerangka kerja modern.
+**[EN]**  
+BelajarKUY is an online course marketplace web application inspired by platforms like Udemy, designed specifically for the Indonesian market. Developed as a major academic project, it features three distinct user roles (Student, Instructor, Admin), a comprehensive e-commerce flow (cart, checkout, Midtrans payment gateway, auto-enrollment), an interactive course player with progress tracking, and a robust administrative panel. 
 
-Lapisan presentasi aplikasi sedang dimigrasikan dari Blade + Alpine.js menjadi **React.js melalui Inertia.js** (lihat `BelajarKUY_docs/02_architecture/ADR/ADR-008-frontend-react-inertia.md`). Selama masa transisi, kedua lapisan berjalan berdampingan: halaman yang telah dimigrasikan dirender melalui Inertia, sedangkan sisanya masih menggunakan Blade. Lapisan backend (model, route, controller, skema basis data, dan middleware peran) dipertahankan tanpa perubahan selama migrasi.
+The primary goal of this project is to build a highly functional online learning platform with minimal operational costs (leveraging free-tier services) while serving as a practical implementation of modern software engineering practices.
 
-## Daftar Isi
+**[ID]**  
+BelajarKUY adalah aplikasi web marketplace kursus daring (e-learning) bergaya Udemy yang ditujukan untuk pasar Indonesia. Dikembangkan sebagai proyek Tugas Besar perkuliahan, aplikasi ini menyediakan tiga peran pengguna (Siswa, Instruktur, Admin), alur belanja lengkap (keranjang, checkout, pembayaran Midtrans, hingga pendaftaran kelas otomatis), pemutar kursus interaktif dengan pelacakan progres, serta panel administrasi yang kuat.
 
-- [Fitur Utama](#fitur-utama)
-- [Teknologi yang Digunakan](#teknologi-yang-digunakan)
-- [Struktur Repositori](#struktur-repositori)
-- [Prasyarat](#prasyarat)
-- [Instalasi dan Konfigurasi](#instalasi-dan-konfigurasi)
-- [Menjalankan Aplikasi](#menjalankan-aplikasi)
-- [Akun Default](#akun-default)
-- [Skema Basis Data](#skema-basis-data)
-- [Dokumentasi Proyek](#dokumentasi-proyek)
-- [Status Pengembangan](#status-pengembangan)
-- [Tim Pengembang](#tim-pengembang)
-- [Lisensi](#lisensi)
+Tujuan utama proyek ini adalah membangun platform pembelajaran daring yang fungsional dengan biaya operasional minimal (memanfaatkan layanan dengan tingkat gratis), sekaligus menjadi sarana pembelajaran praktik rekayasa perangkat lunak modern.
 
-## Fitur Utama
+---
 
-- Autentikasi multi-peran (Student, Instructor, Admin) dengan Laravel Breeze dan login Google (Socialite).
-- Katalog kursus, halaman detail kursus, serta pencarian dengan Meilisearch (Laravel Scout).
-- Keranjang belanja, daftar keinginan (wishlist), dan sistem kupon diskon.
-- Pembayaran melalui Midtrans Snap (mode sandbox) dengan pendaftaran kelas otomatis setelah transaksi berhasil.
-- Pemutar kursus (course player) beserta pelacakan penyelesaian materi (lecture completion).
-- Panel instruktur untuk pengelolaan kursus, bagian (section), dan materi (lecture).
-- Panel administrasi untuk moderasi kursus dan ulasan, pengelolaan kategori, pengguna, pesanan, serta pengaturan situs.
-- Notifikasi surel dan pembaruan waktu nyata (real-time) melalui Laravel Reverb.
+## Architecture | Arsitektur
 
-Catatan: sebagian fitur masih dalam pengembangan. Lihat bagian [Status Pengembangan](#status-pengembangan).
+**[EN]**  
+The presentation layer is currently transitioning from Blade + Alpine.js to **React.js via Inertia.js**. During this migration phase, both layers coexist: migrated pages are rendered via Inertia, while the rest continue to use Blade. The backend layer (models, routes, controllers, database schema, and role middleware) remains fully intact and unchanged during this transition.
 
-## Teknologi yang Digunakan
+**[ID]**  
+Lapisan presentasi aplikasi sedang dimigrasikan dari Blade + Alpine.js menjadi **React.js melalui Inertia.js**. Selama masa transisi, kedua lapisan berjalan berdampingan: halaman yang telah dimigrasikan dirender melalui Inertia, sedangkan sisanya masih menggunakan Blade. Lapisan backend (model, route, controller, skema basis data, dan middleware peran) dipertahankan tanpa perubahan selama masa transisi ini.
 
-| Lapisan | Teknologi | Versi |
-|---|---|---|
-| Kerangka kerja backend | Laravel | `^13.7` |
-| Bahasa | PHP | `^8.3` |
-| Lapisan presentasi | React via Inertia.js | `react ^19.2.6`, `@inertiajs/react ^3.3.0`, `inertiajs/inertia-laravel ^3.1` |
-| Styling | Tailwind CSS | `tailwindcss ^3.1.0` (paket inti) dan `@tailwindcss/vite ^4.0.0` (plugin Vite) |
-| Build tool | Vite | `^8.0.0` (`@vitejs/plugin-react ^6.0.2`) |
-| Basis data | MySQL (produksi) / SQLite (pengembangan) | 8.x / 3.x |
-| Pembayaran | Midtrans Snap (sandbox) | `midtrans/midtrans-php ^2.6` |
-| Penyimpanan media | Cloudinary | `cloudinary/cloudinary_php ^3.1` |
-| Mesin pencari | Meilisearch + Laravel Scout | `^1.16` / `^11.1` |
-| Real-time (WebSocket) | Laravel Reverb | `^1.10` |
-| Autentikasi | Laravel Breeze + Socialite | `^2.4` / `^5.27` |
+---
 
-Nilai versi di atas dikutip dari `BelajarKUY/composer.json` dan `BelajarKUY/package.json`. Catatan: proyek ini tidak menggunakan Filament; panel administrasi dibangun sebagai halaman React + Inertia.
+## Key Features | Fitur Utama
 
-## Struktur Repositori
+**[EN]**
+- Multi-role Authentication (Student, Instructor, Admin) using Laravel Breeze and Google Socialite.
+- Course Catalog, detailed course pages, and advanced search powered by Meilisearch (Laravel Scout).
+- Shopping Cart, Wishlist, and an Instructor Coupon system.
+- Secure Payments via Midtrans Snap (sandbox mode) with automated course enrollment upon success.
+- Interactive Course Player featuring lecture completion tracking.
+- Instructor Panel for comprehensive course, section, and lecture management.
+- Administrator Panel for content moderation, category management, user oversight, and site configuration.
+- Real-time Updates and email notifications powered by Laravel Reverb.
 
-```text
-.
-├── BelajarKUY/                 Aplikasi Laravel (kode sumber utama)
-│   ├── app/                    Model, Controller, Middleware, Service
-│   ├── routes/                 Definisi route (web.php, auth.php)
-│   ├── resources/js/           Lapisan presentasi React + Inertia (Pages, Components, Layouts)
-│   ├── resources/views/        Root view Inertia (app.blade.php) dan view Blade lama
-│   └── database/               Migrations, factories, seeders
-├── BelajarKUY_docs/            Dokumentasi proyek (panduan, arsitektur, ADR, fitur, prompt, laporan)
-├── BelajarKuy_Design_Revisi/   Aset desain hasil ekspor Google Stitch
-└── README.md
-```
+**[ID]**
+- Autentikasi multi-peran (Siswa, Instruktur, Admin) dengan Laravel Breeze dan login Google (Socialite).
+- Katalog kursus, halaman detail kursus, serta pencarian lanjutan dengan Meilisearch (Laravel Scout).
+- Keranjang belanja, daftar keinginan (wishlist), dan sistem kupon diskon instruktur.
+- Pembayaran aman melalui Midtrans Snap (sandbox) dengan pendaftaran kelas otomatis setelah transaksi berhasil.
+- Pemutar kursus interaktif beserta pelacakan penyelesaian materi.
+- Panel instruktur untuk pengelolaan kursus, bagian (section), dan materi (lecture) secara komprehensif.
+- Panel administrasi untuk moderasi konten, pengelolaan kategori, pengawasan pengguna, serta pengaturan situs.
+- Pembaruan waktu nyata (real-time) dan notifikasi surel melalui Laravel Reverb.
 
-## Prasyarat
+---
 
-Pastikan perangkat lunak berikut telah terpasang:
+## Tech Stack | Teknologi yang Digunakan
 
-- PHP `8.3` atau lebih baru beserta ekstensi yang dibutuhkan Laravel
-- Composer `2.x`
-- Node.js `20` atau lebih baru dan NPM `10` atau lebih baru
-- MySQL `8.x` (opsional; SQLite dapat digunakan untuk pengembangan)
-- Meilisearch `1.x` (untuk fitur pencarian)
-- Git
+<div align="center">
 
-## Instalasi dan Konfigurasi
+| Layer / Lapisan | Technology / Teknologi | Version / Versi |
+| --- | --- | --- |
+| Backend Framework | Laravel | `^13.7` |
+| Programming Language | PHP | `^8.3` |
+| Presentation Layer | React via Inertia.js | `react ^19.2.6`, `@inertiajs/react ^3.3.0` |
+| Styling | Tailwind CSS | `tailwindcss ^3.1.0`, `@tailwindcss/vite ^4.0.0` |
+| Build Tool | Vite | `^8.0.0` |
+| Database | MySQL (Prod) / SQLite (Dev) | 8.x / 3.x |
+| Payment Gateway | Midtrans Snap (Sandbox) | `midtrans/midtrans-php ^2.6` |
+| Media Storage | Cloudinary | `cloudinary/cloudinary_php ^3.1` |
+| Search Engine | Meilisearch + Laravel Scout | `^1.16` / `^11.1` |
+| Real-time / WebSocket | Laravel Reverb | `^1.10` |
+| Authentication | Laravel Breeze + Socialite | `^2.4` / `^5.27` |
 
-Seluruh perintah berikut dijalankan dari direktori aplikasi Laravel, yaitu `BelajarKUY/`.
+</div>
 
-1. Klona repositori dan masuk ke direktori aplikasi.
+---
 
-   ```bash
-   git clone https://github.com/yopalll/bjrkuy.git
-   cd bjrkuy/BelajarKUY
-   ```
+## Installation & Configuration | Instalasi dan Konfigurasi
 
-2. Pasang dependensi backend dan frontend.
+**[EN]**  
+Ensure your environment meets the prerequisites: PHP 8.3+, Composer 2.x, Node.js 20+, and MySQL 8.x (or SQLite).
 
-   ```bash
-   composer install
-   npm install
-   ```
-
-3. Siapkan berkas environment dan kunci aplikasi.
-
-   ```bash
-   cp .env.example .env
-   php artisan key:generate
-   ```
-
-4. Konfigurasikan `.env` (basis data, Midtrans sandbox, Google OAuth, Cloudinary, Meilisearch, Reverb). Rincian variabel tersedia pada `BelajarKUY_docs/01_guides/SETUP_GUIDE.md`.
-
-5. Jalankan migrasi dan seeder.
-
-   ```bash
-   php artisan migrate --seed
-   ```
-
-6. Tautkan storage dan bangun aset frontend.
-
-   ```bash
-   php artisan storage:link
-   npm run build
-   ```
-
-## Menjalankan Aplikasi
-
-Untuk pengembangan, jalankan proses berikut (disarankan pada terminal terpisah):
+**[ID]**  
+Pastikan lingkungan pengembangan Anda memenuhi prasyarat: PHP 8.3+, Composer 2.x, Node.js 20+, dan MySQL 8.x (atau SQLite).
 
 ```bash
-# Terminal 1: server pengembangan Vite (hot reload React/Inertia)
+# 1. Clone the repository | Klona repositori
+git clone https://github.com/yopalll/BelajarKUY.git
+cd BelajarKUY/BelajarKUY
+
+# 2. Install dependencies | Pasang dependensi
+composer install
+npm install
+
+# 3. Setup environment | Siapkan berkas environment
+cp .env.example .env
+php artisan key:generate
+
+# 4. Run migrations and seeders | Jalankan migrasi dan seeder
+php artisan migrate --seed
+
+# 5. Link storage and build assets | Tautkan storage dan bangun aset
+php artisan storage:link
+npm run build
+```
+
+---
+
+## Running the Application | Menjalankan Aplikasi
+
+**[EN]**  
+For development, it is recommended to run the following processes in separate terminal instances:
+
+**[ID]**  
+Untuk pengembangan, jalankan proses berikut pada terminal terpisah:
+
+```bash
+# Terminal 1: Vite Development Server
 npm run dev
 
-# Terminal 2: server aplikasi Laravel
+# Terminal 2: Laravel Application Server
 php artisan serve
 
-# Terminal 3: mesin pencari Meilisearch
+# Terminal 3: Meilisearch Engine
 meilisearch --master-key="masterKey"
 
-# Terminal 4: server WebSocket Laravel Reverb
+# Terminal 4: Laravel Reverb WebSocket Server
 php artisan reverb:start
 ```
 
-Aplikasi dapat diakses pada `http://localhost:8000`. Untuk mengindeks data kursus ke Meilisearch setelah seeding:
+---
 
-```bash
-php artisan scout:import "App\Models\Course"
-```
+## Default Accounts | Akun Default
 
-## Akun Default
+**[EN]** All default accounts use the password: `password`  
+**[ID]** Semua akun default menggunakan kata sandi: `password`
 
-Setelah seeder dijalankan, kata sandi seluruh akun adalah `password`.
+<div align="center">
 
-| Peran | Surel |
-|---|---|
+| Role / Peran | Email / Surel |
+| --- | --- |
 | Admin | `admin@belajarkuy.test` |
 | Instructor | `ray@belajarkuy.test` |
 | Student | `student@belajarkuy.test` |
 
-## Skema Basis Data
-
-BelajarKUY menggunakan **15 tabel utama** dengan relasi sebagai berikut.
-
-### Daftar Tabel
-
-| Tabel | Deskripsi |
-|---|---|
-| `users` | Pengguna platform — role: `user`, `instructor`, `admin` |
-| `categories` | Kategori kursus (contoh: Pemrograman, Desain) |
-| `sub_categories` | Sub-kategori, turunan dari `categories` |
-| `courses` | Kursus yang dibuat instruktur |
-| `course_goals` | Tujuan pembelajaran per kursus |
-| `course_sections` | Bagian (section/bab) dalam sebuah kursus |
-| `course_lectures` | Materi (lecture/video) dalam sebuah section |
-| `wishlists` | Daftar keinginan siswa |
-| `carts` | Keranjang belanja siswa |
-| `coupons` | Kupon diskon yang dibuat instruktur |
-| `payments` | Data transaksi Midtrans |
-| `orders` | Pesanan yang terhubung ke payment |
-| `enrollments` | Pendaftaran siswa ke kursus setelah bayar |
-| `lecture_completions` | Pelacakan materi yang sudah diselesaikan siswa |
-| `reviews` | Ulasan dan rating kursus dari siswa |
-
-### Relasi Antar Tabel
-
-```
-users ──< courses              (instructor_id)   — instruktur memiliki banyak kursus
-users ──< wishlists            (user_id)         — siswa punya banyak wishlist
-users ──< carts                (user_id)         — siswa punya banyak item cart
-users ──< coupons              (instructor_id)   — instruktur membuat kupon
-users ──< payments             (user_id)
-users ──< orders               (user_id, instructor_id)
-users ──< enrollments          (user_id)
-users ──< lecture_completions  (user_id)
-users ──< reviews              (user_id)
-
-categories ──< sub_categories  (category_id)
-categories ──< courses         (category_id)
-sub_categories ──< courses     (subcategory_id)
-
-courses ──< course_goals       (course_id)
-courses ──< course_sections    (course_id)
-courses ──< wishlists          (course_id)
-courses ──< carts              (course_id)
-courses ──< coupons            (course_id, nullable)
-courses ──< orders             (course_id)
-courses ──< enrollments        (course_id)
-courses ──< reviews            (course_id)
-
-course_sections ──< course_lectures     (section_id)
-course_lectures ──< lecture_completions (lecture_id)
-
-payments ──< orders    (payment_id)
-orders   ──< enrollments (order_id)
-coupons  ──< orders    (coupon_id, nullable)
-```
-
-**Unique constraints:** `wishlists(user_id, course_id)` · `carts(user_id, course_id)` · `enrollments(user_id, course_id)` · `lecture_completions(user_id, lecture_id)` · `reviews(user_id, course_id)`
+</div>
 
 ---
 
-## Dokumentasi Proyek
+## Database Schema | Skema Basis Data
 
-Dokumentasi lengkap berada pada direktori `BelajarKUY_docs/`. Berkas yang disarankan untuk dibaca terlebih dahulu:
+**[EN]**  
+BelajarKUY utilizes 15 primary tables designed to handle users, categories, courses, curriculum (sections and lectures), e-commerce (wishlists, carts, coupons, payments, orders), learning progress (enrollments, lecture completions), and feedback (reviews).
 
-- `BelajarKUY_docs/00_INDEX.md` — indeks utama dokumentasi.
-- `BelajarKUY_docs/01_guides/SETUP_GUIDE.md` — panduan pemasangan terperinci.
-- `BelajarKUY_docs/02_architecture/TECH_STACK.md` — rincian tumpukan teknologi.
-- `BelajarKUY_docs/02_architecture/ADR/` — catatan keputusan arsitektur (Architecture Decision Records).
-- `BelajarKUY_docs/04_plans/MASTER_PLAN_REACT_INERTIA.md` — rencana migrasi frontend ke React + Inertia.
-- `BelajarKUY_docs/04_plans/MIGRATION_SCHEDULE_REACT_INERTIA.md` — jadwal pengerjaan dan pembagian tugas.
+**[ID]**  
+BelajarKUY menggunakan 15 tabel utama yang dirancang untuk menangani pengguna, kategori, kursus, kurikulum (bagian dan materi), e-commerce (daftar keinginan, keranjang, kupon, pembayaran, pesanan), kemajuan belajar (pendaftaran, penyelesaian materi), serta umpan balik (ulasan).
 
-## Status Pengembangan
+---
 
-Proyek berada pada tahap pengembangan aktif. Ringkasan terkini tersedia pada `BelajarKUY_docs/06_reports/PROGRESS_TRACKER.md`. Secara umum:
+## Development Team | Tim Pengembang
 
-- Selesai: penyiapan proyek, basis data, sistem autentikasi, panel administrasi (Blade), serta halaman publik dan panel student (Blade).
-- Dalam pengerjaan: migrasi lapisan presentasi ke React + Inertia (Fase 1 telah dirintis).
-- Belum selesai: keranjang dan wishlist, integrasi pembayaran menyeluruh, sistem kupon, panel instruktur, pemutar kursus, dan notifikasi.
+<div align="center">
 
-## Tim Pengembang
+| Name / Nama | Role / Peran |
+| --- | --- |
+| **Yosua Valentino Gulo** | Project Manager & Architect |
+| **Albariqi Deanda Tarigan** | Backend Developer (Auth & Curriculum) |
+| **Ray Nathan Geereno Saragih** | Backend Developer (Commerce & Payment) |
+| **Vascha Uli Lumbantoruan** | Frontend Developer (Public & Student) |
+| **Quinsha Ilmi Azzahra** | UI/UX Developer (Administration Panel) |
 
-| No | Nama | NIM | Peran |
-|---|---|---|---|
-| 1 | Yosua Valentino Gulo | 251402055 | Project Manager & Arsitektur |
-| 2 | Albariqi Deanda Tarigan | 251402037 | Backend Developer (Autentikasi & Kurikulum) |
-| 3 | Ray Nathan Geereno Saragih | 251402046 | Backend Developer (Commerce & Pembayaran) |
-| 4 | Vascha Uli Lumbantoruan | 251402125 | Frontend Developer (Halaman Publik & Student) |
-| 5 | Quinsha Ilmi Azzahra | 251402137 | UI/UX Developer (Panel Administrasi) |
+</div>
 
-Aset desain (Google Stitch) dikerjakan oleh Vascha Uli Lumbantoruan dan Quinsha Ilmi Azzahra.
+**[EN]** Design assets (Google Stitch) were crafted by Vascha Uli Lumbantoruan and Quinsha Ilmi Azzahra.  
+**[ID]** Aset desain (Google Stitch) dikerjakan oleh Vascha Uli Lumbantoruan dan Quinsha Ilmi Azzahra.
 
-## Lisensi
+---
 
-Proyek ini dikembangkan untuk keperluan akademik (Tugas Besar perkuliahan). Kerangka kerja Laravel yang menjadi basis aplikasi dirilis di bawah lisensi MIT.
+## License | Lisensi
+
+**[EN]** This project was developed for academic purposes. The underlying Laravel framework is open-sourced software licensed under the MIT license.  
+**[ID]** Proyek ini dikembangkan untuk keperluan akademik. Kerangka kerja Laravel yang menjadi basis aplikasi dirilis di bawah lisensi MIT.
