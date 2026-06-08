@@ -33,7 +33,7 @@ class StoreCategoryRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'status' => $this->has('status') ? true : false,
+            'status' => $this->has('status') ? (bool) $this->status : true,
         ]);
     }
 }

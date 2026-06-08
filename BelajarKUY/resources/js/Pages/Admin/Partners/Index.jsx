@@ -1,7 +1,7 @@
 import { Head, useForm, router } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
+import Pagination from '@/Components/Admin/Pagination';
 import { useState } from 'react';
-import { Plus, Pencil, Trash2, X, Upload, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 
 function Modal({ title, onClose, children }) {
     return (
@@ -10,7 +10,9 @@ function Modal({ title, onClose, children }) {
             <div className="relative bg-surface rounded-2xl shadow-xl w-full max-w-md p-xl z-10">
                 <div className="flex justify-between items-center mb-lg">
                     <h3 className="font-headline-md text-headline-md text-on-surface">{title}</h3>
-                    <button onClick={onClose} className="text-on-surface-variant hover:text-error"><X className="w-5 h-5" /></button>
+                    <button onClick={onClose} className="text-on-surface-variant hover:text-error">
+                        <span className="material-symbols-outlined text-[20px]">close</span>
+                    </button>
                 </div>
                 {children}
             </div>
@@ -18,10 +20,6 @@ function Modal({ title, onClose, children }) {
     );
 }
 
-/**
- * Pages/Admin/Partners/Index.jsx
- * CRUD Partner (logo Cloudinary upload)
- */
 export default function PartnersIndex({ partners, editPartner = null }) {
     const [showCreate, setShowCreate] = useState(false);
     const [editItem, setEditItem] = useState(editPartner);
@@ -64,7 +62,7 @@ export default function PartnersIndex({ partners, editPartner = null }) {
                     <label className="font-label-md text-label-md text-on-surface block mb-xs">Logo {ei ? '(opsional, ganti logo)' : ''}</label>
                     {ei?.logo_url && <img src={ei.logo_url} alt={ei.name} className="h-10 object-contain mb-sm rounded" />}
                     <label className="flex items-center gap-sm bg-background-subtle border-2 border-dashed border-outline-variant hover:border-primary rounded-lg py-md px-md cursor-pointer transition-colors">
-                        <Upload className="w-4 h-4 text-on-surface-variant" />
+                        <span className="material-symbols-outlined text-[18px] text-on-surface-variant">upload</span>
                         <span className="font-body-md text-body-md text-on-surface-variant">{form.data.logo ? form.data.logo.name : 'Pilih logo…'}</span>
                         <input type="file" accept="image/*" className="hidden" onChange={e => form.setData('logo', e.target.files[0])} />
                     </label>
@@ -97,7 +95,7 @@ export default function PartnersIndex({ partners, editPartner = null }) {
                 </div>
                 <button id="btn-tambah-partner" onClick={() => setShowCreate(true)}
                     className="flex items-center gap-sm bg-primary text-on-primary font-label-md text-label-md px-lg py-sm rounded-lg hover:bg-primary-container shadow-sm">
-                    <Plus className="w-4 h-4" /> Tambah Partner
+                    <span className="material-symbols-outlined text-[18px]">add</span> Tambah Partner
                 </button>
             </div>
 
@@ -118,28 +116,24 @@ export default function PartnersIndex({ partners, editPartner = null }) {
                                 <p className="font-label-md text-label-md font-bold text-on-surface">{p.name}</p>
                                 {p.url && (
                                     <a href={p.url} target="_blank" rel="noreferrer" className="flex items-center gap-xs font-caption text-caption text-primary hover:underline mt-xs">
-                                        <ExternalLink className="w-3 h-3" /> Website
+                                        <span className="material-symbols-outlined text-[12px]">open_in_new</span> Website
                                     </a>
                                 )}
                             </div>
                             <div className="flex gap-sm">
-                                <button onClick={() => openEdit(p)} className="p-sm rounded-lg text-primary hover:bg-primary/10"><Pencil className="w-4 h-4" /></button>
-                                <button onClick={() => handleDelete(p)} className="p-sm rounded-lg text-error hover:bg-error-container"><Trash2 className="w-4 h-4" /></button>
+                                <button onClick={() => openEdit(p)} className="p-sm rounded-lg text-primary hover:bg-primary/10">
+                                    <span className="material-symbols-outlined text-[18px]">edit</span>
+                                </button>
+                                <button onClick={() => handleDelete(p)} className="p-sm rounded-lg text-error hover:bg-error-container">
+                                    <span className="material-symbols-outlined text-[18px]">delete</span>
+                                </button>
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
 
-            {partners.last_page > 1 && (
-                <div className="flex justify-between items-center mt-gutter">
-                    <span className="font-caption text-caption text-on-surface-variant">Halaman {partners.current_page} dari {partners.last_page}</span>
-                    <div className="flex gap-sm">
-                        {partners.prev_page_url && <a href={partners.prev_page_url} className="p-sm rounded-lg border border-outline-variant hover:bg-surface-variant"><ChevronLeft className="w-4 h-4" /></a>}
-                        {partners.next_page_url && <a href={partners.next_page_url} className="p-sm rounded-lg border border-outline-variant hover:bg-surface-variant"><ChevronRight className="w-4 h-4" /></a>}
-                    </div>
-                </div>
-            )}
+            <Pagination data={partners} />
 
             {showCreate && <Modal title="Tambah Partner" onClose={() => setShowCreate(false)}>
                 <PartnerForm form={createForm} onSubmit={handleCreate} label="Simpan" editItem={null} />

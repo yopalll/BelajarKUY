@@ -170,12 +170,13 @@ class CourseController extends Controller
                 'title'      => $s->title,
                 'sort_order' => $s->sort_order,
                 'lectures'   => $s->lectures->map(fn ($l) => [
-                    'id'         => $l->id,
-                    'title'      => $l->title,
-                    'url'        => $l->url,
-                    'content'    => $l->content,
-                    'duration'   => $l->duration,
-                    'sort_order' => $l->sort_order,
+                    'id'          => $l->id,
+                    'title'       => $l->title,
+                    'source_type' => $l->source_type ?? ($l->video_type === 'youtube' ? 'youtube' : 'gcs'),
+                    'video_path'  => $l->source_type === 'gcs' ? null : $l->video_path,
+                    'content'     => $l->content,
+                    'duration'    => $l->duration,
+                    'sort_order'  => $l->sort_order,
                 ]),
             ]);
 

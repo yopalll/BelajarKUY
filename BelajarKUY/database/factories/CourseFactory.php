@@ -30,7 +30,7 @@ class CourseFactory extends Factory
             'description' => fake()->paragraphs(3, true),
             'price' => fake()->randomElement([99000, 149000, 199000, 299000, 499000, 799000, 1200000]),
             'discount' => fake()->randomElement([0, 0, 0, 10, 20, 30, 50]),
-            'thumbnail' => 'courses/thumb-'.fake()->uuid().'.jpg',
+            'thumbnail' => 'https://placehold.co/600x340/300033/ffffff?text='.urlencode($title),
             'video_url' => 'https://youtu.be/'.fake()->regexify('[A-Za-z0-9]{11}'),
             'duration' => fake()->numberBetween(2, 40).' jam',
             'bestseller' => false,

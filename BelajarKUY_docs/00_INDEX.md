@@ -75,38 +75,19 @@ BelajarKUY_docs/
 │   ├── F13_COURSE_PLAYER.md             🆕 Watch page + progress tracking
 │   └── F14_NOTIFICATIONS.md             🆕 Email + real-time events
 │
-├── 04_plans/                            📅 Timeline & Task Distribution
-│   ├── MASTER_ROADMAP.md                Timeline Phase 1-5 (relative days)
-│   ├── SPRINT_PLAN.md                   Sprint breakdown per minggu
-│   ├── TASK_DISTRIBUTION.md             Pembagian tugas per anggota
-│   ├── MASTER_PLAN_REACT_INERTIA.md     🆕 Master plan migrasi Blade → React+Inertia
-│   ├── DOCS_UPDATE_PLAN_REACT_INERTIA.md 🆕 Rencana pembaruan seluruh dokumentasi
-│   ├── SCREEN_MAPPING_STITCH_REACT.md   🆕 Peta layar Stitch → halaman React
-│   ├── MIGRATION_SCHEDULE_REACT_INERTIA.md 🆕 Jadwal & push per bagian (per anggota)
-│   └── URUTAN_KERJA_TIM_REACT_INERTIA.md 🆕 Estafet langkah demi langkah (untuk diajarkan ke tim)
-│
-├── 05_prompts/                          🤖 AI Prompt Templates
-│   ├── PROMPT_SETUP_PROJECT.md          Init Laravel ^13.7 + React/Inertia project
-│   ├── PROMPT_MIGRATIONS.md             Generate migrations (Schema v2)
-│   ├── PROMPT_MODELS.md                 Generate Eloquent models
-│   ├── PROMPT_AUTH.md                   Build auth system
-│   ├── PROMPT_MIDTRANS.md               Integrate Midtrans
-│   ├── PROMPT_FRONTEND.md               Build frontend pages (React+Inertia)
-│   ├── PROMPT_ADMIN_PANEL.md            Build admin panel (React+Inertia)
-│   ├── PROMPT_INSTRUCTOR_PANEL.md       🆕 Sisa kerja Albariqi (instructor + course player)
-│   ├── PROMPT_COMMERCE.md               🆕 Sisa kerja Ray (cart/wishlist/coupon/Midtrans)
-│   └── PROMPT_ADMIN_REACT_MIGRATION.md  🆕 Sisa kerja Quinsha (migrasi admin → React)
-│
-├── 06_reports/                          📊 Progress & Daily Reports
-│   ├── PROGRESS_TRACKER.md              Status live progress
-│   ├── REPORT_2026-05-13_DATABASE_LAYER.md
-│   └── REPORT_2026-05-14_SEEDERS_FACTORIES.md
+├── 04_plans/                            📅 Rencana Migrasi React + Inertia
+│   ├── MASTER_PLAN_REACT_INERTIA.md     Master plan migrasi Blade → React+Inertia
+│   ├── DOCS_UPDATE_PLAN_REACT_INERTIA.md Rencana pembaruan seluruh dokumentasi
+│   ├── SCREEN_MAPPING_STITCH_REACT.md   Peta layar Stitch → halaman React
+│   ├── MIGRATION_SCHEDULE_REACT_INERTIA.md Jadwal & push per bagian (per anggota)
+│   └── URUTAN_KERJA_TIM_REACT_INERTIA.md Estafet langkah demi langkah (untuk diajarkan ke tim)
 │
 └── 07_extras/                           🎁 Extras & References
     ├── ERD_BelajarKUY.html              Visual ERD (HTML)
-    ├── TECH_STACK_EXTRAS.md             Additional tech details (Alpine, Reverb, dll)
-    └── AUDIT_DOCS_REVIEW.md             Docs audit report (14 Mei 2026)
+    └── TECH_STACK_EXTRAS.md             Additional tech details (Alpine, Reverb, dll)
 ```
+
+> **Catatan cleanup (2026-06-07):** folder `05_prompts/` (prompt sekali-pakai), `06_reports/` (log progres bertanggal), serta plan v1 `MASTER_ROADMAP`/`SPRINT_PLAN`/`TASK_DISTRIBUTION` & `07_extras/AUDIT_DOCS_REVIEW.md` telah **dihapus** sebagai artefak v1 yang tak relevan. Lihat `docs/final-audit/05_CLEANUP_DOKUMENTASI.md`.
 
 ---
 
@@ -122,21 +103,9 @@ BelajarKUY_docs/
 
 ---
 
-## 📈 Current Status (28 Mei 2026)
+## 📈 Current Status
 
-| Phase | Status | Notes |
-|-------|--------|-------|
-| P0: Project Setup | 🟢 Done | Laravel ^13.7 + React/Inertia + Tailwind + Vite |
-| P1: Database (Migrations + Models) | 🟢 Done | 19 tables, 19 models |
-| P1b: Seeders + Factories | 🟢 Done | 896 records seeded |
-| P2: Auth System | 🔜 Next | Breeze + RoleMiddleware + Google OAuth |
-| P3: Commerce | 🔴 Pending | Cart, wishlist, Midtrans, coupon |
-| P4: Admin Panel | 🟡 In Progress | **Halaman React + Inertia** (`Pages/Admin/*`, tanpa Filament). Sebagian halaman TBD. |
-| P5: Polish | 🔴 Pending | Review, settings, testing, deploy |
-
-**Overall:** ~20% complete.
-
-Lihat `06_reports/PROGRESS_TRACKER.md` untuk detail live.
+> Status fitur jauh lebih maju dari catatan v1 (yang lama menyebut "~20%"). Semua modul inti (auth, commerce/Midtrans, admin/instructor/student panel React+Inertia) sudah ada. Untuk kondisi bug & yang perlu dibereskan terkini, lihat **`docs/final-audit/`** (2026-06-07) dan `LAPORAN_AUDIT/` (2026-06-06).
 
 ---
 
@@ -150,8 +119,8 @@ Lihat `06_reports/PROGRESS_TRACKER.md` untuk detail live.
 6. **JANGAN** cek enrollment via `Order::where(...)` — pakai `Enrollment` table
 7. **SELALU** commit sesuai Conventional Commits: `feat(module): ...`
 8. **JANGAN** push ke `main` langsung — selalu via feature branch + PR
-9. **UPDATE** `06_reports/PROGRESS_TRACKER.md` setelah setiap sesi kerja
-10. **BUAT** daily report di `06_reports/REPORT_YYYY-MM-DD_TOPIC.md` setelah milestone
+9. **JANGAN** bikin desain UI sendiri — selalu dari `BelajarKuy_Design_Revisi/.../code.html`
+10. **SELALU** `npm run build` setelah menambah/ubah `resources/js/Pages/*.jsx`
 
 ---
 

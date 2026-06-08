@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\WelcomeMail;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -44,9 +46,13 @@ class GoogleController extends Controller
         $existingUser = User::where('email', $googleUser->email)->first();
 
         if ($existingUser) {
-            // Update photo jika belum ada (untuk user existing yang baru pertama login Google)
+            // Update photo jika belum ada
             if (! $existingUser->photo && $googleUser->avatar) {
                 $existingUser->update(['photo' => $googleUser->avatar]);
+            }
+            // Google sudah verify email — bypass OTP untuk akun yang belum terverifikasi
+            if (! $existingUser->hasVerifiedEmail()) {
+                $existingUser->markEmailAsVerified();
             }
             $user = $existingUser;
         } else {
@@ -60,8 +66,7 @@ class GoogleController extends Controller
                 'email_verified_at' => now(), // ✅ KEY FIX — Google sudah verify email
             ]);
 
-            // TODO: Send WelcomeMail (F14) saat user pertama register via Google
-            // Mail::to($user)->queue(new WelcomeMail($user));
+            Mail::to($user->email)->queue(new WelcomeMail($user));
         }
 
         Auth::login($user, remember: true);

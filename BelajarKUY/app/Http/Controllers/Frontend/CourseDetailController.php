@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\Course;
+use App\Models\Enrollment;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -21,7 +24,9 @@ class CourseDetailController extends Controller
                 'sections.lectures', 
                 'goals', 
                 'reviews' => function($q) {
-                    $q->where('status', true)->latest();
+                    // kolom status bertipe string ('pending'|'approved'|'rejected'),
+                    // bukan boolean — hanya tampilkan yang sudah di-approve admin
+                    $q->where('status', 'approved')->latest();
                 },
                 'reviews.user'
             ])
@@ -37,22 +42,37 @@ class CourseDetailController extends Controller
             ->get();
 
         // 3. Business rule checks for review eligibility
-        $showReviewForm = false;
+        $showReviewForm   = false;
+        $hasPendingReview = false;
         if (auth()->check()) {
             $canReview = \App\Models\Order::where('user_id', auth()->id())
                 ->where('course_id', $course->id)
                 ->where('status', 'completed')
                 ->exists();
 
-            $alreadyReviewed = \App\Models\Review::where('user_id', auth()->id())
+            $existingReview = \App\Models\Review::where('user_id', auth()->id())
                 ->where('course_id', $course->id)
-                ->exists();
+                ->first();
 
-            $showReviewForm = $canReview && !$alreadyReviewed;
+            $alreadyReviewed  = (bool) $existingReview;
+            $hasPendingReview = $existingReview && $existingReview->status === 'pending';
+            $showReviewForm   = $canReview && !$alreadyReviewed;
         }
 
-        // Fase 1 migrasi React+Inertia (ADR-008): ganti view() → Inertia::render()
-        return Inertia::render('Courses/Show', compact('course', 'relatedCourses', 'showReviewForm'));
+        $inCart       = false;
+        $isWishlisted = false;
+        $isEnrolled   = false;
+        if (auth()->check()) {
+            $uid = auth()->id();
+            $inCart       = Cart::where('user_id', $uid)->where('course_id', $course->id)->exists();
+            $isWishlisted = Wishlist::where('user_id', $uid)->where('course_id', $course->id)->exists();
+            $isEnrolled   = Enrollment::where('user_id', $uid)->where('course_id', $course->id)->exists();
+        }
+
+        return Inertia::render('Courses/Show', compact(
+            'course', 'relatedCourses', 'showReviewForm', 'hasPendingReview',
+            'inCart', 'isWishlisted', 'isEnrolled',
+        ));
     }
 
     /**
@@ -88,7 +108,7 @@ class CourseDetailController extends Controller
             'course_id' => $course->id,
             'rating' => $request->rating,
             'comment' => $request->comment,
-            'status' => false, // Pending admin approval by default
+            'status' => 'pending', // string column — menunggu approve admin (bukan boolean false)
         ]);
 
         return redirect()->back()->with('success', 'Ulasan Anda berhasil dikirim dan menunggu persetujuan admin.');

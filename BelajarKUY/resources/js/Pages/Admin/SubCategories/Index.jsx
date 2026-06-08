@@ -1,7 +1,7 @@
 import { Head, useForm, router } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
+import Pagination from '@/Components/Admin/Pagination';
 import { useState } from 'react';
-import { Plus, Pencil, Trash2, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 function Modal({ title, onClose, children }) {
     return (
@@ -11,7 +11,7 @@ function Modal({ title, onClose, children }) {
                 <div className="flex justify-between items-center mb-lg">
                     <h3 className="font-headline-md text-headline-md text-on-surface">{title}</h3>
                     <button onClick={onClose} className="text-on-surface-variant hover:text-error transition-colors">
-                        <X className="w-5 h-5" />
+                        <span className="material-symbols-outlined text-[20px]">close</span>
                     </button>
                 </div>
                 {children}
@@ -20,10 +20,6 @@ function Modal({ title, onClose, children }) {
     );
 }
 
-/**
- * Pages/Admin/SubCategories/Index.jsx
- * CRUD sub-kategori dengan dropdown parent — desain Konteks_A (Quinsha)
- */
 export default function SubCategoriesIndex({ subCategories, categories = [], subCategory: editInit = null }) {
     const [showCreate, setShowCreate] = useState(false);
     const [editItem, setEditItem] = useState(editInit);
@@ -59,7 +55,6 @@ export default function SubCategoriesIndex({ subCategories, categories = [], sub
         <AdminLayout title="Admin Portal">
             <Head title="Sub-Kategori — BelajarKUY Admin" />
 
-            {/* Header */}
             <div className="flex justify-between items-center mb-gutter">
                 <div>
                     <h1 className="font-headline-lg text-headline-lg text-on-surface">Sub-Kategori</h1>
@@ -72,12 +67,11 @@ export default function SubCategoriesIndex({ subCategories, categories = [], sub
                     onClick={() => setShowCreate(true)}
                     className="flex items-center gap-sm bg-primary text-on-primary font-label-md text-label-md px-lg py-sm rounded-lg hover:bg-primary-container transition-colors shadow-sm"
                 >
-                    <Plus className="w-4 h-4" />
+                    <span className="material-symbols-outlined text-[18px]">add</span>
                     Tambah Sub-Kategori
                 </button>
             </div>
 
-            {/* Table */}
             <div className="bg-surface rounded-2xl shadow-[0_8px_30px_rgb(48,0,51,0.04)] overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
@@ -107,10 +101,10 @@ export default function SubCategoriesIndex({ subCategories, categories = [], sub
                                     <td className="py-md px-lg text-right">
                                         <div className="flex items-center justify-end gap-sm">
                                             <button onClick={() => openEdit(sub)} className="p-sm rounded-lg text-primary hover:bg-primary/10 transition-colors" title="Edit">
-                                                <Pencil className="w-4 h-4" />
+                                                <span className="material-symbols-outlined text-[18px]">edit</span>
                                             </button>
                                             <button onClick={() => handleDelete(sub)} className="p-sm rounded-lg text-error hover:bg-error-container transition-colors" title="Hapus">
-                                                <Trash2 className="w-4 h-4" />
+                                                <span className="material-symbols-outlined text-[18px]">delete</span>
                                             </button>
                                         </div>
                                     </td>
@@ -119,26 +113,7 @@ export default function SubCategoriesIndex({ subCategories, categories = [], sub
                         </tbody>
                     </table>
                 </div>
-                {/* Pagination */}
-                {subCategories.last_page > 1 && (
-                    <div className="flex justify-between items-center px-lg py-md border-t border-surface-variant">
-                        <span className="font-caption text-caption text-on-surface-variant">
-                            Halaman {subCategories.current_page} dari {subCategories.last_page}
-                        </span>
-                        <div className="flex gap-sm">
-                            {subCategories.prev_page_url && (
-                                <a href={subCategories.prev_page_url} className="p-sm rounded-lg border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors">
-                                    <ChevronLeft className="w-4 h-4" />
-                                </a>
-                            )}
-                            {subCategories.next_page_url && (
-                                <a href={subCategories.next_page_url} className="p-sm rounded-lg border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors">
-                                    <ChevronRight className="w-4 h-4" />
-                                </a>
-                            )}
-                        </div>
-                    </div>
-                )}
+                <Pagination data={subCategories} />
             </div>
 
             {/* Modal Create */}

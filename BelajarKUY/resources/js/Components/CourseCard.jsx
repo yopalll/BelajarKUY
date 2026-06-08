@@ -1,17 +1,17 @@
 import { Link, usePage } from '@inertiajs/react';
-import { Star, ShoppingCart, Heart, Check } from 'lucide-react';
 import { useState } from 'react';
 
 const rupiah = (n) => 'Rp ' + Number(n ?? 0).toLocaleString('id-ID');
 
 /**
  * Komponen reusable CourseCard (≥2 layar).
+ * Desain dari: katalog_kursus_final_polish/code.html (Vascha & Quinsha).
  *
  * Props:
- *   course        – objek Course (lihat model Course)
- *   isWishlisted  – boolean (opsional), status wishlist awal
- *   onWishlistChange – callback(courseId, newIsWishlisted) opsional
- *   isInCart      – boolean (opsional), sudah di keranjang
+ *   course            – objek Course
+ *   isWishlisted      – boolean (opsional)
+ *   onWishlistChange  – callback(courseId, newIsWishlisted) opsional
+ *   isInCart          – boolean (opsional)
  */
 export default function CourseCard({ course, isWishlisted: initialWishlisted = false, onWishlistChange, isInCart: initialInCart = false }) {
     const { auth } = usePage().props;
@@ -64,7 +64,6 @@ export default function CourseCard({ course, isWishlisted: initialWishlisted = f
         } finally { setCartLoading(false); }
     }
 
-    // Helper CSRF
     function getCsrf() {
         return decodeURIComponent(
             document.cookie.split('; ').find((r) => r.startsWith('XSRF-TOKEN='))?.split('=')[1] ?? '',
@@ -72,112 +71,156 @@ export default function CourseCard({ course, isWishlisted: initialWishlisted = f
     }
 
     return (
-        <div className="group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col h-full relative">
-            {/* Badges */}
-            <div className="absolute top-4 left-4 z-10 flex flex-col gap-1.5">
-                {course.bestseller && (
-                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-amber-500 to-orange-500 text-white">
-                        Bestseller
-                    </span>
-                )}
-                {course.featured && (
-                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-                        Featured
-                    </span>
-                )}
-            </div>
+        <div
+            className="group bg-surface rounded-2xl overflow-hidden border border-transparent hover:border-primary/10 transition-colors flex flex-col h-full relative"
+            style={{ boxShadow: '0 4px 24px rgba(48,0,51,0.08)' }}
+        >
+            {/* Badges (bestseller/featured) */}
+            {(course.bestseller || course.featured) && (
+                <div className="absolute top-3 left-3 z-10 flex flex-col gap-xs">
+                    {course.bestseller && (
+                        <span className="px-2 py-0.5 rounded-full font-caption text-caption font-bold bg-secondary-container text-on-secondary-container">
+                            Bestseller
+                        </span>
+                    )}
+                    {course.featured && (
+                        <span className="px-2 py-0.5 rounded-full font-caption text-caption font-bold bg-primary text-on-primary">
+                            Featured
+                        </span>
+                    )}
+                </div>
+            )}
 
-            {/* Tombol Wishlist */}
+            {/* Wishlist toggle */}
             <button
                 onClick={handleWishlistToggle}
                 disabled={loading}
-                className={`absolute top-4 right-4 z-10 w-9 h-9 rounded-full border flex items-center justify-center transition-all ${
+                className={`absolute top-3 right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center transition-all ${
                     wishlisted
-                        ? 'bg-red-500 border-red-500 text-white hover:bg-red-600'
-                        : 'bg-white/90 border-gray-100 text-gray-500 hover:text-red-500'
+                        ? 'bg-error text-on-error'
+                        : 'bg-white/90 backdrop-blur-sm text-primary hover:bg-primary-fixed/30'
                 } ${loading ? 'opacity-60 cursor-wait' : ''}`}
                 aria-label={wishlisted ? 'Hapus dari Wishlist' : 'Tambah ke Wishlist'}
-                title={wishlisted ? 'Hapus dari Wishlist' : 'Tambah ke Wishlist'}
             >
-                <Heart className={`w-5 h-5 ${wishlisted ? 'fill-current' : ''}`} />
+                <span
+                    className="material-symbols-outlined text-[20px]"
+                    style={{ fontVariationSettings: wishlisted ? "'FILL' 1" : "'FILL' 0" }}
+                >
+                    favorite
+                </span>
             </button>
 
             {/* Thumbnail */}
-            <Link href={`/courses/${course.slug}`} className="block overflow-hidden bg-gray-50 aspect-video">
+            <Link href={`/courses/${course.slug}`} className="block overflow-hidden bg-surface-container-low relative" style={{ height: '160px' }}>
                 <img
-                    src={
-                        course.thumbnail ||
-                        'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80'
-                    }
+                    src={course.thumbnail || 'https://placehold.co/600x340/300033/ffffff?text=BelajarKUY'}
                     alt={course.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                        if (!e.currentTarget.dataset.fallback) {
+                            e.currentTarget.dataset.fallback = '1';
+                            e.currentTarget.src = 'https://placehold.co/600x340/300033/ffffff?text=BelajarKUY';
+                        }
+                    }}
                 />
+                {/* Rating overlay badge */}
+                {rating > 0 && (
+                    <div className="absolute bottom-2 left-3 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full flex items-center gap-1">
+                        <span
+                            className="material-symbols-outlined text-secondary-container text-[14px]"
+                            style={{ fontVariationSettings: "'FILL' 1" }}
+                        >
+                            star
+                        </span>
+                        <span className="font-caption text-caption text-on-surface font-bold">{rating.toFixed(1)}</span>
+                    </div>
+                )}
             </Link>
 
-            {/* Konten */}
-            <div className="p-6 flex flex-col flex-1">
-                <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg w-max mb-3 uppercase tracking-wider">
-                    {course.category?.name ?? 'Kategori'}
-                </span>
-                <h3 className="text-base font-bold text-gray-900 leading-snug group-hover:text-indigo-600 mb-2 line-clamp-2 min-h-[2.75rem]">
+            {/* Content */}
+            <div className="p-md flex flex-col flex-1">
+                {/* Category pill */}
+                <div className="flex items-center gap-2 mb-sm">
+                    <span className="px-2 py-0.5 bg-primary-fixed/20 text-primary rounded-full font-caption text-[10px] uppercase font-bold tracking-wider">
+                        {course.category?.name ?? 'Kategori'}
+                    </span>
+                </div>
+
+                {/* Title */}
+                <h3 className="font-label-md text-body-lg font-bold text-on-surface mb-xs line-clamp-2 leading-tight group-hover:text-primary transition-colors">
                     <Link href={`/courses/${course.slug}`}>{course.title}</Link>
                 </h3>
 
-                <div className="flex items-center gap-2.5 mb-4">
-                    <img
-                        src={
-                            course.instructor?.photo ||
-                            `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                                course.instructor?.name ?? 'BK',
-                            )}&background=4F46E5&color=fff`
-                        }
-                        alt={course.instructor?.name}
-                        className="h-6 w-6 rounded-full object-cover border border-indigo-100"
-                    />
-                    <span className="text-xs font-medium text-gray-600 truncate">{course.instructor?.name}</span>
-                </div>
-
-                <div className="flex items-center gap-1.5 mb-4">
-                    <div className="flex items-center text-amber-400">
-                        {[1, 2, 3, 4, 5].map((i) => (
-                            <Star
-                                key={i}
-                                className={`w-4 h-4 ${i <= Math.round(rating) ? 'fill-current' : 'text-gray-200'}`}
-                            />
-                        ))}
+                {/* Instructor */}
+                <div className="flex items-center gap-2 mb-md pt-xs border-t border-surface-variant mt-xs">
+                    <div className="w-6 h-6 rounded-full bg-surface-container-highest overflow-hidden shrink-0">
+                        <img
+                            src={
+                                course.instructor?.photo ||
+                                `https://ui-avatars.com/api/?name=${encodeURIComponent(course.instructor?.name ?? 'BK')}&background=300033&color=fff`
+                            }
+                            alt={course.instructor?.name}
+                            className="w-full h-full object-cover"
+                        />
                     </div>
-                    <span className="text-sm font-bold text-gray-800">{rating.toFixed(1)}</span>
-                    <span className="text-xs text-gray-400">({reviewCount} ulasan)</span>
+                    {course.instructor?.id ? (
+                        <Link
+                            href={`/instructors/${course.instructor.id}`}
+                            onClick={e => e.stopPropagation()}
+                            className="font-caption text-caption text-on-surface-variant hover:text-primary truncate transition-colors"
+                        >
+                            {course.instructor?.name}
+                        </Link>
+                    ) : (
+                        <span className="font-caption text-caption text-on-surface-variant truncate">{course.instructor?.name}</span>
+                    )}
                 </div>
 
-                <div className="mt-auto border-t border-gray-50 pt-4 flex items-center justify-between">
+                {/* Star rating row */}
+                <div className="flex items-center gap-0.5 mb-md">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                        <span
+                            key={i}
+                            className="material-symbols-outlined text-secondary-container text-[15px]"
+                            style={{ fontVariationSettings: i <= Math.round(rating) ? "'FILL' 1" : "'FILL' 0" }}
+                        >
+                            star
+                        </span>
+                    ))}
+                    <span className="font-caption text-caption text-on-surface-variant ml-1">({reviewCount})</span>
+                </div>
+
+                {/* Price + Cart */}
+                <div className="mt-auto flex items-center justify-between">
                     <div className="flex flex-col">
                         {hasDiscount ? (
                             <>
-                                <span className="text-xs text-gray-400 line-through">{rupiah(course.price)}</span>
-                                <span className="text-lg font-extrabold text-indigo-600">
-                                    {rupiah(course.discounted_price)}
-                                </span>
+                                <span className="font-caption text-caption text-on-surface-variant line-through">{rupiah(course.price)}</span>
+                                <span className="font-body-lg text-body-lg font-bold text-primary">{rupiah(course.discounted_price)}</span>
                             </>
                         ) : Number(course.price) === 0 ? (
-                            <span className="text-lg font-extrabold text-emerald-600">Gratis</span>
+                            <span className="font-body-lg text-body-lg font-bold text-success">Gratis</span>
                         ) : (
-                            <span className="text-lg font-extrabold text-gray-900">{rupiah(course.price)}</span>
+                            <span className="font-body-lg text-body-lg font-bold text-primary">{rupiah(course.price)}</span>
                         )}
-                        {cartMsg && <span className="text-xs text-red-500 mt-0.5">{cartMsg}</span>}
+                        {cartMsg && <span className="font-caption text-caption text-error mt-xs">{cartMsg}</span>}
                     </div>
                     <button
                         onClick={handleCartAdd}
                         disabled={cartLoading || inCart}
-                        className={`p-2.5 rounded-2xl transition-all ${
+                        className={`p-2 rounded-full transition-all ${
                             inCart
-                                ? 'bg-emerald-50 text-emerald-600 cursor-default'
-                                : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white'
+                                ? 'bg-success/10 text-success cursor-default'
+                                : 'text-primary hover:bg-primary-fixed/20'
                         } ${cartLoading ? 'opacity-60 cursor-wait' : ''}`}
                         aria-label={inCart ? 'Sudah di Keranjang' : 'Tambah ke Keranjang'}
-                        title={inCart ? 'Sudah di Keranjang' : 'Tambah ke Keranjang'}
                     >
-                        {inCart ? <Check className="w-5 h-5" /> : <ShoppingCart className="w-5 h-5" />}
+                        <span
+                            className="material-symbols-outlined text-[22px]"
+                            style={{ fontVariationSettings: inCart ? "'FILL' 1" : "'FILL' 0" }}
+                        >
+                            {inCart ? 'check_circle' : 'shopping_cart'}
+                        </span>
                     </button>
                 </div>
             </div>

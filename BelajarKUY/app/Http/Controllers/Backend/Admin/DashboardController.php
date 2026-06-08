@@ -24,7 +24,7 @@ class DashboardController extends Controller
             'total_courses'     => Course::count(),
             'active_courses'    => Course::where('status', 'active')->count(),
             'total_orders'      => Order::where('status', 'completed')->count(),
-            'total_revenue'     => Order::where('status', 'completed')->sum('amount'),
+            'total_revenue'     => Order::where('status', 'completed')->sum('final_price'),
             'pending_courses'   => Course::where('status', 'pending_review')->count(),
             'pending_reviews'   => Review::where('status', 'pending')->count(),
         ];

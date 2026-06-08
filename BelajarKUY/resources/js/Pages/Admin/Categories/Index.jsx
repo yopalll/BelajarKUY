@@ -1,7 +1,7 @@
 import { Head, useForm, router } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
+import Pagination from '@/Components/Admin/Pagination';
 import { useState } from 'react';
-import { Plus, Pencil, Trash2, X, Upload, ChevronLeft, ChevronRight } from 'lucide-react';
 
 function Modal({ title, onClose, children }) {
     return (
@@ -11,7 +11,7 @@ function Modal({ title, onClose, children }) {
                 <div className="flex justify-between items-center mb-lg">
                     <h3 className="font-headline-md text-headline-md text-on-surface">{title}</h3>
                     <button onClick={onClose} className="text-on-surface-variant hover:text-error transition-colors">
-                        <X className="w-5 h-5" />
+                        <span className="material-symbols-outlined text-[20px]">close</span>
                     </button>
                 </div>
                 {children}
@@ -20,17 +20,25 @@ function Modal({ title, onClose, children }) {
     );
 }
 
-/**
- * Pages/Admin/Categories/Index.jsx
- * CRUD kategori dengan modal — desain Konteks_A (Quinsha)
- */
+function ToggleSwitch({ checked, onChange, disabled }) {
+    return (
+        <button
+            type="button"
+            onClick={onChange}
+            disabled={disabled}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none disabled:opacity-50 ${checked ? 'bg-success' : 'bg-surface-variant'}`}
+        >
+            <span className={`inline-block h-4 w-4 rounded-full bg-white shadow transition-transform ${checked ? 'translate-x-6' : 'translate-x-1'}`} />
+        </button>
+    );
+}
+
 export default function CategoriesIndex({ categories, editCategory = null }) {
     const [showCreate, setShowCreate] = useState(false);
     const [editItem, setEditItem] = useState(editCategory);
+    const [toggling, setToggling] = useState(null);
 
-    // Create form
     const createForm = useForm({ name: '', image: null });
-    // Edit form
     const editForm = useForm({ name: editItem?.name ?? '', image: null, _method: 'PATCH' });
 
     function handleCreate(e) {
@@ -54,11 +62,18 @@ export default function CategoriesIndex({ categories, editCategory = null }) {
         router.delete(`/admin/categories/${category.id}`);
     }
 
+    function handleToggle(category) {
+        setToggling(category.id);
+        router.patch(route('admin.categories.toggle', category.id), {}, {
+            onFinish: () => setToggling(null),
+            preserveScroll: true,
+        });
+    }
+
     return (
         <AdminLayout title="Admin Portal">
             <Head title="Kategori — BelajarKUY Admin" />
 
-            {/* Header */}
             <div className="flex justify-between items-center mb-gutter">
                 <div>
                     <h1 className="font-headline-lg text-headline-lg text-on-surface">Kategori</h1>
@@ -71,12 +86,11 @@ export default function CategoriesIndex({ categories, editCategory = null }) {
                     onClick={() => setShowCreate(true)}
                     className="flex items-center gap-sm bg-primary text-on-primary font-label-md text-label-md px-lg py-sm rounded-lg hover:bg-primary-container transition-colors shadow-sm"
                 >
-                    <Plus className="w-4 h-4" />
+                    <span className="material-symbols-outlined text-[18px]">add</span>
                     Tambah Kategori
                 </button>
             </div>
 
-            {/* Table */}
             <div className="bg-surface rounded-2xl shadow-[0_8px_30px_rgb(48,0,51,0.04)] overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
@@ -85,13 +99,14 @@ export default function CategoriesIndex({ categories, editCategory = null }) {
                                 <th className="py-md px-lg font-label-md text-label-md text-on-surface-variant">Gambar</th>
                                 <th className="py-md px-lg font-label-md text-label-md text-on-surface-variant">Nama</th>
                                 <th className="py-md px-lg font-label-md text-label-md text-on-surface-variant hidden md:table-cell">Slug</th>
+                                <th className="py-md px-lg font-label-md text-label-md text-on-surface-variant text-center">Aktif</th>
                                 <th className="py-md px-lg font-label-md text-label-md text-on-surface-variant text-right">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             {categories.data?.length === 0 && (
                                 <tr>
-                                    <td colSpan={4} className="py-xl text-center text-on-surface-variant font-body-md text-body-md">
+                                    <td colSpan={5} className="py-xl text-center text-on-surface-variant font-body-md text-body-md">
                                         Belum ada kategori
                                     </td>
                                 </tr>
@@ -105,7 +120,14 @@ export default function CategoriesIndex({ categories, editCategory = null }) {
                                         }
                                     </td>
                                     <td className="py-md px-lg font-body-md text-body-md text-on-surface font-medium">{cat.name}</td>
-                                    <td className="py-md px-lg font-body-md text-body-md text-on-surface-variant hidden md:table-cell font-mono text-sm">{cat.slug}</td>
+                                    <td className="py-md px-lg text-body-md text-on-surface-variant hidden md:table-cell font-mono text-sm">{cat.slug}</td>
+                                    <td className="py-md px-lg text-center">
+                                        <ToggleSwitch
+                                            checked={!!cat.status}
+                                            onChange={() => handleToggle(cat)}
+                                            disabled={toggling === cat.id}
+                                        />
+                                    </td>
                                     <td className="py-md px-lg text-right">
                                         <div className="flex items-center justify-end gap-sm">
                                             <button
@@ -113,14 +135,14 @@ export default function CategoriesIndex({ categories, editCategory = null }) {
                                                 className="p-sm rounded-lg text-primary hover:bg-primary/10 transition-colors"
                                                 title="Edit"
                                             >
-                                                <Pencil className="w-4 h-4" />
+                                                <span className="material-symbols-outlined text-[18px]">edit</span>
                                             </button>
                                             <button
                                                 onClick={() => handleDelete(cat)}
                                                 className="p-sm rounded-lg text-error hover:bg-error-container transition-colors"
                                                 title="Hapus"
                                             >
-                                                <Trash2 className="w-4 h-4" />
+                                                <span className="material-symbols-outlined text-[18px]">delete</span>
                                             </button>
                                         </div>
                                     </td>
@@ -129,26 +151,7 @@ export default function CategoriesIndex({ categories, editCategory = null }) {
                         </tbody>
                     </table>
                 </div>
-                {/* Pagination */}
-                {categories.last_page > 1 && (
-                    <div className="flex justify-between items-center px-lg py-md border-t border-surface-variant">
-                        <span className="font-caption text-caption text-on-surface-variant">
-                            Halaman {categories.current_page} dari {categories.last_page}
-                        </span>
-                        <div className="flex gap-sm">
-                            {categories.prev_page_url && (
-                                <a href={categories.prev_page_url} className="p-sm rounded-lg border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors">
-                                    <ChevronLeft className="w-4 h-4" />
-                                </a>
-                            )}
-                            {categories.next_page_url && (
-                                <a href={categories.next_page_url} className="p-sm rounded-lg border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors">
-                                    <ChevronRight className="w-4 h-4" />
-                                </a>
-                            )}
-                        </div>
-                    </div>
-                )}
+                <Pagination data={categories} />
             </div>
 
             {/* Modal Create */}
@@ -171,7 +174,7 @@ export default function CategoriesIndex({ categories, editCategory = null }) {
                             <div>
                                 <label className="font-label-md text-label-md text-on-surface block mb-xs">Gambar Kategori</label>
                                 <label className="flex items-center gap-sm bg-background-subtle border-2 border-dashed border-outline-variant hover:border-primary rounded-lg py-md px-md cursor-pointer transition-colors">
-                                    <Upload className="w-4 h-4 text-on-surface-variant" />
+                                    <span className="material-symbols-outlined text-[18px] text-on-surface-variant">upload</span>
                                     <span className="font-body-md text-body-md text-on-surface-variant">
                                         {createForm.data.image ? createForm.data.image.name : 'Pilih gambar…'}
                                     </span>
@@ -213,7 +216,7 @@ export default function CategoriesIndex({ categories, editCategory = null }) {
                                     <img src={editItem.image_url} alt={editItem.name} className="w-16 h-16 rounded-lg object-cover mb-sm" />
                                 )}
                                 <label className="flex items-center gap-sm bg-background-subtle border-2 border-dashed border-outline-variant hover:border-primary rounded-lg py-md px-md cursor-pointer transition-colors">
-                                    <Upload className="w-4 h-4 text-on-surface-variant" />
+                                    <span className="material-symbols-outlined text-[18px] text-on-surface-variant">upload</span>
                                     <span className="font-body-md text-body-md text-on-surface-variant">
                                         {editForm.data.image ? editForm.data.image.name : 'Ganti gambar…'}
                                     </span>

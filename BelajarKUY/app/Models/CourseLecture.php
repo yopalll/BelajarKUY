@@ -14,6 +14,9 @@ class CourseLecture extends Model
     protected $fillable = [
         'section_id',
         'title',
+        'source_type',
+        'video_path',
+        'video_type',
         'url',
         'content',
         'duration',

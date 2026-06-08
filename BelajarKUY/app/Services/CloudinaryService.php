@@ -72,4 +72,20 @@ class CloudinaryService
             }
         }
     }
+
+    /**
+     * Alias for uploadImage (used by some Admin controllers).
+     */
+    public function upload(UploadedFile $file, string $folder = 'lms_assets'): array
+    {
+        return $this->uploadImage($file, $folder);
+    }
+
+    /**
+     * Alias for deleteImage (used by some Admin controllers).
+     */
+    public function delete(string $publicId): void
+    {
+        $this->deleteImage($publicId);
+    }
 }

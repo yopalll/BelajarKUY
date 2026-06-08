@@ -12,6 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Trust semua reverse proxy (ngrok, Cloudflare, load balancer)
+        $middleware->trustProxies(at: '*');
+
         // Inertia: wajib ada di web group agar auth & shared props dikirim ke React
         $middleware->web(append: [
             \App\Http\Middleware\HandleInertiaRequests::class,
@@ -25,8 +28,12 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        // Semua HTTP error → React error pages via Inertia
+        // Semua HTTP error → React error pages via Inertia (hanya jika debug dinonaktifkan)
         $exceptions->respond(function (\Symfony\Component\HttpFoundation\Response $response, \Throwable $e, \Illuminate\Http\Request $request) {
+            if (config('app.debug')) {
+                return $response;
+            }
+
             $status  = $response->getStatusCode();
             $handled = [403, 404, 419, 429, 500, 503];
 

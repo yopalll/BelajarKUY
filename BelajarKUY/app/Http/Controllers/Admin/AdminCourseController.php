@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\CourseApprovedMail;
 use App\Mail\CourseRejectedMail;
 use App\Models\Course;
+use App\Notifications\CourseStatusNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
@@ -56,16 +57,20 @@ class AdminCourseController extends Controller
 
         // Kirim email hanya jika ada perubahan status yang relevan
         if ($request->status === 'active' && $oldStatus !== 'active') {
-            // Kursus disetujui → email approval ke instruktur
             if ($course->instructor && $course->instructor->email) {
                 Mail::to($course->instructor->email)
                     ->queue(new CourseApprovedMail($course));
             }
+            if ($course->instructor) {
+                $course->instructor->notify(new CourseStatusNotification($course, 'active'));
+            }
         } elseif ($request->status === 'inactive' && $oldStatus === 'pending_review') {
-            // Kursus ditolak dari pending_review → email rejection ke instruktur
             if ($course->instructor && $course->instructor->email) {
                 Mail::to($course->instructor->email)
                     ->queue(new CourseRejectedMail($course, $request->reason));
+            }
+            if ($course->instructor) {
+                $course->instructor->notify(new CourseStatusNotification($course, 'inactive', $request->reason));
             }
         }
 

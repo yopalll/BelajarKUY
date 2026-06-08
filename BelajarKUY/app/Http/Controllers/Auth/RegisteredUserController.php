@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\WelcomeMail;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class RegisteredUserController extends Controller
 {
@@ -30,7 +32,7 @@ class RegisteredUserController extends Controller
      *
      * @throws ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): SymfonyResponse
     {
         $request->validate([
             'name'     => ['required', 'string', 'max:255'],
@@ -51,10 +53,13 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        // TODO: Send WelcomeMail (F14) — Mail::to($user)->queue(new WelcomeMail($user));
+        Mail::to($user->email)->queue(new WelcomeMail($user));
 
         Auth::login($user);
 
+        // Inertia::location() → 409 + X-Inertia-Location → client paksa full reload ke /dashboard
+        // (dashboard di-dispatch per-role). Mengembalikan SymfonyResponse (bukan RedirectResponse)
+        // saat request berupa XHR Inertia — return type WAJIB SymfonyResponse agar tidak TypeError.
         return Inertia::location(route('dashboard'));
     }
 }

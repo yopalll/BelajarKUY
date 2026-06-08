@@ -1,11 +1,6 @@
 import { Head, useForm } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
-import { Save, Upload, Globe, Share2 } from 'lucide-react';
 
-/**
- * Pages/Admin/Settings/Index.jsx
- * Pengaturan situs global — desain dari pengaturan_situs_global/code.html (Quinsha, Konteks_A)
- */
 export default function SettingsIndex({ settings = {} }) {
     const { data, setData, post, processing, errors } = useForm({
         site_name:     settings.site_name     ?? '',
@@ -46,7 +41,7 @@ export default function SettingsIndex({ settings = {} }) {
                     <div className="bg-surface rounded-2xl p-lg shadow-sm border border-primary/10">
                         <div className="flex items-center gap-sm mb-md pb-md border-b border-surface-variant">
                             <div className="bg-primary-container p-sm rounded-lg text-on-primary-container">
-                                <Globe className="w-5 h-5" />
+                                <span className="material-symbols-outlined text-[20px]">language</span>
                             </div>
                             <h2 className="font-headline-md text-headline-md text-primary">Konfigurasi Umum</h2>
                         </div>
@@ -76,14 +71,13 @@ export default function SettingsIndex({ settings = {} }) {
                                 <label className="font-label-md text-label-md text-on-surface block">Footer Text</label>
                                 <input type="text" value={data.footer_text} onChange={e => setData('footer_text', e.target.value)} className={inputCls} placeholder="© 2026 BelajarKUY. All rights reserved." />
                             </div>
-                            {/* Logo upload */}
                             <div className="md:col-span-2 space-y-xs">
                                 <label className="font-label-md text-label-md text-on-surface block">Logo Situs</label>
                                 {settings.logo && (
                                     <img src={settings.logo} alt="Logo saat ini" className="h-12 object-contain rounded mb-xs" />
                                 )}
                                 <label className="flex items-center gap-sm bg-background-subtle border-2 border-dashed border-outline-variant hover:border-primary rounded-lg py-md px-md cursor-pointer transition-colors">
-                                    <Upload className="w-4 h-4 text-on-surface-variant" />
+                                    <span className="material-symbols-outlined text-[18px] text-on-surface-variant">upload</span>
                                     <span className="font-body-md text-body-md text-on-surface-variant">
                                         {data.logo ? data.logo.name : 'Ganti logo (opsional)…'}
                                     </span>
@@ -97,7 +91,7 @@ export default function SettingsIndex({ settings = {} }) {
                     <div className="bg-surface rounded-2xl p-lg shadow-sm border border-primary/10">
                         <div className="flex items-center gap-sm mb-md pb-md border-b border-surface-variant">
                             <div className="bg-secondary-container p-sm rounded-lg text-secondary">
-                                <Share2 className="w-5 h-5" />
+                                <span className="material-symbols-outlined text-[20px]">share</span>
                             </div>
                             <h2 className="font-headline-md text-headline-md text-primary">Media Sosial</h2>
                         </div>
@@ -131,7 +125,7 @@ export default function SettingsIndex({ settings = {} }) {
                             disabled={processing}
                             className="px-lg py-md rounded-lg font-label-md text-label-md text-on-primary bg-primary hover:bg-primary-container transition-colors shadow-sm flex items-center gap-sm disabled:opacity-50"
                         >
-                            <Save className="w-4 h-4" />
+                            <span className="material-symbols-outlined text-[18px]">save</span>
                             {processing ? 'Menyimpan…' : 'Simpan Perubahan'}
                         </button>
                     </div>

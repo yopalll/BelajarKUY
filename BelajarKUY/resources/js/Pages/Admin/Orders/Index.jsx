@@ -1,6 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
-import { Eye, ChevronLeft, ChevronRight } from 'lucide-react';
+import Pagination from '@/Components/Admin/Pagination';
 
 const STATUS_CONFIG = {
     completed: { label: 'Selesai',   cls: 'bg-success/10 text-success' },
@@ -14,10 +14,6 @@ function formatRupiah(amount) {
     return `Rp ${Number(amount).toLocaleString('id-ID')}`;
 }
 
-/**
- * Pages/Admin/Orders/Index.jsx
- * Desain dari manajemen_pesanan_admin_panel (Quinsha, Konteks_A)
- */
 export default function OrdersIndex({ orders, status: currentStatus }) {
     const TABS = [
         { key: '',          label: 'Semua' },
@@ -93,7 +89,7 @@ export default function OrdersIndex({ orders, status: currentStatus }) {
                                             <span className="truncate block">{order.course?.title ?? '—'}</span>
                                         </td>
                                         <td className="py-md px-lg text-right font-medium font-body-md text-body-md">
-                                            {formatRupiah(order.amount)}
+                                            {formatRupiah(order.final_price)}
                                         </td>
                                         <td className="py-md px-lg text-center">
                                             <span className={`inline-flex items-center px-sm py-xs rounded-full font-caption text-caption ${cfg.cls}`}>
@@ -106,7 +102,7 @@ export default function OrdersIndex({ orders, status: currentStatus }) {
                                                 className="p-sm rounded-lg text-primary hover:bg-primary/10 transition-colors inline-flex"
                                                 title="Detail"
                                             >
-                                                <Eye className="w-4 h-4" />
+                                                <span className="material-symbols-outlined text-[18px]">visibility</span>
                                             </Link>
                                         </td>
                                     </tr>
@@ -115,26 +111,7 @@ export default function OrdersIndex({ orders, status: currentStatus }) {
                         </tbody>
                     </table>
                 </div>
-                {/* Pagination */}
-                {orders.last_page > 1 && (
-                    <div className="flex justify-between items-center px-lg py-md border-t border-surface-variant">
-                        <span className="font-caption text-caption text-on-surface-variant">
-                            Halaman {orders.current_page} dari {orders.last_page}
-                        </span>
-                        <div className="flex gap-sm">
-                            {orders.prev_page_url && (
-                                <a href={orders.prev_page_url} className="p-sm rounded-lg border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors">
-                                    <ChevronLeft className="w-4 h-4" />
-                                </a>
-                            )}
-                            {orders.next_page_url && (
-                                <a href={orders.next_page_url} className="p-sm rounded-lg border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors">
-                                    <ChevronRight className="w-4 h-4" />
-                                </a>
-                            )}
-                        </div>
-                    </div>
-                )}
+                <Pagination data={orders} />
             </div>
         </AdminLayout>
     );

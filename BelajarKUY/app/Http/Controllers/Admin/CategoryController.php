@@ -94,6 +94,13 @@ class CategoryController extends Controller
             ->with('success', 'Category updated successfully.');
     }
 
+    public function toggle(Category $category)
+    {
+        $category->update(['status' => !$category->status]);
+        $label = $category->fresh()->status ? 'diaktifkan' : 'dinonaktifkan';
+        return back()->with('success', "Kategori \"{$category->name}\" berhasil {$label}.");
+    }
+
     /**
      * Remove the specified category from storage.
      */

@@ -48,7 +48,8 @@ class CourseSeeder extends Seeder
                 'description' => $data['description'],
                 'price' => $data['price'],
                 'discount' => $data['discount'],
-                'thumbnail' => 'courses/'.Str::slug($data['title']).'.jpg',
+                // Placeholder URL nyata (path relatif lama 'courses/*.jpg' tidak ada filenya → 404)
+                'thumbnail' => 'https://placehold.co/600x340/300033/ffffff?text='.urlencode($data['title']),
                 'video_url' => 'https://youtu.be/'.$videoIds[$vid++ % count($videoIds)],
                 'duration' => $data['duration'],
                 'bestseller' => $data['bestseller'],

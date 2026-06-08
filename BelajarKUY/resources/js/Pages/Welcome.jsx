@@ -1,4 +1,5 @@
 import { Head, Link, usePage } from '@inertiajs/react';
+import BrandLogo from '@/Components/BrandLogo';
 
 // Aturan navigasi di halaman ini:
 // - <Link> hanya untuk Inertia pages: /login, /register
@@ -21,13 +22,9 @@ export default function Welcome() {
                 <header className="bg-surface shadow-sm sticky top-0 z-50">
                     <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-md max-w-7xl mx-auto">
                         {/* Brand */}
-                        <div className="flex items-center gap-2">
-                            <img
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT3KH1r1c7ZmumLRrzMRaea-4Nub7I_QpCPtNqeNeBIi2383fGN4Fas2Sr8Q5gyyTLWAYvu6nBaUKyA_JUp7iND1keVnFigeLE2lL9sK2pR-4nQPAOA-jKhXnt4aez_iN1DdO89SSgF3iERm47auSmMMH8mdBw9-TuXaeGpQL6WKefcdzQFOxfjSiYNBLbn_rT3ENy7qVrVFSx3LLE6eTrawoLg85uqnIflQScuqw9XX55A70eqkI2WB7WC3rkFuD4WvQYQ--FYw"
-                                alt="BelajarKUY Logo"
-                                className="h-10 w-auto"
-                            />
-                        </div>
+                        <a href="/home">
+                            <BrandLogo size="lg" />
+                        </a>
 
                         {/* Navigation Links (Desktop) */}
                         <nav className="hidden md:flex gap-lg">

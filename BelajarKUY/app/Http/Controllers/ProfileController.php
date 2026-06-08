@@ -7,18 +7,20 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Redirect to the role-appropriate profile page.
+     * Breeze's /profile route is unused — delegate to each panel's own profile.
      */
-    public function edit(Request $request): View
+    public function edit(Request $request): RedirectResponse
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        return match($request->user()->role) {
+            'admin'      => redirect()->route('admin.dashboard'),
+            'instructor' => redirect()->route('instructor.dashboard'),
+            default      => redirect()->route('student.profile'),
+        };
     }
 
     /**

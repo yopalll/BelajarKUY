@@ -1,7 +1,7 @@
 import { Head, useForm, router } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
+import Pagination from '@/Components/Admin/Pagination';
 import { useState } from 'react';
-import { Plus, Pencil, Trash2, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 function Modal({ title, onClose, children }) {
     return (
@@ -10,7 +10,7 @@ function Modal({ title, onClose, children }) {
             <div className="relative bg-surface rounded-2xl shadow-xl w-full max-w-md p-xl z-10">
                 <div className="flex justify-between items-center mb-lg">
                     <h3 className="font-headline-md text-headline-md text-on-surface">{title}</h3>
-                    <button onClick={onClose} className="text-on-surface-variant hover:text-error"><X className="w-5 h-5" /></button>
+                    <button onClick={onClose} className="text-on-surface-variant hover:text-error"><span className="material-symbols-outlined text-[20px]">close</span></button>
                 </div>
                 {children}
             </div>
@@ -18,10 +18,6 @@ function Modal({ title, onClose, children }) {
     );
 }
 
-/**
- * Pages/Admin/InfoBoxes/Index.jsx
- * CRUD Info Box (tanpa gambar)
- */
 export default function InfoBoxesIndex({ infoBoxes, editInfoBox = null }) {
     const [showCreate, setShowCreate] = useState(false);
     const [editItem, setEditItem] = useState(editInfoBox);
@@ -60,7 +56,7 @@ export default function InfoBoxesIndex({ infoBoxes, editInfoBox = null }) {
                         className="w-full bg-background-subtle border-2 border-transparent focus:border-primary rounded-lg py-sm px-md font-body-md text-body-md outline-none resize-none" />
                 </div>
                 <div>
-                    <label className="font-label-md text-label-md text-on-surface block mb-xs">Icon (nama lucide / emoji)</label>
+                    <label className="font-label-md text-label-md text-on-surface block mb-xs">Icon (nama Material Symbol atau emoji)</label>
                     <input type="text" value={form.data.icon} onChange={e => form.setData('icon', e.target.value)}
                         className="w-full bg-background-subtle border-2 border-transparent focus:border-primary rounded-lg py-sm px-md font-body-md text-body-md outline-none" />
                 </div>
@@ -90,7 +86,7 @@ export default function InfoBoxesIndex({ infoBoxes, editInfoBox = null }) {
                 </div>
                 <button id="btn-tambah-infobox" onClick={() => setShowCreate(true)}
                     className="flex items-center gap-sm bg-primary text-on-primary font-label-md text-label-md px-lg py-sm rounded-lg hover:bg-primary-container shadow-sm">
-                    <Plus className="w-4 h-4" /> Tambah Info Box
+                    <span className="material-symbols-outlined text-[18px]">add</span> Tambah Info Box
                 </button>
             </div>
 
@@ -119,23 +115,19 @@ export default function InfoBoxesIndex({ infoBoxes, editInfoBox = null }) {
                                 <td className="py-md px-lg font-caption text-caption text-on-surface-variant">{ib.order_position}</td>
                                 <td className="py-md px-lg text-right">
                                     <div className="flex items-center justify-end gap-sm">
-                                        <button onClick={() => openEdit(ib)} className="p-sm rounded-lg text-primary hover:bg-primary/10"><Pencil className="w-4 h-4" /></button>
-                                        <button onClick={() => handleDelete(ib)} className="p-sm rounded-lg text-error hover:bg-error-container"><Trash2 className="w-4 h-4" /></button>
+                                        <button onClick={() => openEdit(ib)} className="p-sm rounded-lg text-primary hover:bg-primary/10">
+                                            <span className="material-symbols-outlined text-[18px]">edit</span>
+                                        </button>
+                                        <button onClick={() => handleDelete(ib)} className="p-sm rounded-lg text-error hover:bg-error-container">
+                                            <span className="material-symbols-outlined text-[18px]">delete</span>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-                {infoBoxes.last_page > 1 && (
-                    <div className="flex justify-between items-center px-lg py-md border-t border-surface-variant">
-                        <span className="font-caption text-caption text-on-surface-variant">Halaman {infoBoxes.current_page} dari {infoBoxes.last_page}</span>
-                        <div className="flex gap-sm">
-                            {infoBoxes.prev_page_url && <a href={infoBoxes.prev_page_url} className="p-sm rounded-lg border border-outline-variant hover:bg-surface-variant"><ChevronLeft className="w-4 h-4" /></a>}
-                            {infoBoxes.next_page_url && <a href={infoBoxes.next_page_url} className="p-sm rounded-lg border border-outline-variant hover:bg-surface-variant"><ChevronRight className="w-4 h-4" /></a>}
-                        </div>
-                    </div>
-                )}
+                <Pagination data={infoBoxes} />
             </div>
 
             {showCreate && <Modal title="Tambah Info Box" onClose={() => setShowCreate(false)}>

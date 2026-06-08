@@ -5,6 +5,97 @@
 
 ---
 
+## [2026-06-09] — Full React Migration, Auth OTP, GCS Video, & Feature Complete
+
+Penyelesaian besar-besaran migrasi sistem ke arsitektur React+Inertia sepenuhnya, pembersihan sisa komponen Blade lama, dan penambahan berbagai fitur utama mulai dari otentikasi OTP hingga penyimpanan video di GCS.
+
+### ➕ Added
+
+- **Sistem Autentikasi Lanjutan & OTP**: 
+  - Controller dan layanan OTP (`OtpVerificationController`, `OtpService`, model `EmailOtp`).
+  - Mailable dan Blade view untuk email OTP (`OtpMail`, `otp.blade.php`, `welcome.blade.php`).
+  - Halaman React baru: `AdminLogin`, `VerifyEmail`, `ConfirmPassword`, dan `VerifyOtp`.
+  - Terjemahan bahasa Inggris di direktori `lang/en/` (auth, pagination, passwords, validation).
+- **Instructor Portal**: 
+  - `InstructorController` dan `InstructorLayout`.
+  - Halaman Dashboard Instruktur (`Dashboard.jsx`), Profil (`Profile.jsx`), dan manajemen Kursus/Kurikulum/Kupon untuk instruktur.
+  - Halaman manajemen instruktur di sisi Admin (`Admin/Instructors/Index.jsx`, `Show.jsx`).
+- **Sistem Sertifikat (Certificates)**: 
+  - `CertificateController` untuk men-generate dan memverifikasi sertifikat kelulusan.
+  - Migration untuk menambahkan kolom sertifikat di tabel `enrollments`.
+  - Halaman React untuk Student mengunduh dan verifikasi sertifikat (`Certificate.jsx`, `Verify.jsx`).
+- **Sistem Notifikasi Database**:
+  - Tabel `notifications` beserta Class Notifikasi Database: `CoursePurchasedNotification`, `CourseStatusNotification`, `NewSaleNotification`.
+- **Integrasi Video GCS (Google Cloud Storage)**:
+  - `GcsVideoService` untuk upload dan manajemen video materi.
+  - File config `config/gcp.php`.
+  - Schema update pada tabel `course_lectures` (`video_type`, `source_type`, `video_path`).
+- **Halaman Student**:
+  - Halaman `Transactions.jsx` dan `TransactionDetail.jsx` untuk daftar riwayat pembelian siswa.
+- **Komponen Global**: 
+  - `BrandLogo.jsx`, `Pagination.jsx` untuk navigasi Admin.
+
+### 🔧 Changed
+
+- **Arsitektur Frontend Total (Inertia)**: 
+  - Semua controller Frontend dan Backend dikonversi mengembalikan `Inertia::render` alih-alih view Blade.
+  - Halaman-halaman React di `resources/js/Pages/` dikembangkan dan dipoles secara ekstensif (Admin, Course, Auth, Payment, Student, dll).
+  - Konfigurasi `tailwind.config.js`, `package.json`, dan `composer.json` disesuaikan untuk React/Inertia stack.
+- **Modul Commerce & Checkout**:
+  - `CartController`, `CheckoutController`, `CouponController`, dan `WishlistController` disesuaikan untuk merespon dengan data Inersia dan memproses transaksi Midtrans/Kupon.
+- **Modul Admin**: 
+  - `AdminCourseController`, `AdminSliderController`, dan lainnya diperbarui alurnya untuk sinkron dengan payload dari React.
+
+### ➖ Removed
+
+- **Komponen Blade & Layouts Lama**: 
+  - `AppLayout.php`, `AdminLayout.php`, `GuestLayout.php` blade component dibersihkan dari server.
+  - Folder dan file `.gitkeep.php` kosong dihapus.
+- **Dokumentasi Usang**: 
+  - Seluruh file roadmap lama dan prompt yang tidak relevan dihapus (`SPRINT_PLAN.md`, `TASK_DISTRIBUTION.md`, laporan harian `REPORT_*.md` dll) dari `BelajarKUY_docs`.
+- **Data Seeder Lama**: 
+  - `BulkCouponSeeder`, `BulkCurriculumSeeder`, dan file sampel JSON terkait dihapus dari database/seeders.
+## [2026-06-08] — Admin Panel: Icon Migration, Coupon Management, Bug Fixes
+
+Penyelesaian admin panel: migrasi ikon menyeluruh, manajemen kupon baru, perbaikan role pengguna inline, dan fix bug kolom DB.
+
+### ➕ Added
+
+- **`app/Http/Controllers/Admin/AdminCouponController.php`** — Controller baru: `index()` (filter search/scope/status), `store()`, `update()`, `destroy()`, `toggle()`, `generateCode()`; kupon dibuat sebagai global (`course_id = null`) dengan `instructor_id = auth()->id()`.
+- **`resources/js/Pages/Admin/Coupons/Index.jsx`** — Halaman manajemen kupon: tabel dengan filter bar (search + scope + status), toggle switch aktif/nonaktif, modal create/edit (kode + tombol Generate, diskon %, tanggal berlaku, maks pemakaian), konfirmasi hapus.
+- **`AdminUserController::updateRole()`** — Endpoint baru `PATCH admin/users/{user}/role`; guard self-edit (tidak bisa ubah role sendiri); validasi enum `user|instructor|admin`.
+- **Route** `admin.coupons.*` (resource + `toggle` + `generate-code`) dan `admin.users.update-role` di `routes/web.php`.
+- **`database/seeders/UserSeeder`** dijalankan: 26 akun dibuat (1 admin, 6 instruktur, 18 siswa + 1 demo student + 1 Google user).
+
+### 🔧 Changed
+
+- **`resources/js/Layouts/AdminLayout.jsx`** — Rewrite total: semua `lucide-react` dihapus, NAV_ITEMS pakai string nama ikon Material Symbols; item "Kupon" ditambahkan ke navigasi; aktif state: `bg-primary/5 text-primary font-bold border-r-4 border-primary` + `fontVariationSettings: "'FILL' 1"`.
+- **15 file admin JSX** — Migrasi ikon menyeluruh `lucide-react` → `<span className="material-symbols-outlined">`:
+  - `Dashboard.jsx` — `group`, `manage_accounts`, `menu_book`, `shopping_cart`, `rate_review`
+  - `Courses/Index.jsx` — `check_circle`, `cancel`, `visibility`, `chevron_left/right`
+  - `Courses/Show.jsx` — `arrow_back`, `check_circle`, `cancel`, `person`, `label`, `menu_book`
+  - `Reviews/Index.jsx` — `star` (filled/outline via fontVariationSettings), `check_circle`, `cancel`
+  - `Orders/Index.jsx` & `Show.jsx` — `visibility`, `arrow_back`, `person`, `credit_card`, `calendar_today`
+  - `Instructors/Index.jsx` & `Show.jsx` — `visibility`, `arrow_back`, `label`
+  - `Categories/Index.jsx`, `SubCategories/Index.jsx`, `Sliders/Index.jsx`, `InfoBoxes/Index.jsx`, `Partners/Index.jsx` — `add`, `edit`, `delete`, `upload`, `close`, `open_in_new`
+  - `Settings/Index.jsx` — `language`, `share`, `upload`, `save`
+- **`resources/js/Pages/Admin/Users/Index.jsx`** — Redesain: filter bar (search + role select), inline role edit dengan select dropdown + konfirmasi, self-guard badge "(Anda)" tanpa tombol edit, pagination dari `users.links`.
+- **`app/Http/Controllers/Backend/Admin/DashboardController.php`** — `sum('amount')` → `sum('final_price')` (kolom aktual tabel `orders`).
+- **`resources/js/Pages/Admin/Dashboard.jsx`**, **`Orders/Index.jsx`**, **`Orders/Show.jsx`** — `order.amount` → `order.final_price` di semua titik tampil.
+
+### 🐛 Fixed
+
+- **Auth failed saat login admin** — `UserSeeder` belum pernah dijalankan; akun `admin@belajarkuy.test` tidak ada di DB. Fix: `php artisan db:seed --class=UserSeeder`.
+- **500 di `/dashboard` setelah login admin** — `SQLSTATE[42S22]: Column not found: 'amount'`; kolom di tabel `orders` adalah `final_price`. Diperbaiki di controller dan 3 JSX.
+
+### ✅ Verified
+
+- `npm run build` PASS ✅ — 0 error, built in ~900ms.
+- Akun admin: `admin@belajarkuy.test` / `password`, role `admin`, `email_verified_at` terisi.
+- `/admin/login` → login → `/dashboard` → render `Admin/Dashboard` tanpa error.
+
+---
+
 ## [2026-06-05] — L11 Albariqi · Email Notifikasi (F14)
 
 Implementasi sistem email notifikasi untuk kursus — 3 Mailable baru beserta template HTML yang dikirim via queue database.

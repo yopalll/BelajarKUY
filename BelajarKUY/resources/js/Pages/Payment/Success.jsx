@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import { CheckCircle2 } from 'lucide-react';
+import BrandLogo from '@/Components/BrandLogo';
 
 const rupiah = (n) => 'Rp ' + Number(n ?? 0).toLocaleString('id-ID');
 
@@ -17,8 +17,8 @@ export default function PaymentSuccess({ payment, orders }) {
             <div className="bg-background text-on-background flex flex-col min-h-screen font-sans antialiased">
                 {/* Minimal brand header */}
                 <header className="w-full py-md px-margin-desktop flex justify-center items-center">
-                    <Link href="/" className="font-headline-md text-headline-md font-extrabold text-primary">
-                        🚀 BelajarKUY
+                    <Link href="/">
+                        <BrandLogo size="md" />
                     </Link>
                 </header>
 
@@ -36,7 +36,10 @@ export default function PaymentSuccess({ payment, orders }) {
                         {/* Success icon dengan animasi ping */}
                         <div className="w-24 h-24 bg-success/10 rounded-full flex items-center justify-center mb-lg relative">
                             <div className="absolute inset-0 bg-success/20 rounded-full animate-ping opacity-75" />
-                            <CheckCircle2 className="w-12 h-12 text-success relative z-10" />
+                            <span
+                                    className="material-symbols-outlined text-success text-[48px] relative z-10"
+                                    style={{ fontVariationSettings: "'FILL' 1" }}
+                                >check_circle</span>
                         </div>
 
                         {/* Headline */}
@@ -88,12 +91,21 @@ export default function PaymentSuccess({ payment, orders }) {
                                                     src={order.course.thumbnail}
                                                     alt={order.course.title}
                                                     className="w-10 h-10 rounded-lg object-cover shrink-0"
+                                                    onError={(e) => {
+                                                        if (!e.currentTarget.dataset.fallback) {
+                                                            e.currentTarget.dataset.fallback = '1';
+                                                            e.currentTarget.src = 'https://placehold.co/600x340/300033/ffffff?text=BelajarKUY';
+                                                        }
+                                                    }}
                                                 />
                                             )}
                                             <span className="font-label-md text-label-md text-on-surface line-clamp-1 flex-1">
                                                 {order.course?.title ?? 'Kursus'}
                                             </span>
-                                            <CheckCircle2 className="w-4 h-4 text-success shrink-0" />
+                                            <span
+                                                className="material-symbols-outlined text-success text-[18px] shrink-0"
+                                                style={{ fontVariationSettings: "'FILL' 1" }}
+                                            >check_circle</span>
                                         </li>
                                     ))}
                                 </ul>

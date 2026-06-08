@@ -1,6 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
-import { ArrowLeft, User, BookOpen, CreditCard, Tag } from 'lucide-react';
 
 function formatRupiah(amount) {
     if (!amount) return 'Rp 0';
@@ -14,10 +13,6 @@ const STATUS_CONFIG = {
     refunded:  { label: 'Refund',     cls: 'bg-surface-variant text-on-surface-variant border-outline-variant' },
 };
 
-/**
- * Pages/Admin/Orders/Show.jsx
- * Detail order + info payment
- */
 export default function OrderShow({ order }) {
     const cfg = STATUS_CONFIG[order.status] ?? { label: order.status, cls: 'bg-surface-variant text-on-surface-variant border-outline-variant' };
 
@@ -27,7 +22,7 @@ export default function OrderShow({ order }) {
 
             <div className="mb-lg">
                 <Link href="/admin/orders" className="flex items-center gap-sm text-on-surface-variant hover:text-primary font-label-md text-label-md transition-colors">
-                    <ArrowLeft className="w-4 h-4" />
+                    <span className="material-symbols-outlined text-[18px]">arrow_back</span>
                     Kembali ke Daftar Order
                 </Link>
             </div>
@@ -43,7 +38,7 @@ export default function OrderShow({ order }) {
                 {/* Student info */}
                 <div className="bg-surface rounded-2xl p-lg shadow-[0_8px_30px_rgb(48,0,51,0.04)]">
                     <div className="flex items-center gap-sm mb-md">
-                        <User className="w-5 h-5 text-primary" />
+                        <span className="material-symbols-outlined text-[20px] text-primary">person</span>
                         <h2 className="font-headline-md text-headline-md text-on-surface">Info Siswa</h2>
                     </div>
                     <div className="flex items-center gap-md">
@@ -60,7 +55,7 @@ export default function OrderShow({ order }) {
                 {/* Course info */}
                 <div className="bg-surface rounded-2xl p-lg shadow-[0_8px_30px_rgb(48,0,51,0.04)]">
                     <div className="flex items-center gap-sm mb-md">
-                        <BookOpen className="w-5 h-5 text-secondary" />
+                        <span className="material-symbols-outlined text-[20px] text-secondary">menu_book</span>
                         <h2 className="font-headline-md text-headline-md text-on-surface">Info Kursus</h2>
                     </div>
                     {order.course ? (
@@ -77,13 +72,13 @@ export default function OrderShow({ order }) {
                 {/* Payment info */}
                 <div className="bg-surface rounded-2xl p-lg shadow-[0_8px_30px_rgb(48,0,51,0.04)]">
                     <div className="flex items-center gap-sm mb-md">
-                        <CreditCard className="w-5 h-5 text-warning" />
+                        <span className="material-symbols-outlined text-[20px] text-warning">credit_card</span>
                         <h2 className="font-headline-md text-headline-md text-on-surface">Info Pembayaran</h2>
                     </div>
                     <div className="space-y-sm">
                         <div className="flex justify-between">
                             <span className="font-caption text-caption text-on-surface-variant">Total</span>
-                            <span className="font-label-md text-label-md text-on-surface font-bold">{formatRupiah(order.amount)}</span>
+                            <span className="font-label-md text-label-md text-on-surface font-bold">{formatRupiah(order.final_price)}</span>
                         </div>
                         {order.payment && (
                             <>
@@ -109,7 +104,7 @@ export default function OrderShow({ order }) {
                 {/* Date info */}
                 <div className="bg-surface rounded-2xl p-lg shadow-[0_8px_30px_rgb(48,0,51,0.04)]">
                     <div className="flex items-center gap-sm mb-md">
-                        <Tag className="w-5 h-5 text-primary" />
+                        <span className="material-symbols-outlined text-[20px] text-primary">calendar_today</span>
                         <h2 className="font-headline-md text-headline-md text-on-surface">Tanggal</h2>
                     </div>
                     <div className="space-y-sm">

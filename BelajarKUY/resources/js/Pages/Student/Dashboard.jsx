@@ -57,6 +57,12 @@ function CourseProgressItem({ item }) {
                         src={course.thumbnail}
                         alt={course.title}
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                            if (!e.currentTarget.dataset.fallback) {
+                                e.currentTarget.dataset.fallback = '1';
+                                e.currentTarget.src = 'https://placehold.co/600x340/300033/ffffff?text=BelajarKUY';
+                            }
+                        }}
                     />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center">

@@ -135,8 +135,9 @@ class Course extends Model
      */
     public function getAverageRatingAttribute(): float
     {
+        // status kolom string ('approved'), bukan boolean true → tanpa fix ini rating selalu 0
         return (float) $this->reviews()
-            ->where('status', true)
+            ->where('status', 'approved')
             ->avg('rating') ?: 0.0;
     }
 }
