@@ -290,7 +290,7 @@ function OrderSummary({ subtotal, itemCount, coupon, courseIds, onCouponApply, o
             />
 
             <Link
-                href="/checkout"
+                href={coupon ? `/checkout?coupon_code=${encodeURIComponent(coupon.coupon_code)}` : '/checkout'}
                 className="w-full flex items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-6 py-3.5 text-sm font-bold text-white hover:bg-indigo-700 transition-colors"
             >
                 Lanjut ke Checkout
