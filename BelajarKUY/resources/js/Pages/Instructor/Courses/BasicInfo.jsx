@@ -488,24 +488,26 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                                                 ))}
                                             </ul>
                                         )}
-                                        <form onSubmit={handleAddGoal} className="flex gap-2">
+                                        <div className="flex gap-2">
                                             <input
                                                 type="text"
                                                 value={goalInput}
                                                 onChange={(e) => { setGoalInput(e.target.value); setGoalError(''); }}
+                                                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddGoal(e); } }}
                                                 placeholder="Contoh: Memahami konsep MVC Laravel"
                                                 maxLength={200}
                                                 className="flex-1 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-semibold bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all"
                                             />
                                             <button
-                                                type="submit"
+                                                type="button"
+                                                onClick={handleAddGoal}
                                                 disabled={goalLoading || !goalInput.trim()}
                                                 className="flex items-center gap-1.5 px-4 py-3 rounded-2xl bg-teal-600 text-white text-sm font-bold hover:bg-teal-500 disabled:opacity-50 transition-colors shrink-0"
                                             >
                                                 {goalLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
                                                 Tambah
                                             </button>
-                                        </form>
+                                        </div>
                                         {goalError && (
                                             <p className="text-xs text-red-500 flex items-center gap-1">
                                                 <AlertCircle className="w-3.5 h-3.5" /> {goalError}
