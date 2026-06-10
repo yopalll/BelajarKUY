@@ -39,8 +39,8 @@ export default function CheckoutProcess({ snapToken, clientKey, midtransOrderId,
                     window.location.href = `/payment/success?order_id=${result.order_id}`;
                 },
                 onPending: function (result) {
-                    // Bank transfer / VA — menunggu konfirmasi
-                    window.location.href = `/payment/success?order_id=${result.order_id}`;
+                    // Bank transfer / VA — menunggu konfirmasi pembayaran
+                    window.location.href = `/payment/pending?order_id=${result.order_id}`;
                 },
                 onError: function (result) {
                     console.error('[BelajarKUY] Snap error:', result);

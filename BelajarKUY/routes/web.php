@@ -174,6 +174,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
     Route::get('/payment/success', [CheckoutController::class, 'success'])->name('payment.success');
+    Route::get('/payment/pending', [CheckoutController::class, 'pending'])->name('payment.pending');
     Route::get('/payment/failed', [CheckoutController::class, 'failed'])->name('payment.failed');
 });
 

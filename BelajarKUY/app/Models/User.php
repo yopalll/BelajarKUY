@@ -29,6 +29,7 @@ class User extends Authenticatable
         'address',
         'bio',
         'website',
+        'email_verified_at',
     ];
 
     /**

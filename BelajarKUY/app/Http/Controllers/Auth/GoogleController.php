@@ -33,11 +33,16 @@ class GoogleController extends Controller
                 ->redirectUrl(config('services.google.redirect'))
                 ->stateless()  // Avoid session state issues during dev
                 ->user();
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            $responseBody = $e->getResponse()->getBody()->getContents();
+            Log::error('Google OAuth ClientException: '.$responseBody);
+            return redirect()->route('login')
+                ->with('error', 'Gagal login: ' . $responseBody);
         } catch (\Throwable $e) {
             Log::error('Google OAuth callback error: '.$e->getMessage());
 
             return redirect()->route('login')
-                ->with('error', 'Gagal login dengan Google. Silakan coba lagi.');
+                ->with('error', 'Gagal login dengan Google. Error: ' . $e->getMessage());
         }
 
         // Cek apakah user sudah ada

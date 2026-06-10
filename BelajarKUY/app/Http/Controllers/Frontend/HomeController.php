@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\InfoBox;
+use App\Models\Partner;
 use App\Models\Slider;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -18,8 +20,9 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $sliders   = Slider::where('status', true)->orderBy('sort_order')->get();
-        $infoBoxes = InfoBox::orderBy('id')->get();
+        $sliders   = Slider::active()->get();
+        $infoBoxes = InfoBox::orderBy('order_position')->get();
+        $partners  = Partner::orderBy('order_position')->get();
         $categories = Category::where('status', true)
             ->withCount(['courses' => fn($q) => $q->where('status', 'active')])
             ->orderByDesc('courses_count')
@@ -31,17 +34,47 @@ class HomeController extends Controller
         if ($isSearchingOrFiltering) {
             $filteredCourses = Course::where('status', 'active')
                 ->with(['instructor', 'category', 'reviews'])
-                ->when($request->search, fn($q) => $q->where('title', 'like', "%{$request->search}%"))
+                ->withAvg(['reviews as reviews_avg_rating' => fn($q) => $q->where('status', 'approved')], 'rating')
+                ->when($request->search, fn($q) => $q
+                    // cocok judul kursus ATAU nama instruktur
+                    ->where(fn($sub) => $sub
+                        ->where('title', 'like', "%{$request->search}%")
+                        ->orWhereHas('instructor', fn($i) => $i->where('name', 'like', "%{$request->search}%"))
+                    )
+                )
                 ->when($request->category, fn($q) => $q->whereHas('category', fn($c) => $c->where('slug', $request->category)))
+                // rating tertinggi dulu (kursus tanpa review/NULL otomatis di urutan akhir)
+                ->orderByDesc('reviews_avg_rating')
                 ->latest()
                 ->get();
+
+            // Cari instruktur yang namanya cocok dengan keyword
+            $matchedInstructors = $request->search
+                ? User::where('role', 'instructor')
+                    ->where('name', 'like', "%{$request->search}%")
+                    ->withCount(['courses' => fn($q) => $q->where('status', 'active')])
+                    ->get()
+                    ->map(fn($u) => [
+                        'id'              => $u->id,
+                        'name'            => $u->name,
+                        'photo'           => $u->photo,
+                        'bio'             => $u->bio,
+                        'website'         => $u->website,
+                        'courses_count'   => $u->courses_count,
+                    ])
+                : collect();
+
             $featuredCourses   = collect();
             $bestsellerCourses = collect();
         } else {
+            $matchedInstructors = collect();
             $filteredCourses   = collect();
             $featuredCourses   = Course::where('status', 'active')
                 ->where('featured', true)
                 ->with(['instructor', 'category', 'reviews'])
+                ->withAvg(['reviews as reviews_avg_rating' => fn($q) => $q->where('status', 'approved')], 'rating')
+                // rating tertinggi dulu (kursus tanpa review/NULL otomatis di urutan akhir)
+                ->orderByDesc('reviews_avg_rating')
                 ->latest()
                 ->take(8)
                 ->get();
@@ -59,10 +92,12 @@ class HomeController extends Controller
         return Inertia::render('Home', compact(
             'sliders',
             'infoBoxes',
+            'partners',
             'categories',
             'featuredCourses',
             'bestsellerCourses',
             'filteredCourses',
+            'matchedInstructors',
             'isSearchingOrFiltering'
         ));
     }

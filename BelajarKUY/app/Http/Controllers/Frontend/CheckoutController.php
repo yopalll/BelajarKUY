@@ -320,6 +320,23 @@ class CheckoutController extends Controller
     }
 
     /**
+     * Payment Pending Page (bank transfer / VA menunggu konfirmasi).
+     */
+    public function pending(Request $request): \Inertia\Response
+    {
+        $orderId = $request->query('order_id');
+        $payment = null;
+
+        if ($orderId) {
+            $payment = Payment::where('midtrans_order_id', $orderId)->first();
+        }
+
+        return Inertia::render('Payment/Pending', [
+            'payment' => $payment,
+        ]);
+    }
+
+    /**
      * Payment Failed Page.
      */
     public function failed(Request $request): \Inertia\Response
