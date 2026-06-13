@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Inertia\Inertia;
 
 class AdminInstructorController extends Controller
 {
@@ -16,8 +17,8 @@ class AdminInstructorController extends Controller
             ->withCount(['courses', 'coupons'])
             ->latest()
             ->paginate(15);
-            
-        return view('admin.instructors.index', compact('instructors'));
+
+        return Inertia::render('Admin/Instructors/Index', compact('instructors'));
     }
 
     /**
@@ -25,14 +26,12 @@ class AdminInstructorController extends Controller
      */
     public function show(User $instructor)
     {
-        // Ensure the user is actually an instructor
         abort_if(!$instructor->isInstructor(), 404);
 
         $instructor->loadCount(['courses', 'coupons']);
 
-        // Fetch their courses for the detailed view
         $courses = $instructor->courses()->with('category')->latest()->paginate(10);
-        
-        return view('admin.instructors.show', compact('instructor', 'courses'));
+
+        return Inertia::render('Admin/Instructors/Show', compact('instructor', 'courses'));
     }
 }

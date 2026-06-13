@@ -1,4 +1,5 @@
 import { Head } from '@inertiajs/react';
+import BrandLogo from '@/Components/BrandLogo';
 
 // Desain: error_404_minimalist_no_illustration (Vascha & Quinsha)
 export default function Error404() {
@@ -8,7 +9,7 @@ export default function Error404() {
             <div className="bg-background text-on-background font-body-md min-h-screen flex flex-col overflow-hidden">
 
                 <header className="w-full px-margin-desktop py-4 sticky top-0 z-50 flex justify-between items-center bg-transparent">
-                    <a href="/" className="font-headline-md text-headline-md font-bold text-primary">BelajarKUY</a>
+                    <a href="/"><BrandLogo size="md" /></a>
                 </header>
 
                 <main className="flex-grow flex items-center justify-center relative z-10 px-margin-mobile md:px-margin-desktop py-xxl">
@@ -32,7 +33,7 @@ export default function Error404() {
                 </main>
 
                 <footer className="w-full py-xl px-margin-desktop bg-tertiary text-on-tertiary flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-md">
-                    <div className="font-headline-md text-headline-md font-bold">BelajarKUY</div>
+                    <BrandLogo size="sm" dark />
                     <p className="font-caption text-caption text-on-tertiary-container">© {new Date().getFullYear()} BelajarKUY. Launch your career with us.</p>
                 </footer>
 

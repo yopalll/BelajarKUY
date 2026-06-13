@@ -1,11 +1,14 @@
 import { Link, usePage, router } from '@inertiajs/react';
 import { useState } from 'react';
+import BrandLogo from '@/Components/BrandLogo';
 
 const NAV_ITEMS = [
     { href: '/student/dashboard',      icon: 'dashboard',     label: 'Dashboard' },
+    { href: '/home',                   icon: 'explore',       label: 'Jelajahi Kursus' },
     { href: '/student/my-courses',     icon: 'school',        label: 'Kursus Saya' },
     { href: '/student/wishlist',       icon: 'favorite',      label: 'Wishlist' },
-    { href: '/student/notifications',  icon: 'notifications', label: 'Notifikasi' },
+    { href: '/student/notifications',  icon: 'notifications', label: 'Notifikasi', badge: 'unread' },
+    { href: '/student/transactions',   icon: 'receipt_long',  label: 'Transaksi' },
     { href: '/student/profile',        icon: 'person',        label: 'Profil' },
     { href: '/student/setting',        icon: 'settings',      label: 'Pengaturan' },
 ];
@@ -33,7 +36,8 @@ function UserAvatar({ user, className = '' }) {
     );
 }
 
-function NavLink({ item, active, onClick }) {
+function NavLink({ item, active, onClick, unreadCount }) {
+    const showBadge = item.badge === 'unread' && unreadCount > 0;
     return (
         <Link
             href={item.href}
@@ -44,18 +48,25 @@ function NavLink({ item, active, onClick }) {
                     : 'text-on-surface-variant hover:bg-surface-container-high'
             }`}
         >
-            <span
-                className="material-symbols-outlined text-[22px]"
-                style={active ? { fontVariationSettings: "'FILL' 1" } : undefined}
-            >
-                {item.icon}
+            <span className="relative flex-shrink-0">
+                <span
+                    className="material-symbols-outlined text-[22px]"
+                    style={active ? { fontVariationSettings: "'FILL' 1" } : undefined}
+                >
+                    {item.icon}
+                </span>
+                {showBadge && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-error text-on-error text-[9px] font-bold rounded-full flex items-center justify-center leading-none">
+                        {unreadCount > 9 ? '9+' : unreadCount}
+                    </span>
+                )}
             </span>
-            <span className="font-label-md text-label-md">{item.label}</span>
+            <span className="font-label-md text-label-md flex-1">{item.label}</span>
         </Link>
     );
 }
 
-function SidebarContent({ user, url, onNavClick }) {
+function SidebarContent({ user, url, onNavClick, unreadCount }) {
     function handleLogout() {
         router.post('/logout');
     }
@@ -63,14 +74,8 @@ function SidebarContent({ user, url, onNavClick }) {
     return (
         <>
             {/* Logo */}
-            <div className="px-lg mb-xl flex items-center gap-sm flex-shrink-0">
-                <span className="material-symbols-outlined text-primary text-[32px]"
-                    style={{ fontVariationSettings: "'FILL' 1" }}>
-                    rocket_launch
-                </span>
-                <h1 className="font-headline-md text-headline-md text-primary tracking-tight">
-                    Belajar<span className="text-secondary-container">KUY!</span>
-                </h1>
+            <div className="px-lg mb-xl flex-shrink-0">
+                <BrandLogo size="md" />
             </div>
 
             {/* User Profile */}
@@ -92,6 +97,7 @@ function SidebarContent({ user, url, onNavClick }) {
                         item={item}
                         active={url === item.href}
                         onClick={onNavClick}
+                        unreadCount={unreadCount}
                     />
                 ))}
             </nav>
@@ -111,17 +117,18 @@ function SidebarContent({ user, url, onNavClick }) {
 }
 
 export default function StudentLayout({ children }) {
-    const { auth, flash } = usePage().props;
+    const { auth, flash, unreadNotificationsCount } = usePage().props;
     const user = auth?.user;
     const { url } = usePage();
     const [mobileOpen, setMobileOpen] = useState(false);
+    const unreadCount = unreadNotificationsCount ?? 0;
 
     return (
         <div className="bg-background text-on-background min-h-screen flex">
 
             {/* ── Desktop Sidebar ── */}
             <aside className="hidden md:flex flex-col fixed left-0 top-0 h-full w-64 bg-surface shadow-md z-40 pt-xxl">
-                <SidebarContent user={user} url={url} onNavClick={undefined} />
+                <SidebarContent user={user} url={url} onNavClick={undefined} unreadCount={unreadCount} />
             </aside>
 
             {/* ── Mobile Top Header ── */}
@@ -158,6 +165,7 @@ export default function StudentLayout({ children }) {
                             user={user}
                             url={url}
                             onNavClick={() => setMobileOpen(false)}
+                            unreadCount={unreadCount}
                         />
                     </aside>
                 </div>
@@ -195,6 +203,7 @@ export default function StudentLayout({ children }) {
             <nav className="md:hidden fixed bottom-0 w-full bg-surface border-t border-outline-variant flex justify-around items-center py-2 z-40">
                 {[
                     { href: '/student/dashboard',  icon: 'dashboard', label: 'Dashboard' },
+                    { href: '/home',               icon: 'explore',   label: 'Jelajahi' },
                     { href: '/student/my-courses', icon: 'school',    label: 'Kursus' },
                     { href: '/student/wishlist',   icon: 'favorite',  label: 'Wishlist' },
                     { href: '/student/profile',    icon: 'person',    label: 'Profil' },

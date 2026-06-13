@@ -27,13 +27,21 @@ class Enrollment extends Model
         'course_id',
         'order_id',
         'enrolled_at',
+        'certificate_code',
+        'issued_at',
     ];
 
     protected function casts(): array
     {
         return [
             'enrolled_at' => 'datetime',
+            'issued_at'   => 'datetime',
         ];
+    }
+
+    public function hasCertificate(): bool
+    {
+        return !is_null($this->certificate_code);
     }
 
     // ========================= RELATIONSHIPS =========================

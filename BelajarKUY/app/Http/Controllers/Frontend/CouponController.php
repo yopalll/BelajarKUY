@@ -69,8 +69,17 @@ class CouponController extends Controller
             ], 404);
         }
 
-        $subtotal       = (float) $data['subtotal'];
-        $discountAmount = round($subtotal * $coupon->discount_percent / 100, 2);
+        $subtotal = (float) $data['subtotal'];
+
+        // Course-specific coupon: hitung diskon hanya dari harga kursus yang match,
+        // bukan dari seluruh subtotal (selaras dengan CheckoutController & MidtransService).
+        if (is_null($coupon->course_id)) {
+            $base = $subtotal;
+        } else {
+            $base = (float) (\App\Models\Course::find($coupon->course_id)?->discounted_price ?? 0);
+        }
+
+        $discountAmount = round($base * $coupon->discount_percent / 100, 2);
         $finalPrice     = max(0, $subtotal - $discountAmount);
 
         return response()->json([

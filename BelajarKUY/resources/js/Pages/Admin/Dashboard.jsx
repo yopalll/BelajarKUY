@@ -1,6 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
-import { Users, UserCircle, BookOpen, ShoppingCart, TrendingUp, Minus, Star } from 'lucide-react';
 
 function formatRupiah(amount) {
     if (!amount) return 'Rp 0';
@@ -24,10 +23,6 @@ function StatusBadge({ status }) {
     );
 }
 
-/**
- * Pages/Admin/Dashboard.jsx
- * Desain dari admin_dashboard_overview/code.html (Quinsha, Konteks_A)
- */
 export default function Dashboard({ stats = {}, recentOrders = [] }) {
     const initials = (name) => name?.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2) ?? '??';
 
@@ -35,7 +30,7 @@ export default function Dashboard({ stats = {}, recentOrders = [] }) {
         {
             label: 'Total Siswa',
             value: stats.total_students?.toLocaleString('id-ID') ?? '—',
-            icon: Users,
+            icon: 'group',
             bg: 'bg-primary-container',
             iconColor: 'text-on-primary-container',
             accent: 'bg-primary/5',
@@ -45,7 +40,7 @@ export default function Dashboard({ stats = {}, recentOrders = [] }) {
         {
             label: 'Total Instruktur',
             value: stats.total_instructors?.toLocaleString('id-ID') ?? '—',
-            icon: UserCircle,
+            icon: 'manage_accounts',
             bg: 'bg-secondary-container',
             iconColor: 'text-on-secondary-container',
             accent: 'bg-secondary/5',
@@ -55,7 +50,7 @@ export default function Dashboard({ stats = {}, recentOrders = [] }) {
         {
             label: 'Kursus Aktif',
             value: stats.active_courses?.toLocaleString('id-ID') ?? stats.total_courses?.toLocaleString('id-ID') ?? '—',
-            icon: BookOpen,
+            icon: 'menu_book',
             bg: 'bg-[#FFF3E0]',
             iconColor: 'text-warning',
             accent: 'bg-warning/5',
@@ -65,7 +60,7 @@ export default function Dashboard({ stats = {}, recentOrders = [] }) {
         {
             label: 'Total Revenue',
             value: formatRupiah(stats.total_revenue ?? 0),
-            icon: ShoppingCart,
+            icon: 'shopping_cart',
             primary: true,
             trend: '+24% vs bulan lalu',
             up: true,
@@ -76,7 +71,6 @@ export default function Dashboard({ stats = {}, recentOrders = [] }) {
         <AdminLayout title="Admin Portal">
             <Head title="Dashboard — BelajarKUY Admin" />
 
-            {/* Page header */}
             <div className="flex justify-between items-end mb-gutter">
                 <div>
                     <h1 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
@@ -91,13 +85,12 @@ export default function Dashboard({ stats = {}, recentOrders = [] }) {
             {/* Metrics bento grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter mb-gutter">
                 {METRICS.map((m) => {
-                    const Icon = m.icon;
                     if (m.primary) {
                         return (
                             <div key={m.label} className="bg-primary rounded-2xl p-lg shadow-[0_8px_30px_rgb(48,0,51,0.15)] relative overflow-hidden group text-on-primary">
                                 <div className="absolute inset-0 bg-gradient-to-br from-primary to-surface-tint opacity-80" />
                                 <div className="absolute -right-4 -bottom-4 opacity-10">
-                                    <Icon className="w-28 h-28" />
+                                    <span className="material-symbols-outlined text-[112px] text-white">{m.icon}</span>
                                 </div>
                                 <div className="flex justify-between items-start relative z-10">
                                     <div>
@@ -105,11 +98,11 @@ export default function Dashboard({ stats = {}, recentOrders = [] }) {
                                         <h3 className="font-headline-lg text-headline-lg mt-sm">{m.value}</h3>
                                     </div>
                                     <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                                        <Icon className="w-6 h-6" />
+                                        <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: "'FILL' 1" }}>{m.icon}</span>
                                     </div>
                                 </div>
                                 <div className="mt-md flex items-center gap-xs text-primary-fixed font-label-md text-label-md relative z-10">
-                                    <TrendingUp className="w-4 h-4" />
+                                    <span className="material-symbols-outlined text-[18px]">trending_up</span>
                                     <span>{m.trend}</span>
                                 </div>
                             </div>
@@ -124,11 +117,11 @@ export default function Dashboard({ stats = {}, recentOrders = [] }) {
                                     <h3 className="font-headline-lg text-headline-lg text-on-surface mt-sm">{m.value}</h3>
                                 </div>
                                 <div className={`w-12 h-12 rounded-xl ${m.bg} ${m.iconColor} flex items-center justify-center`}>
-                                    <Icon className="w-6 h-6" />
+                                    <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: "'FILL' 1" }}>{m.icon}</span>
                                 </div>
                             </div>
                             <div className={`mt-md flex items-center gap-xs font-label-md text-label-md relative z-10 ${m.up === null ? 'text-on-surface-variant' : 'text-success'}`}>
-                                {m.up === null ? <Minus className="w-4 h-4" /> : <TrendingUp className="w-4 h-4" />}
+                                <span className="material-symbols-outlined text-[18px]">{m.up === null ? 'remove' : 'trending_up'}</span>
                                 <span>{m.trend}</span>
                             </div>
                         </div>
@@ -180,7 +173,7 @@ export default function Dashboard({ stats = {}, recentOrders = [] }) {
                                             <span className="truncate block">{order.course?.title ?? '—'}</span>
                                         </td>
                                         <td className="py-md px-sm text-right font-medium font-body-md text-body-md">
-                                            {formatRupiah(order.amount)}
+                                            {formatRupiah(order.final_price)}
                                         </td>
                                         <td className="py-md px-sm text-center">
                                             <StatusBadge status={order.status} />
@@ -194,14 +187,12 @@ export default function Dashboard({ stats = {}, recentOrders = [] }) {
 
                 {/* Action Required + System Status */}
                 <div className="flex flex-col gap-gutter">
-                    {/* Action Required */}
                     <div className="bg-surface rounded-2xl p-lg shadow-[0_8px_30px_rgb(48,0,51,0.04)] flex-1">
                         <h2 className="font-headline-md text-headline-md text-on-surface mb-lg">Perlu Ditindaklanjuti</h2>
                         <div className="space-y-md">
-                            {/* Pending courses */}
                             <div className="p-md rounded-xl border border-warning/30 bg-warning/5 flex items-start gap-md">
                                 <div className="w-10 h-10 rounded-full bg-warning/20 text-warning flex items-center justify-center shrink-0 mt-1">
-                                    <BookOpen className="w-5 h-5" />
+                                    <span className="material-symbols-outlined text-[20px]">menu_book</span>
                                 </div>
                                 <div className="flex-1">
                                     <h4 className="font-label-md text-label-md text-on-surface font-bold">
@@ -215,10 +206,9 @@ export default function Dashboard({ stats = {}, recentOrders = [] }) {
                                     </Link>
                                 </div>
                             </div>
-                            {/* Pending reviews */}
                             <div className="p-md rounded-xl border border-secondary/30 bg-secondary/5 flex items-start gap-md">
                                 <div className="w-10 h-10 rounded-full bg-secondary/20 text-secondary flex items-center justify-center shrink-0 mt-1">
-                                    <Star className="w-5 h-5" />
+                                    <span className="material-symbols-outlined text-[20px]">rate_review</span>
                                 </div>
                                 <div className="flex-1">
                                     <h4 className="font-label-md text-label-md text-on-surface font-bold">
@@ -235,7 +225,6 @@ export default function Dashboard({ stats = {}, recentOrders = [] }) {
                         </div>
                     </div>
 
-                    {/* System Status */}
                     <div className="bg-surface rounded-2xl p-lg shadow-[0_8px_30px_rgb(48,0,51,0.04)]">
                         <h3 className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-md">
                             Status Sistem

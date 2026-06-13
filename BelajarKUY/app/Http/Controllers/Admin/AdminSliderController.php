@@ -99,6 +99,13 @@ class AdminSliderController extends Controller
         return redirect()->route('admin.sliders.index')->with('success', 'Slider berhasil diperbarui.');
     }
 
+    public function toggle(Slider $slider)
+    {
+        $slider->update(['status' => !$slider->status]);
+        $label = $slider->fresh()->status ? 'diaktifkan' : 'dinonaktifkan';
+        return back()->with('success', "Slider \"{$slider->title}\" berhasil {$label}.");
+    }
+
     /**
      * Remove the specified resource from storage.
      */

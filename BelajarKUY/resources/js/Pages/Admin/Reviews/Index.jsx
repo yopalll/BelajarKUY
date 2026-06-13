@@ -1,6 +1,6 @@
 import { Head, router } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
-import { CheckCircle, XCircle, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import Pagination from '@/Components/Admin/Pagination';
 
 const STATUS_CONFIG = {
     pending:  { label: 'Pending',  cls: 'bg-warning/10 text-warning' },
@@ -12,17 +12,17 @@ function StarRating({ rating }) {
     return (
         <div className="flex items-center gap-xs">
             {[1,2,3,4,5].map(s => (
-                <Star key={s} className={`w-3.5 h-3.5 ${s <= rating ? 'text-secondary-container fill-secondary-container' : 'text-surface-variant'}`} />
+                <span
+                    key={s}
+                    className={`material-symbols-outlined text-[14px] ${s <= rating ? 'text-secondary-container' : 'text-surface-variant'}`}
+                    style={s <= rating ? { fontVariationSettings: "'FILL' 1" } : {}}
+                >star</span>
             ))}
             <span className="font-caption text-caption text-on-surface-variant ml-xs">{rating}/5</span>
         </div>
     );
 }
 
-/**
- * Pages/Admin/Reviews/Index.jsx
- * Moderasi ulasan siswa — desain Konteks_A (Quinsha)
- */
 export default function ReviewsIndex({ reviews }) {
     function updateStatus(review, status) {
         router.patch(`/admin/reviews/${review.id}/status`, { status });
@@ -32,7 +32,6 @@ export default function ReviewsIndex({ reviews }) {
         <AdminLayout title="Admin Portal">
             <Head title="Moderasi Review — BelajarKUY Admin" />
 
-            {/* Header */}
             <div className="flex justify-between items-end mb-gutter">
                 <div>
                     <h1 className="font-headline-lg text-headline-lg text-on-surface">Moderasi Review</h1>
@@ -42,7 +41,6 @@ export default function ReviewsIndex({ reviews }) {
                 </div>
             </div>
 
-            {/* Table */}
             <div className="bg-surface rounded-2xl shadow-[0_8px_30px_rgb(48,0,51,0.04)] overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
@@ -98,7 +96,7 @@ export default function ReviewsIndex({ reviews }) {
                                                         className="p-sm rounded-lg text-success hover:bg-success/10 transition-colors"
                                                         title="Approve"
                                                     >
-                                                        <CheckCircle className="w-4 h-4" />
+                                                        <span className="material-symbols-outlined text-[18px]">check_circle</span>
                                                     </button>
                                                 )}
                                                 {review.status !== 'rejected' && (
@@ -107,7 +105,7 @@ export default function ReviewsIndex({ reviews }) {
                                                         className="p-sm rounded-lg text-error hover:bg-error-container transition-colors"
                                                         title="Reject"
                                                     >
-                                                        <XCircle className="w-4 h-4" />
+                                                        <span className="material-symbols-outlined text-[18px]">cancel</span>
                                                     </button>
                                                 )}
                                             </div>
@@ -118,26 +116,7 @@ export default function ReviewsIndex({ reviews }) {
                         </tbody>
                     </table>
                 </div>
-                {/* Pagination */}
-                {reviews.last_page > 1 && (
-                    <div className="flex justify-between items-center px-lg py-md border-t border-surface-variant">
-                        <span className="font-caption text-caption text-on-surface-variant">
-                            Halaman {reviews.current_page} dari {reviews.last_page}
-                        </span>
-                        <div className="flex gap-sm">
-                            {reviews.prev_page_url && (
-                                <a href={reviews.prev_page_url} className="p-sm rounded-lg border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors">
-                                    <ChevronLeft className="w-4 h-4" />
-                                </a>
-                            )}
-                            {reviews.next_page_url && (
-                                <a href={reviews.next_page_url} className="p-sm rounded-lg border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors">
-                                    <ChevronRight className="w-4 h-4" />
-                                </a>
-                            )}
-                        </div>
-                    </div>
-                )}
+                <Pagination data={reviews} />
             </div>
         </AdminLayout>
     );

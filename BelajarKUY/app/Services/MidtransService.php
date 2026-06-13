@@ -75,6 +75,13 @@ class MidtransService
             'item_details' => $itemDetails,
         ];
 
+        // Kirim coupon id lewat custom_field1 — Midtrans mengembalikannya di webhook
+        // notification, dibaca lagi di CheckoutController@callback. Tanpa ini diskon
+        // tidak tercatat di order & coupons.used_count tidak pernah naik.
+        if ($coupon) {
+            $params['custom_field1'] = (string) $coupon->id;
+        }
+
         try {
             return Snap::getSnapToken($params);
         } catch (\Exception $e) {

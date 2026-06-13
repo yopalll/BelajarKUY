@@ -27,9 +27,12 @@ class Course extends Model
         'bestseller',
         'featured',
         'status',
+        'rejection_reason',
+        'rejection_suggestion',
+        'reviewed_at',
     ];
 
-    protected $appends = ['discounted_price', 'average_rating'];
+    protected $appends = ['discounted_price', 'average_rating', 'thumbnail_url'];
 
     protected function casts(): array
     {
@@ -38,6 +41,7 @@ class Course extends Model
             'discount' => 'integer',
             'bestseller' => 'boolean',
             'featured' => 'boolean',
+            'reviewed_at' => 'datetime',
         ];
     }
 
@@ -117,6 +121,11 @@ class Course extends Model
 
     // ========================== ACCESSORS ============================
 
+    public function getThumbnailUrlAttribute(): ?string
+    {
+        return $this->thumbnail ?: null;
+    }
+
     /**
      * Harga setelah diskon: price - (price * discount / 100).
      */
@@ -137,8 +146,9 @@ class Course extends Model
      */
     public function getAverageRatingAttribute(): float
     {
+        // status kolom string ('approved'), bukan boolean true → tanpa fix ini rating selalu 0
         return (float) $this->reviews()
-            ->where('status', true)
+            ->where('status', 'approved')
             ->avg('rating') ?: 0.0;
     }
 }

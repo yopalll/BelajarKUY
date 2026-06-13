@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -26,13 +27,15 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request): SymfonyResponse
     {
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        // Inertia::location() → 409 + X-Inertia-Location → client paksa window.location (full reload ke Blade dashboard)
+        // Inertia::location() → 409 + X-Inertia-Location → client paksa full reload ke /dashboard
+        // (dashboard di-dispatch per-role). Mengembalikan SymfonyResponse saat XHR Inertia,
+        // jadi return type WAJIB SymfonyResponse (bukan RedirectResponse) agar tidak TypeError.
         return Inertia::location(route('dashboard'));
     }
 

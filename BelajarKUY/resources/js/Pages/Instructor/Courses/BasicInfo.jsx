@@ -1,37 +1,20 @@
 import { Head, Link, useForm, router } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
-import AppLayout from '@/Layouts/AppLayout';
-import {
-    ArrowLeft,
-    Save,
-    Upload,
-    X,
-    Image as ImageIcon,
-    ChevronRight,
-    Info,
-    BookOpen,
-    Tag,
-    DollarSign,
-    Sparkles,
-    Send,
-    AlertCircle,
-    CheckCircle2,
-    ListChecks,
-    Plus,
-    Loader2,
-} from 'lucide-react';
+import InstructorLayout from '@/Layouts/InstructorLayout';
+import ConfirmDialog from '@/Components/ConfirmDialog';
 
-// Layar: informasi_dasar_kursus (Konteks_A)
+// Layar: informasi_dasar_kursus (Vascha & Quinsha)
 // Route: instructor.courses.create → GET /instructor/courses/create
 //        instructor.courses.edit   → GET /instructor/courses/{course}/edit
 export default function BasicInfo({ course, categories = [], subcategories = [] }) {
     const isEditing = !!course;
 
     // Goals state (hanya saat edit)
-    const [goals, setGoals]         = useState(course?.goals ?? []);
-    const [goalInput, setGoalInput] = useState('');
+    const [goals, setGoals]             = useState(course?.goals ?? []);
+    const [goalInput, setGoalInput]     = useState('');
     const [goalLoading, setGoalLoading] = useState(false);
-    const [goalError, setGoalError] = useState('');
+    const [goalError, setGoalError]     = useState('');
+    const [dialog, setDialog]           = useState(null);
 
     function getCsrf() {
         return decodeURIComponent(
@@ -86,16 +69,14 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
         discount:       course?.discount ?? 0,
         featured:       course?.featured ?? false,
         bestseller:     course?.bestseller ?? false,
-        thumbnail:      null, // File — selalu null saat render awal
+        thumbnail:      null,
         _method:        isEditing ? 'PATCH' : undefined,
     });
 
-    // Sub-kategori yang difilter berdasarkan kategori yang dipilih
     const filteredSubs = subcategories.filter(
         (s) => String(s.category_id) === String(data.category_id)
     );
 
-    // Auto-generate slug dari title (hanya saat create)
     useEffect(() => {
         if (!isEditing && data.title) {
             setData('slug',
@@ -109,23 +90,30 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
         }
     }, [data.title]);
 
-    // Preview thumbnail
-    const [preview, setPreview] = useState(course?.thumbnail ?? null);
+    const [preview, setPreview]         = useState(course?.thumbnail ?? null);
+    const [previewIsVideo, setPreviewIsVideo] = useState(() => isVideoUrl(course?.thumbnail));
     const fileInputRef = useRef(null);
+
+    function isVideoUrl(url) {
+        if (!url) return false;
+        return /\.(mp4|webm|mov)(\?|$)/i.test(url) || url.includes('/video/upload/');
+    }
 
     const handleThumbnailChange = (e) => {
         const file = e.target.files?.[0];
         if (!file) return;
         setData('thumbnail', file);
         setPreview(URL.createObjectURL(file));
+        setPreviewIsVideo(file.type.startsWith('video/'));
     };
 
     const handleThumbnailDrop = (e) => {
         e.preventDefault();
         const file = e.dataTransfer.files?.[0];
-        if (!file || !file.type.startsWith('image/')) return;
+        if (!file || (!file.type.startsWith('image/') && !file.type.startsWith('video/'))) return;
         setData('thumbnail', file);
         setPreview(URL.createObjectURL(file));
+        setPreviewIsVideo(file.type.startsWith('video/'));
     };
 
     const clearThumbnail = () => {
@@ -137,18 +125,19 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (isEditing) {
-            // Kirim sebagai POST dengan _method PATCH agar file bisa dikirim
-            post(route('instructor.courses.update', course.id), {
-                forceFormData: true,
-            });
+            post(route('instructor.courses.update', course.id), { forceFormData: true });
         } else {
             post(route('instructor.courses.store'), { forceFormData: true });
         }
     };
 
     const handleSubmitForReview = () => {
-        if (!confirm('Ajukan kursus ini untuk ditinjau admin?')) return;
-        router.post(route('instructor.courses.submit', course.id));
+        setDialog({
+            title: 'Ajukan untuk Ditinjau',
+            message: 'Kursus akan dikirim ke admin untuk ditinjau.',
+            icon: 'send', variant: 'primary', confirmLabel: 'Ajukan',
+            onConfirm: () => router.post(route('instructor.courses.submit', course.id)),
+        });
     };
 
     const rupiah = (n) => 'Rp ' + Number(n ?? 0).toLocaleString('id-ID');
@@ -158,7 +147,7 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
             : data.price;
 
     return (
-        <AppLayout>
+        <InstructorLayout>
             <Head
                 title={
                     isEditing
@@ -167,45 +156,52 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                 }
             />
 
-            {/* ─── Top bar ─── */}
-            <div className="bg-white border-b border-gray-100 sticky top-20 z-30">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
+            {/* ─── Page Header ─── */}
+            <div className="bg-surface px-margin-mobile md:px-margin-desktop py-lg border-b border-surface-variant sticky top-[60px] md:top-0 z-30">
+                <div className="max-w-7xl mx-auto">
                     {/* Breadcrumb */}
-                    <div className="flex items-center gap-2 text-sm font-semibold text-gray-500">
-                        <Link
-                            href={route('instructor.courses.index')}
-                            className="flex items-center gap-1 hover:text-indigo-600 transition-colors"
-                        >
-                            <ArrowLeft className="w-4 h-4" />
+                    <div className="flex items-center gap-xs font-caption text-caption text-on-surface-variant mb-sm">
+                        <Link href={route('instructor.courses.index')} className="flex items-center gap-xs hover:text-primary transition-colors">
+                            <span className="material-symbols-outlined text-[16px]">arrow_back</span>
                             Kursus Saya
                         </Link>
-                        <ChevronRight className="w-4 h-4 text-gray-300" />
-                        <span className="text-gray-900">
-                            {isEditing ? 'Informasi Dasar' : 'Kursus Baru'}
+                        <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+                        <span className="text-on-surface">
+                            {isEditing ? course.title : 'Kursus Baru'}
                         </span>
                     </div>
 
-                    {/* Tabs — jika edit, tampilkan tab kurikulum */}
-                    <div className="flex items-center gap-3">
+                    {/* Title row */}
+                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-sm">
+                        <div>
+                            <p className="font-caption text-caption text-on-surface-variant uppercase tracking-widest mb-xs">Panel Instruktur</p>
+                            <h1 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background">
+                                {isEditing ? 'Informasi Dasar' : 'Buat Kursus Baru'}
+                            </h1>
+                            <p className="font-body-md text-body-md text-on-surface-variant mt-xs">
+                                {isEditing ? 'Edit detail dan informasi kursusmu.' : 'Isi informasi dasar untuk kursus barumu.'}
+                            </p>
+                        </div>
+                        {/* Tabs (hanya tampil saat edit) */}
                         {isEditing && (
-                            <>
-                                <span className="px-3 py-1 rounded-full text-xs font-bold bg-indigo-600 text-white">
+                            <div className="flex items-center gap-xs">
+                                <span className="px-md py-xs rounded-lg font-caption text-caption bg-primary text-on-primary font-bold">
                                     Informasi Dasar
                                 </span>
                                 <Link
                                     href={route('instructor.courses.curriculum', course.id)}
-                                    className="px-3 py-1 rounded-full text-xs font-bold text-gray-500 hover:text-indigo-600 hover:bg-gray-50 transition-colors"
+                                    className="px-md py-xs rounded-lg font-caption text-caption text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors"
                                 >
                                     Kurikulum
                                 </Link>
-                            </>
+                            </div>
                         )}
                     </div>
                 </div>
             </div>
 
             {/* ─── Main ─── */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div className="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-lg">
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
@@ -213,18 +209,18 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                         <div className="lg:col-span-2 space-y-6">
 
                             {/* Section: Judul & Slug */}
-                            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                                <div className="flex items-center gap-3 px-7 py-5 border-b border-gray-50">
-                                    <div className="p-2 bg-indigo-50 rounded-xl">
-                                        <BookOpen className="w-4 h-4 text-indigo-600" />
+                            <div className="bg-surface rounded-3xl border border-surface-variant shadow-sm overflow-hidden">
+                                <div className="flex items-center gap-3 px-7 py-5 border-b border-surface-variant/50">
+                                    <div className="p-2 bg-primary-fixed/20 rounded-xl">
+                                        <span className="material-symbols-outlined text-[18px] text-primary">menu_book</span>
                                     </div>
-                                    <h2 className="font-bold text-gray-900 text-sm">Identitas Kursus</h2>
+                                    <h2 className="font-bold text-on-surface text-sm">Identitas Kursus</h2>
                                 </div>
                                 <div className="px-7 py-6 space-y-5">
                                     {/* Judul */}
                                     <div className="space-y-1.5">
-                                        <label htmlFor="title" className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
-                                            Judul Kursus <span className="text-red-500">*</span>
+                                        <label htmlFor="title" className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">
+                                            Judul Kursus <span className="text-error">*</span>
                                         </label>
                                         <input
                                             id="title"
@@ -232,24 +228,24 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                                             value={data.title}
                                             onChange={(e) => setData('title', e.target.value)}
                                             placeholder="Contoh: Belajar React dari Nol sampai Mahir"
-                                            className={`w-full border rounded-2xl px-5 py-3.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all ${
-                                                errors.title ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50 focus:bg-white'
+                                            className={`w-full border rounded-2xl px-5 py-3.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all ${
+                                                errors.title ? 'border-error/50 bg-error-container/20' : 'border-outline-variant bg-surface-container-low focus:bg-surface'
                                             }`}
                                         />
                                         {errors.title && (
-                                            <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                                                <AlertCircle className="w-3.5 h-3.5" /> {errors.title}
+                                            <p className="text-xs text-error flex items-center gap-1 mt-1">
+                                                <span className="material-symbols-outlined text-[14px]">error</span> {errors.title}
                                             </p>
                                         )}
                                     </div>
 
                                     {/* Slug */}
                                     <div className="space-y-1.5">
-                                        <label htmlFor="slug" className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                                        <label htmlFor="slug" className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">
                                             URL Slug
                                         </label>
-                                        <div className="flex items-center rounded-2xl border border-gray-200 bg-gray-50 focus-within:bg-white focus-within:ring-2 focus-within:ring-indigo-500 transition-all overflow-hidden">
-                                            <span className="px-4 text-xs font-semibold text-gray-400 whitespace-nowrap border-r border-gray-200 py-3.5">
+                                        <div className="flex items-center rounded-2xl border border-outline-variant bg-surface-container-low focus-within:bg-surface focus-within:ring-2 focus-within:ring-primary/50 transition-all overflow-hidden">
+                                            <span className="px-4 text-xs font-semibold text-on-surface-variant whitespace-nowrap border-r border-outline-variant py-3.5">
                                                 /courses/
                                             </span>
                                             <input
@@ -262,15 +258,15 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                                             />
                                         </div>
                                         {errors.slug && (
-                                            <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                                                <AlertCircle className="w-3.5 h-3.5" /> {errors.slug}
+                                            <p className="text-xs text-error flex items-center gap-1 mt-1">
+                                                <span className="material-symbols-outlined text-[14px]">error</span> {errors.slug}
                                             </p>
                                         )}
                                     </div>
 
                                     {/* Deskripsi */}
                                     <div className="space-y-1.5">
-                                        <label htmlFor="description" className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                                        <label htmlFor="description" className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">
                                             Deskripsi Kursus
                                         </label>
                                         <textarea
@@ -279,28 +275,28 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                                             value={data.description}
                                             onChange={(e) => setData('description', e.target.value)}
                                             placeholder="Ceritakan tentang kursus ini: apa yang akan dipelajari, untuk siapa kursus ini, dan apa manfaatnya..."
-                                            className="w-full border border-gray-200 rounded-2xl px-5 py-4 text-sm font-semibold bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all resize-none"
+                                            className="w-full border border-outline-variant rounded-2xl px-5 py-4 text-sm font-semibold bg-surface-container-low focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
                                         />
                                         {errors.description && (
-                                            <p className="text-xs text-red-500">{errors.description}</p>
+                                            <p className="text-xs text-error">{errors.description}</p>
                                         )}
                                     </div>
                                 </div>
                             </div>
 
                             {/* Section: Kategori */}
-                            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                                <div className="flex items-center gap-3 px-7 py-5 border-b border-gray-50">
-                                    <div className="p-2 bg-purple-50 rounded-xl">
-                                        <Tag className="w-4 h-4 text-purple-600" />
+                            <div className="bg-surface rounded-3xl border border-surface-variant shadow-sm overflow-hidden">
+                                <div className="flex items-center gap-3 px-7 py-5 border-b border-surface-variant/50">
+                                    <div className="p-2 bg-primary-fixed/20 rounded-xl">
+                                        <span className="material-symbols-outlined text-[18px] text-primary">sell</span>
                                     </div>
-                                    <h2 className="font-bold text-gray-900 text-sm">Kategori</h2>
+                                    <h2 className="font-bold text-on-surface text-sm">Kategori</h2>
                                 </div>
                                 <div className="px-7 py-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
                                     {/* Kategori */}
                                     <div className="space-y-1.5">
-                                        <label htmlFor="category_id" className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
-                                            Kategori <span className="text-red-500">*</span>
+                                        <label htmlFor="category_id" className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">
+                                            Kategori <span className="text-error">*</span>
                                         </label>
                                         <select
                                             id="category_id"
@@ -309,8 +305,8 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                                                 setData('category_id', e.target.value);
                                                 setData('subcategory_id', '');
                                             }}
-                                            className={`w-full border rounded-2xl px-5 py-3.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all appearance-none ${
-                                                errors.category_id ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50 focus:bg-white'
+                                            className={`w-full border rounded-2xl px-5 py-3.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all appearance-none ${
+                                                errors.category_id ? 'border-error/50 bg-error-container/20' : 'border-outline-variant bg-surface-container-low focus:bg-surface'
                                             }`}
                                         >
                                             <option value="">-- Pilih Kategori --</option>
@@ -321,15 +317,15 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                                             ))}
                                         </select>
                                         {errors.category_id && (
-                                            <p className="text-xs text-red-500 flex items-center gap-1">
-                                                <AlertCircle className="w-3.5 h-3.5" /> {errors.category_id}
+                                            <p className="text-xs text-error flex items-center gap-1">
+                                                <span className="material-symbols-outlined text-[14px]">error</span> {errors.category_id}
                                             </p>
                                         )}
                                     </div>
 
                                     {/* Sub-Kategori */}
                                     <div className="space-y-1.5">
-                                        <label htmlFor="subcategory_id" className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                                        <label htmlFor="subcategory_id" className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">
                                             Sub-Kategori
                                         </label>
                                         <select
@@ -337,7 +333,7 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                                             value={data.subcategory_id}
                                             onChange={(e) => setData('subcategory_id', e.target.value)}
                                             disabled={!data.category_id || filteredSubs.length === 0}
-                                            className="w-full border border-gray-200 rounded-2xl px-5 py-3.5 text-sm font-semibold bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="w-full border border-outline-variant rounded-2xl px-5 py-3.5 text-sm font-semibold bg-surface-container-low focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                             <option value="">-- Pilih Sub-Kategori --</option>
                                             {filteredSubs.map((sub) => (
@@ -351,22 +347,22 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                             </div>
 
                             {/* Section: Harga */}
-                            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                                <div className="flex items-center gap-3 px-7 py-5 border-b border-gray-50">
-                                    <div className="p-2 bg-emerald-50 rounded-xl">
-                                        <DollarSign className="w-4 h-4 text-emerald-600" />
+                            <div className="bg-surface rounded-3xl border border-surface-variant shadow-sm overflow-hidden">
+                                <div className="flex items-center gap-3 px-7 py-5 border-b border-surface-variant/50">
+                                    <div className="p-2 bg-success/10 rounded-xl">
+                                        <span className="material-symbols-outlined text-[18px] text-success">payments</span>
                                     </div>
-                                    <h2 className="font-bold text-gray-900 text-sm">Harga</h2>
+                                    <h2 className="font-bold text-on-surface text-sm">Harga</h2>
                                 </div>
                                 <div className="px-7 py-6 space-y-5">
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                         {/* Harga Normal */}
                                         <div className="space-y-1.5">
-                                            <label htmlFor="price" className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
-                                                Harga (Rp) <span className="text-red-500">*</span>
+                                            <label htmlFor="price" className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">
+                                                Harga (Rp) <span className="text-error">*</span>
                                             </label>
                                             <div className="relative">
-                                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400">
+                                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xs font-bold text-on-surface-variant">
                                                     Rp
                                                 </span>
                                                 <input
@@ -376,22 +372,22 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                                                     step={1000}
                                                     value={data.price}
                                                     onChange={(e) => setData('price', Number(e.target.value))}
-                                                    className={`w-full border rounded-2xl pl-10 pr-5 py-3.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all ${
-                                                        errors.price ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50 focus:bg-white'
+                                                    className={`w-full border rounded-2xl pl-10 pr-5 py-3.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all ${
+                                                        errors.price ? 'border-error/50 bg-error-container/20' : 'border-outline-variant bg-surface-container-low focus:bg-surface'
                                                     }`}
                                                 />
                                             </div>
                                             {errors.price && (
-                                                <p className="text-xs text-red-500">{errors.price}</p>
+                                                <p className="text-xs text-error">{errors.price}</p>
                                             )}
-                                            <p className="text-xs text-gray-400 font-medium">
+                                            <p className="text-xs text-on-surface-variant font-medium">
                                                 Isi 0 untuk kursus gratis.
                                             </p>
                                         </div>
 
                                         {/* Diskon */}
                                         <div className="space-y-1.5">
-                                            <label htmlFor="discount" className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                                            <label htmlFor="discount" className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">
                                                 Diskon (%)
                                             </label>
                                             <div className="relative">
@@ -402,29 +398,29 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                                                     max={100}
                                                     value={data.discount}
                                                     onChange={(e) => setData('discount', Number(e.target.value))}
-                                                    className="w-full border border-gray-200 rounded-2xl pr-10 pl-5 py-3.5 text-sm font-semibold bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                                                    className="w-full border border-outline-variant rounded-2xl pr-10 pl-5 py-3.5 text-sm font-semibold bg-surface-container-low focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                                                 />
-                                                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400">
+                                                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-on-surface-variant">
                                                     %
                                                 </span>
                                             </div>
                                             {errors.discount && (
-                                                <p className="text-xs text-red-500">{errors.discount}</p>
+                                                <p className="text-xs text-error">{errors.discount}</p>
                                             )}
                                         </div>
                                     </div>
 
                                     {/* Preview harga */}
                                     {data.price > 0 && (
-                                        <div className="bg-indigo-50 border border-indigo-100 rounded-2xl px-5 py-4 flex items-center gap-4">
-                                            <Info className="w-4 h-4 text-indigo-500 flex-shrink-0" />
-                                            <div className="text-sm font-semibold text-gray-700">
+                                        <div className="bg-primary-fixed/10 border border-primary/10 rounded-2xl px-5 py-4 flex items-center gap-4">
+                                            <span className="material-symbols-outlined text-[18px] text-primary flex-shrink-0">info</span>
+                                            <div className="text-sm font-semibold text-on-surface">
                                                 Harga yang tampil ke siswa:{' '}
-                                                <span className="text-indigo-600 font-black">
+                                                <span className="text-primary font-black">
                                                     {rupiah(discountedPrice)}
                                                 </span>
                                                 {data.discount > 0 && (
-                                                    <span className="text-gray-400 text-xs line-through ml-2">
+                                                    <span className="text-on-surface-variant text-xs line-through ml-2">
                                                         {rupiah(data.price)}
                                                     </span>
                                                 )}
@@ -435,12 +431,12 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                             </div>
 
                             {/* Section: Toggle featured/bestseller */}
-                            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                                <div className="flex items-center gap-3 px-7 py-5 border-b border-gray-50">
-                                    <div className="p-2 bg-amber-50 rounded-xl">
-                                        <Sparkles className="w-4 h-4 text-amber-600" />
+                            <div className="bg-surface rounded-3xl border border-surface-variant shadow-sm overflow-hidden">
+                                <div className="flex items-center gap-3 px-7 py-5 border-b border-surface-variant/50">
+                                    <div className="p-2 bg-secondary-container/20 rounded-xl">
+                                        <span className="material-symbols-outlined text-[18px] text-secondary-container">auto_awesome</span>
                                     </div>
-                                    <h2 className="font-bold text-gray-900 text-sm">Sorotan</h2>
+                                    <h2 className="font-bold text-on-surface text-sm">Sorotan</h2>
                                 </div>
                                 <div className="px-7 py-6 space-y-4">
                                     <ToggleRow
@@ -460,35 +456,44 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                                 </div>
                             </div>
 
-                            {/* Section: Yang Akan Anda Pelajari (hanya saat edit) */}
-                            {isEditing && (
-                                <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                                    <div className="flex items-center gap-3 px-7 py-5 border-b border-gray-50">
-                                        <div className="p-2 bg-teal-50 rounded-xl">
-                                            <ListChecks className="w-4 h-4 text-teal-600" />
-                                        </div>
-                                        <h2 className="font-bold text-gray-900 text-sm">Yang Akan Anda Pelajari</h2>
-                                        <span className="ml-auto text-xs text-gray-400 font-medium">{goals.length} poin</span>
+                            {/* Section: Yang Akan Anda Pelajari */}
+                            {!isEditing && (
+                                <div className="bg-surface rounded-2xl p-lg md:p-xl border border-primary/5 shadow-sm">
+                                    <div className="flex items-center gap-sm mb-md">
+                                        <span className="text-lg">🎯</span>
+                                        <h2 className="font-headline-md text-headline-md text-on-surface">Yang Akan Anda Pelajari</h2>
                                     </div>
-                                    <div className="px-7 py-6 space-y-4">
+                                    <p className="font-body-md text-body-md text-on-surface-variant">
+                                        Simpan kursus terlebih dahulu, lalu kamu bisa menambahkan poin pembelajaran di halaman edit.
+                                    </p>
+                                </div>
+                            )}
+                            {isEditing && (
+                                <div className="bg-surface rounded-2xl p-lg md:p-xl border border-primary/5 shadow-sm overflow-hidden">
+                                    <div className="flex items-center gap-sm mb-md">
+                                        <span className="text-lg">🎯</span>
+                                        <h2 className="font-headline-md text-headline-md text-on-surface">Yang Akan Anda Pelajari</h2>
+                                        <span className="ml-auto font-caption text-caption text-on-surface-variant">{goals.length} poin</span>
+                                    </div>
+                                    <div className="space-y-sm">
                                         {goals.length > 0 && (
-                                            <ul className="space-y-2">
+                                            <ul className="space-y-xs">
                                                 {goals.map((g) => (
-                                                    <li key={g.id} className="flex items-start gap-3 bg-teal-50/60 rounded-2xl px-4 py-3">
-                                                        <CheckCircle2 className="w-4 h-4 text-teal-600 mt-0.5 flex-shrink-0" />
-                                                        <span className="text-sm font-semibold text-gray-800 flex-1">{g.goal}</span>
+                                                    <li key={g.id} className="flex items-start gap-sm bg-success/5 rounded-lg px-md py-sm">
+                                                        <span className="text-success mt-0.5 flex-shrink-0">✓</span>
+                                                        <span className="font-body-md text-body-md text-on-surface flex-1">{g.goal}</span>
                                                         <button
                                                             type="button"
                                                             onClick={() => handleDeleteGoal(g.id)}
-                                                            className="text-gray-300 hover:text-red-500 transition-colors flex-shrink-0"
+                                                            className="text-on-surface-variant hover:text-error transition-colors flex-shrink-0 text-sm"
                                                         >
-                                                            <X className="w-4 h-4" />
+                                                            ✕
                                                         </button>
                                                     </li>
                                                 ))}
                                             </ul>
                                         )}
-                                        <div className="flex gap-2">
+                                        <div className="flex gap-sm">
                                             <input
                                                 type="text"
                                                 value={goalInput}
@@ -496,22 +501,19 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                                                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddGoal(e); } }}
                                                 placeholder="Contoh: Memahami konsep MVC Laravel"
                                                 maxLength={200}
-                                                className="flex-1 border border-gray-200 rounded-2xl px-4 py-3 text-sm font-semibold bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all"
+                                                className="flex-1 rounded-lg px-md py-sm font-body-md text-body-md text-on-surface bg-surface-container-low border-2 border-transparent focus:border-primary focus:outline-none transition-colors"
                                             />
                                             <button
                                                 type="button"
                                                 onClick={handleAddGoal}
                                                 disabled={goalLoading || !goalInput.trim()}
-                                                className="flex items-center gap-1.5 px-4 py-3 rounded-2xl bg-teal-600 text-white text-sm font-bold hover:bg-teal-500 disabled:opacity-50 transition-colors shrink-0"
+                                                className="bg-primary text-on-primary px-md py-sm rounded-lg font-label-md text-label-md disabled:opacity-50 transition-colors hover:opacity-90 shrink-0"
                                             >
-                                                {goalLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-                                                Tambah
+                                                {goalLoading ? '...' : '+ Tambah'}
                                             </button>
                                         </div>
                                         {goalError && (
-                                            <p className="text-xs text-red-500 flex items-center gap-1">
-                                                <AlertCircle className="w-3.5 h-3.5" /> {goalError}
-                                            </p>
+                                            <p className="font-caption text-caption text-error">{goalError}</p>
                                         )}
                                     </div>
                                 </div>
@@ -527,12 +529,12 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                             )}
 
                             {/* Thumbnail Upload */}
-                            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                                <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-50">
-                                    <div className="p-2 bg-purple-50 rounded-xl">
-                                        <ImageIcon className="w-4 h-4 text-purple-600" />
+                            <div className="bg-surface rounded-3xl border border-surface-variant shadow-sm overflow-hidden">
+                                <div className="flex items-center gap-3 px-6 py-5 border-b border-surface-variant/50">
+                                    <div className="p-2 bg-primary-fixed/20 rounded-xl">
+                                        <span className="material-symbols-outlined text-[18px] text-primary">image</span>
                                     </div>
-                                    <h2 className="font-bold text-gray-900 text-sm">Thumbnail</h2>
+                                    <h2 className="font-bold text-on-surface text-sm">Thumbnail</h2>
                                 </div>
                                 <div className="p-6 space-y-4">
                                     {/* Drop zone */}
@@ -540,31 +542,41 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                                         onDrop={handleThumbnailDrop}
                                         onDragOver={(e) => e.preventDefault()}
                                         onClick={() => fileInputRef.current?.click()}
-                                        className="group relative cursor-pointer border-2 border-dashed border-gray-200 rounded-2xl overflow-hidden hover:border-indigo-400 transition-colors"
+                                        className="group relative cursor-pointer border-2 border-dashed border-outline-variant rounded-2xl overflow-hidden hover:border-primary/50 transition-colors"
                                         style={{ aspectRatio: '16/9' }}
                                     >
                                         {preview ? (
                                             <>
-                                                <img
-                                                    src={preview}
-                                                    alt="Preview thumbnail"
-                                                    className="w-full h-full object-cover"
-                                                />
-                                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                {previewIsVideo ? (
+                                                    <video
+                                                        src={preview}
+                                                        className="w-full h-full object-cover"
+                                                        muted
+                                                        playsInline
+                                                        controls
+                                                    />
+                                                ) : (
+                                                    <img
+                                                        src={preview}
+                                                        alt="Preview thumbnail"
+                                                        className="w-full h-full object-cover bg-white"
+                                                    />
+                                                )}
+                                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
                                                     <div className="text-center text-white">
-                                                        <Upload className="w-6 h-6 mx-auto mb-1" />
-                                                        <p className="text-xs font-semibold">Ganti Gambar</p>
+                                                        <span className="material-symbols-outlined text-[24px] block mb-1">upload</span>
+                                                        <p className="text-xs font-semibold">Ganti Media</p>
                                                     </div>
                                                 </div>
                                             </>
                                         ) : (
                                             <div className="flex flex-col items-center justify-center h-full p-6 text-center">
-                                                <Upload className="w-8 h-8 text-gray-300 mb-3" />
-                                                <p className="text-sm font-semibold text-gray-500">
-                                                    Klik atau seret gambar ke sini
+                                                <span className="material-symbols-outlined text-[32px] text-outline-variant mb-3">upload</span>
+                                                <p className="text-sm font-semibold text-on-surface-variant">
+                                                    Klik atau seret file ke sini
                                                 </p>
-                                                <p className="text-xs text-gray-400 mt-1">
-                                                    PNG, JPG, WebP · Maks. 2MB · Rasio 16:9 disarankan
+                                                <p className="text-xs text-on-surface-variant/60 mt-1">
+                                                    Foto: JPG, PNG, WebP · Maks. 2MB<br/>Video: MP4, WebM, MOV · Maks. 50MB
                                                 </p>
                                             </div>
                                         )}
@@ -573,7 +585,7 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                                     <input
                                         ref={fileInputRef}
                                         type="file"
-                                        accept="image/*"
+                                        accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime"
                                         className="hidden"
                                         onChange={handleThumbnailChange}
                                     />
@@ -582,30 +594,31 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                                         <button
                                             type="button"
                                             onClick={clearThumbnail}
-                                            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-2xl text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
+                                            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-2xl text-xs font-bold text-error bg-error-container hover:bg-error/20 transition-colors"
                                         >
-                                            <X className="w-3.5 h-3.5" />
+                                            <span className="material-symbols-outlined text-[14px]">close</span>
                                             Hapus Gambar Baru
                                         </button>
                                     )}
 
                                     {errors.thumbnail && (
-                                        <p className="text-xs text-red-500 flex items-center gap-1">
-                                            <AlertCircle className="w-3.5 h-3.5" /> {errors.thumbnail}
+                                        <p className="text-xs text-error flex items-center gap-1">
+                                            <span className="material-symbols-outlined text-[14px]">error</span> {errors.thumbnail}
                                         </p>
                                     )}
                                 </div>
                             </div>
 
                             {/* Save button */}
-                            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-3">
+                            <div className="bg-surface rounded-3xl border border-surface-variant shadow-sm p-6 space-y-3">
                                 <button
                                     type="submit"
                                     disabled={processing}
                                     id="btn-save-course"
-                                    className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 hover:-translate-y-0.5 active:translate-y-0 transform transition-all duration-200 shadow-md shadow-indigo-600/20 disabled:opacity-60"
+                                    className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl text-sm font-bold text-on-primary bg-primary hover:bg-primary-container hover:-translate-y-0.5 active:translate-y-0 transform transition-all duration-200 disabled:opacity-60"
+                                    style={{ boxShadow: '0 4px 16px rgba(48,0,51,0.20)' }}
                                 >
-                                    <Save className="w-4 h-4" />
+                                    <span className="material-symbols-outlined text-[18px]">save</span>
                                     {processing
                                         ? 'Menyimpan...'
                                         : isEditing
@@ -614,8 +627,8 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                                 </button>
 
                                 {recentlySuccessful && (
-                                    <p className="text-xs text-emerald-600 font-semibold flex items-center justify-center gap-1.5">
-                                        <CheckCircle2 className="w-4 h-4" />
+                                    <p className="text-xs text-success font-semibold flex items-center justify-center gap-1.5">
+                                        <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
                                         Tersimpan!
                                     </p>
                                 )}
@@ -626,18 +639,18 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                                         type="button"
                                         onClick={handleSubmitForReview}
                                         id="btn-submit-review"
-                                        className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl text-sm font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition-colors border border-emerald-200"
+                                        className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl text-sm font-bold text-success bg-success/10 hover:bg-success/20 transition-colors border border-success/20"
                                     >
-                                        <Send className="w-4 h-4" />
+                                        <span className="material-symbols-outlined text-[18px]">send</span>
                                         Kirim untuk Review
                                     </button>
                                 )}
 
                                 <Link
                                     href={route('instructor.courses.index')}
-                                    className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-bold text-gray-600 hover:text-gray-900 bg-gray-50 hover:bg-gray-100 transition-colors"
+                                    className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-bold text-on-surface-variant hover:text-on-surface bg-surface-container hover:bg-surface-container-high transition-colors"
                                 >
-                                    <ArrowLeft className="w-4 h-4" />
+                                    <span className="material-symbols-outlined text-[18px]">arrow_back</span>
                                     Kembali ke Daftar
                                 </Link>
                             </div>
@@ -645,7 +658,8 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
                     </div>
                 </form>
             </div>
-        </AppLayout>
+            {dialog && <ConfirmDialog open onClose={() => setDialog(null)} {...dialog} />}
+        </InstructorLayout>
     );
 }
 
@@ -653,10 +667,10 @@ export default function BasicInfo({ course, categories = [], subcategories = [] 
 
 function ToggleRow({ id, label, description, checked, onChange }) {
     return (
-        <div className="flex items-center justify-between gap-4 py-3 border-b border-gray-50 last:border-0">
+        <div className="flex items-center justify-between gap-4 py-3 border-b border-surface-variant/50 last:border-0">
             <div>
-                <p className="text-sm font-bold text-gray-800">{label}</p>
-                <p className="text-xs text-gray-400 font-medium mt-0.5">{description}</p>
+                <p className="text-sm font-bold text-on-surface">{label}</p>
+                <p className="text-xs text-on-surface-variant font-medium mt-0.5">{description}</p>
             </div>
             <button
                 type="button"
@@ -664,8 +678,8 @@ function ToggleRow({ id, label, description, checked, onChange }) {
                 role="switch"
                 aria-checked={checked}
                 onClick={() => onChange(!checked)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex-shrink-0 ${
-                    checked ? 'bg-indigo-600' : 'bg-gray-200'
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 flex-shrink-0 ${
+                    checked ? 'bg-primary' : 'bg-outline-variant'
                 }`}
             >
                 <span
@@ -680,10 +694,10 @@ function ToggleRow({ id, label, description, checked, onChange }) {
 
 function StatusBadge({ status }) {
     const config = {
-        draft:          { label: 'Draft', bg: 'bg-gray-50', text: 'text-gray-600', border: 'border-gray-200', dot: 'bg-gray-400' },
-        pending_review: { label: 'Menunggu Review', bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200', dot: 'bg-amber-400' },
-        active:         { label: 'Aktif & Dipublikasikan', bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200', dot: 'bg-emerald-400' },
-        inactive:       { label: 'Nonaktif', bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200', dot: 'bg-red-400' },
+        draft:          { label: 'Draft', bg: 'bg-surface-container', text: 'text-on-surface-variant', border: 'border-outline-variant', dot: 'bg-outline' },
+        pending_review: { label: 'Menunggu Review', bg: 'bg-warning/10', text: 'text-warning', border: 'border-warning/20', dot: 'bg-warning' },
+        active:         { label: 'Aktif & Dipublikasikan', bg: 'bg-success/10', text: 'text-success', border: 'border-success/20', dot: 'bg-success' },
+        inactive:       { label: 'Nonaktif', bg: 'bg-error-container', text: 'text-on-error-container', border: 'border-error/20', dot: 'bg-error' },
     };
     const { label, bg, text, border, dot } = config[status] ?? config.draft;
 
@@ -691,7 +705,7 @@ function StatusBadge({ status }) {
         <div className={`flex items-center gap-3 px-5 py-3.5 rounded-2xl border ${bg} ${border}`}>
             <span className={`w-2 h-2 rounded-full ${dot} flex-shrink-0`} />
             <div>
-                <p className="text-xs font-black text-gray-500 uppercase tracking-widest">Status Kursus</p>
+                <p className="text-xs font-black text-on-surface-variant uppercase tracking-widest">Status Kursus</p>
                 <p className={`text-sm font-bold ${text}`}>{label}</p>
             </div>
         </div>

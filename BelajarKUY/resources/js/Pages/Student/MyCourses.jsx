@@ -2,7 +2,7 @@ import { Head, Link } from '@inertiajs/react';
 import StudentLayout from '@/Layouts/StudentLayout';
 
 function CourseCard({ item }) {
-    const { course, progress, completed_count, lectures_count, enrolled_at } = item;
+    const { course, progress, completed_count, lectures_count, enrolled_at, certificate_code } = item;
 
     const enrolledDate = enrolled_at
         ? new Date(enrolled_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -17,6 +17,12 @@ function CourseCard({ item }) {
                         src={course.thumbnail}
                         alt={course.title}
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                            if (!e.currentTarget.dataset.fallback) {
+                                e.currentTarget.dataset.fallback = '1';
+                                e.currentTarget.src = 'https://placehold.co/600x340/300033/ffffff?text=BelajarKUY';
+                            }
+                        }}
                     />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center">
@@ -72,27 +78,40 @@ function CourseCard({ item }) {
                 )}
 
                 {/* Action */}
-                <Link
-                    href={`/student/learn/${course.slug}`}
-                    className="mt-auto w-full bg-primary text-on-primary font-label-md text-label-md py-2 rounded-lg hover:bg-primary-container transition-colors flex items-center justify-center gap-xs"
-                >
-                    {progress === 100 ? (
-                        <>
-                            <span className="material-symbols-outlined text-[18px]">replay</span>
-                            Tonton Ulang
-                        </>
-                    ) : progress > 0 ? (
-                        <>
-                            <span className="material-symbols-outlined text-[18px]">play_arrow</span>
-                            Lanjutkan
-                        </>
-                    ) : (
-                        <>
-                            <span className="material-symbols-outlined text-[18px]">rocket_launch</span>
-                            Mulai Belajar
-                        </>
+                <div className="mt-auto flex flex-col gap-xs">
+                    {/* Tombol sertifikat — hanya muncul saat progress 100% dan ada certificate_code */}
+                    {progress === 100 && certificate_code && (
+                        <a
+                            href={`/student/certificate/${certificate_code}`}
+                            className="w-full font-label-md text-label-md py-2 rounded-lg flex items-center justify-center gap-xs transition-all hover:opacity-90 active:scale-95"
+                            style={{ background: 'linear-gradient(135deg, #300033 0%, #5a1a5e 100%)', color: '#ffb145' }}
+                        >
+                            <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>workspace_premium</span>
+                            Lihat Sertifikat
+                        </a>
                     )}
-                </Link>
+                    <Link
+                        href={`/student/learn/${course.slug}`}
+                        className="w-full bg-primary text-on-primary font-label-md text-label-md py-2 rounded-lg hover:bg-primary-container transition-colors flex items-center justify-center gap-xs"
+                    >
+                        {progress === 100 ? (
+                            <>
+                                <span className="material-symbols-outlined text-[18px]">replay</span>
+                                Tonton Ulang
+                            </>
+                        ) : progress > 0 ? (
+                            <>
+                                <span className="material-symbols-outlined text-[18px]">play_arrow</span>
+                                Lanjutkan
+                            </>
+                        ) : (
+                            <>
+                                <span className="material-symbols-outlined text-[18px]">rocket_launch</span>
+                                Mulai Belajar
+                            </>
+                        )}
+                    </Link>
+                </div>
             </div>
         </div>
     );
@@ -154,13 +173,23 @@ export default function MyCourses({ enrolledCoursesData }) {
             ) : (
                 <div className="px-margin-mobile md:px-margin-desktop py-xl md:py-xxl">
                     {/* Header */}
-                    <div className="mb-xl">
-                        <h1 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-xs">
-                            Kursus Saya
-                        </h1>
-                        <p className="font-body-md text-body-md text-on-surface-variant">
-                            {courses.length} kursus terdaftar
-                        </p>
+                    <div className="mb-xl flex flex-col sm:flex-row sm:items-end sm:justify-between gap-md">
+                        <div>
+                            <h1 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-xs">
+                                Kursus Saya
+                            </h1>
+                            <p className="font-body-md text-body-md text-on-surface-variant">
+                                {courses.length} kursus terdaftar
+                            </p>
+                        </div>
+                        {/* Jalur ke katalog: sebelumnya tidak ada tombol ke daftar kursus dari sini */}
+                        <a
+                            href="/home"
+                            className="shrink-0 bg-primary text-on-primary font-label-md text-label-md py-3 px-lg rounded-lg shadow-sm hover:bg-primary-container transition-all active:scale-95 flex items-center justify-center gap-2 w-max"
+                        >
+                            <span className="material-symbols-outlined text-[20px]">explore</span>
+                            Jelajahi Kursus
+                        </a>
                     </div>
 
                     {/* In Progress */}

@@ -12,6 +12,15 @@ export default {
 
     theme: {
         extend: {
+            keyframes: {
+                growWidth: {
+                    '0%':   { width: '0%' },
+                    '100%': { width: '100%' },
+                },
+            },
+            animation: {
+                'growWidth': 'growWidth 5s linear 1',
+            },
             fontFamily: {
                 sans: ['Plus Jakarta Sans', 'Figtree', ...defaultTheme.fontFamily.sans],
                 'body-lg':      ['Plus Jakarta Sans'],

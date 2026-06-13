@@ -49,10 +49,10 @@ class CmsSeeder extends Seeder
 
         // --- Info Boxes ---
         $infoBoxes = [
-            ['title' => 'Instruktur Berpengalaman', 'description' => 'Belajar dari praktisi industri.', 'icon' => 'users'],
-            ['title' => 'Materi Lengkap', 'description' => 'Video, dokumen, dan project nyata.', 'icon' => 'book-open'],
-            ['title' => 'Sertifikat Resmi', 'description' => 'Dapat sertifikat setelah menyelesaikan kursus.', 'icon' => 'award'],
-            ['title' => 'Akses Seumur Hidup', 'description' => 'Belajar kapan saja, di mana saja.', 'icon' => 'clock'],
+            ['title' => 'Instruktur Berpengalaman', 'description' => 'Belajar langsung dari praktisi industri terbaik yang berpengalaman.', 'icon' => 'manage_accounts'],
+            ['title' => 'Materi Lengkap & Terstruktur', 'description' => 'Video HD, modul PDF, dan project nyata untuk portofoliomu.', 'icon' => 'auto_stories'],
+            ['title' => 'Sertifikat Resmi', 'description' => 'Dapatkan sertifikat setelah lulus yang diakui oleh mitra perusahaan.', 'icon' => 'workspace_premium'],
+            ['title' => 'Akses Seumur Hidup', 'description' => 'Beli sekali, belajar selamanya — kapan saja dan di mana saja.', 'icon' => 'all_inclusive'],
         ];
 
         foreach ($infoBoxes as $i => $box) {

@@ -26,7 +26,8 @@ class CloudinaryService
     {
         try {
             $response = $this->cloudinary->uploadApi()->upload($file->getRealPath(), [
-                'folder' => $folder,
+                'folder'        => $folder,
+                'resource_type' => 'auto',
             ]);
 
             return [
@@ -71,5 +72,21 @@ class CloudinaryService
                 Log::error('Cloudinary Delete Error: ' . $e->getMessage());
             }
         }
+    }
+
+    /**
+     * Alias for uploadImage (used by some Admin controllers).
+     */
+    public function upload(UploadedFile $file, string $folder = 'lms_assets'): array
+    {
+        return $this->uploadImage($file, $folder);
+    }
+
+    /**
+     * Alias for deleteImage (used by some Admin controllers).
+     */
+    public function delete(string $publicId): void
+    {
+        $this->deleteImage($publicId);
     }
 }

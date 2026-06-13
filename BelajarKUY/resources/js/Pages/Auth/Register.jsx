@@ -15,6 +15,14 @@ export default function Register() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm]   = useState(false);
 
+    const passwordCriteria = [
+        { label: 'Min. 8 karakter',    met: data.password.length >= 8 },
+        { label: 'Huruf besar (A-Z)',  met: /[A-Z]/.test(data.password) },
+        { label: 'Angka (0-9)',        met: /[0-9]/.test(data.password) },
+        { label: 'Simbol (!@#$…)',     met: /[^A-Za-z0-9]/.test(data.password) },
+    ];
+    const strengthCount = passwordCriteria.filter(c => c.met).length;
+
     function submit(e) {
         e.preventDefault();
         post(route('register'), {
@@ -113,7 +121,7 @@ export default function Register() {
                             autoComplete="new-password"
                             required
                             onChange={(e) => setData('password', e.target.value)}
-                            placeholder="Minimal 8 karakter"
+                            placeholder="Min. 8 karakter, huruf besar, angka & simbol"
                             className={`w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded-lg py-3 pl-[44px] pr-[44px] border-2 outline-none transition-all duration-200 placeholder:text-outline-variant ${
                                 errors.password
                                     ? 'border-error bg-error-container/20'
@@ -129,6 +137,51 @@ export default function Register() {
                                 {showPassword ? 'visibility' : 'visibility_off'}
                             </span>
                         </button>
+                    </div>
+                    {/* Strength bar — selalu di-render, animasi via max-height + opacity */}
+                    <div
+                        className="overflow-hidden transition-all duration-500 ease-in-out"
+                        style={{
+                            maxHeight: data.password.length > 0 ? '120px' : '0px',
+                            opacity: data.password.length > 0 ? 1 : 0,
+                            marginTop: data.password.length > 0 ? '6px' : '0px',
+                        }}
+                    >
+                        <div className="flex flex-col gap-xs">
+                            <div className="flex gap-1">
+                                {[0, 1, 2, 3].map(i => (
+                                    <div
+                                        key={i}
+                                        className={`h-1 flex-1 rounded-full transition-all duration-400 ${
+                                            i < strengthCount
+                                                ? strengthCount <= 1 ? 'bg-error'
+                                                : strengthCount <= 3 ? 'bg-[#ffb145]'
+                                                : 'bg-[#300033]'
+                                                : 'bg-surface-container-highest'
+                                        }`}
+                                    />
+                                ))}
+                            </div>
+                            <div className="grid grid-cols-2 gap-x-sm gap-y-[2px]">
+                                {passwordCriteria.map(({ label, met }) => (
+                                    <div key={label} className="flex items-center gap-[6px]">
+                                        <span
+                                            className="material-symbols-outlined transition-all duration-300"
+                                            style={{
+                                                fontSize: '14px',
+                                                fontVariationSettings: "'FILL' 1",
+                                                color: met ? '#300033' : '#9e8e9b',
+                                            }}
+                                        >
+                                            {met ? 'check_circle' : 'radio_button_unchecked'}
+                                        </span>
+                                        <span className={`font-caption text-caption transition-colors duration-300 ${met ? 'text-on-surface' : 'text-outline'}`}>
+                                            {label}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                     {errors.password && (
                         <p className="font-caption text-caption text-error ml-xs">{errors.password}</p>

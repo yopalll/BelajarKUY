@@ -16,12 +16,12 @@ class SliderFactory extends Factory
     {
         return [
             'title' => fake()->catchPhrase(),
-            'description' => fake()->sentence(12),
-            'image' => 'sliders/slide-'.fake()->uuid().'.jpg',
-            'button_text' => fake()->randomElement(['Lihat Sekarang', 'Mulai Belajar', 'Cek Promo']),
-            'button_url' => '/courses',
+            'sub_title' => fake()->sentence(12),
+            'link' => '/courses',
+            'image_url' => 'https://placehold.co/1280x500/4F46E5/ffffff?text=Slider',
+            'image_public_id' => 'sliders/slide-'.fake()->uuid(),
             'status' => true,
-            'sort_order' => fake()->numberBetween(0, 20),
+            'order_position' => fake()->numberBetween(0, 20),
         ];
     }
 }

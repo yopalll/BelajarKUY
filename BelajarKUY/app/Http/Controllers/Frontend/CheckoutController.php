@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Mail\NewSaleMail;
+use App\Mail\PurchaseConfirmationMail;
 use App\Models\Cart;
 use App\Models\Payment;
 use App\Models\Order;
 use App\Models\Coupon;
 use App\Models\Enrollment;
+use App\Models\User;
+use App\Notifications\CoursePurchasedNotification;
+use App\Notifications\NewSaleNotification;
 use App\Services\MidtransService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -122,12 +126,41 @@ class CheckoutController extends Controller
             // 1. Create Payment record in 'pending' status BEFORE fetching Snap token
             $payment = Payment::create([
                 'user_id'          => auth()->id(),
+                'coupon_id'        => $coupon?->id,
                 'midtrans_order_id'=> $midtransOrderId,
                 'total_amount'     => $totalAmount,
                 'status'           => 'pending',
             ]);
 
-            // 2. Fetch Snap Token from Midtrans Service
+            // 2. Snapshot Orders at process() time so handleSuccess() never reads from cart
+            foreach ($cartItems as $item) {
+                $course = $item->course;
+                $originalPrice  = $course->price;
+                $discountAmount = $course->price - $course->discounted_price;
+                $finalPrice     = $course->discounted_price;
+
+                if ($coupon) {
+                    if (is_null($coupon->course_id) || $coupon->course_id == $course->id) {
+                        $couponDiscount  = $finalPrice * ($coupon->discount_percent / 100);
+                        $discountAmount += $couponDiscount;
+                        $finalPrice     -= $couponDiscount;
+                    }
+                }
+
+                Order::create([
+                    'payment_id'      => $payment->id,
+                    'user_id'         => auth()->id(),
+                    'course_id'       => $course->id,
+                    'instructor_id'   => $course->instructor_id,
+                    'coupon_id'       => $coupon?->id,
+                    'original_price'  => $originalPrice,
+                    'discount_amount' => $discountAmount,
+                    'final_price'     => (int) round($finalPrice),
+                    'status'          => 'pending',
+                ]);
+            }
+
+            // 3. Fetch Snap Token from Midtrans Service
             $snapToken = $this->midtrans->createSnapToken($cartItems, auth()->user(), $midtransOrderId, $coupon);
 
             DB::commit();
@@ -177,10 +210,7 @@ class CheckoutController extends Controller
                 return response()->json(['message' => 'Payment not found'], 404);
             }
 
-            // Extract custom_field1 for Coupon ID if present in notification response
-            // Midtrans SDK returns response as an object. We can check property or raw payload
             $midtransRaw = json_decode($request->getContent(), true);
-            $couponId = $midtransRaw['custom_field1'] ?? null;
 
             // Update payment with Midtrans metadata
             $payment->update([
@@ -192,12 +222,12 @@ class CheckoutController extends Controller
             // Handle transaction status mapping
             if ($transactionStatus == 'capture') {
                 if ($fraudStatus == 'accept') {
-                    $this->handleSuccess($payment, $couponId);
+                    $this->handleSuccess($payment);
                 } elseif ($fraudStatus == 'challenge') {
                     $payment->update(['status' => 'pending']);
                 }
             } elseif ($transactionStatus == 'settlement') {
-                $this->handleSuccess($payment, $couponId);
+                $this->handleSuccess($payment);
             } elseif ($transactionStatus == 'pending') {
                 $payment->update(['status' => 'pending']);
             } elseif (in_array($transactionStatus, ['deny', 'cancel', 'expire', 'failure'])) {
@@ -220,65 +250,49 @@ class CheckoutController extends Controller
     /**
      * Process successful payment: Create Orders, Enroll student, Clear cart, update Coupon count.
      */
-    private function handleSuccess(Payment $payment, $couponId = null): void
+    private function handleSuccess(Payment $payment): void
     {
-        // Prevent duplicate processing
-        if ($payment->status === 'settlement' || $payment->status === 'capture') {
-            return;
-        }
+        DB::transaction(function () use ($payment) {
+            // lockForUpdate: cegah race condition bila Midtrans kirim notifikasi ganda
+            $fresh = Payment::lockForUpdate()->find($payment->id);
 
-        DB::transaction(function () use ($payment, $couponId) {
-            $payment->update(['status' => 'settlement']);
+            if (!$fresh || in_array($fresh->status, ['settlement', 'capture'])) {
+                return;
+            }
 
-            // Get all cart items for this user
-            $cartItems = Cart::where('user_id', $payment->user_id)
-                ->with('course')
+            $fresh->update(['status' => 'settlement']);
+
+            // Use snapshot Orders created at process() — never re-read from cart
+            $orders = Order::where('payment_id', $fresh->id)
+                ->with(['course', 'instructor'])
                 ->get();
 
-            $coupon = $couponId ? Coupon::find($couponId) : null;
+            $coupon = $fresh->coupon_id ? Coupon::find($fresh->coupon_id) : null;
 
-            foreach ($cartItems as $item) {
-                $course = $item->course;
-                $originalPrice = $course->price;
-                $discountAmount = $course->price - $course->discounted_price;
-                $finalPrice = $course->discounted_price;
+            foreach ($orders as $order) {
+                $order->update(['status' => 'completed']);
 
-                // Adjust price if coupon applies to this course
-                if ($coupon) {
-                    if (is_null($coupon->course_id) || $coupon->course_id == $course->id) {
-                        $couponDiscount = $finalPrice * ($coupon->discount_percent / 100);
-                        $discountAmount += $couponDiscount;
-                        $finalPrice = $finalPrice - $couponDiscount;
-                    }
-                }
-
-                // Create individual Order record
-                $order = Order::create([
-                    'payment_id' => $payment->id,
-                    'user_id' => $payment->user_id,
-                    'course_id' => $course->id,
-                    'instructor_id' => $course->instructor_id,
-                    'coupon_id' => $coupon ? $coupon->id : null,
-                    'original_price' => $originalPrice,
-                    'discount_amount' => $discountAmount,
-                    'final_price' => $finalPrice,
-                    'status' => 'completed',
-                ]);
-
-                // Create Enrollment record to grant instant access to the course
+                // Grant access to the course
                 Enrollment::firstOrCreate([
-                    'user_id' => $payment->user_id,
-                    'course_id' => $course->id,
+                    'user_id'   => $fresh->user_id,
+                    'course_id' => $order->course_id,
                 ], [
-                    'order_id' => $order->id,
+                    'order_id'    => $order->id,
                     'enrolled_at' => now(),
                 ]);
 
-                // L11 Albariqi: kirim email notifikasi penjualan ke instruktur (via queue)
-                $order->load(['course', 'user', 'instructor']);
+                // Email + in-app notification to instructor
                 if ($order->instructor && $order->instructor->email) {
-                    Mail::to($order->instructor->email)
-                        ->queue(new NewSaleMail($order));
+                    Mail::to($order->instructor->email)->queue(new NewSaleMail($order));
+                }
+                if ($order->instructor) {
+                    $order->instructor->notify(new NewSaleNotification($order));
+                }
+
+                // In-app notification to buyer
+                $buyer = User::find($fresh->user_id);
+                if ($buyer) {
+                    $buyer->notify(new CoursePurchasedNotification($order));
                 }
             }
 
@@ -287,17 +301,37 @@ class CheckoutController extends Controller
                 $coupon->increment('used_count');
             }
 
-            // Clear Cart items only after successful order and enrollment creation
-            Cart::where('user_id', $payment->user_id)->delete();
+            // Clear Cart now that orders are finalised
+            Cart::where('user_id', $fresh->user_id)->delete();
+
+            // Email konfirmasi pembelian + invoice ke pembeli (satu email per transaksi)
+            $buyer = User::find($fresh->user_id);
+            if ($buyer && $buyer->email) {
+                $fresh->setRelation('user', $buyer);
+                Mail::to($buyer->email)->queue(new PurchaseConfirmationMail($fresh, $orders));
+            }
         });
     }
 
     /**
      * Payment Success Page.
+     *
+     * Juga berfungsi sebagai fallback processor: jika webhook Midtrans belum
+     * tiba (mis. local dev / delay), verifikasi transaksi langsung ke Midtrans
+     * API dan jalankan handleSuccess() bila sudah settlement/capture.
      */
-    public function success(Request $request): \Inertia\Response
+    public function success(Request $request): \Inertia\Response|\Illuminate\Http\RedirectResponse
     {
-        $orderId = $request->query('order_id');
+        $orderId   = $request->query('order_id');
+        $txStatus  = $request->query('transaction_status', '');
+
+        // Midtrans menyertakan transaction_status di query string redirect URL.
+        // Jika cancel / expire / deny / failure → tampilkan halaman gagal.
+        $failedStatuses = ['cancel', 'expire', 'deny', 'failure'];
+        if ($txStatus && in_array($txStatus, $failedStatuses)) {
+            return redirect()->route('payment.failed', ['order_id' => $orderId]);
+        }
+
         $payment = null;
         $orders  = [];
 
@@ -305,6 +339,32 @@ class CheckoutController extends Controller
             $payment = Payment::where('midtrans_order_id', $orderId)
                 ->with('user')
                 ->first();
+
+            if ($payment && $payment->status === 'pending') {
+                try {
+                    $verified = $this->midtrans->verifyTransaction($orderId);
+                    $vStatus  = $verified->transaction_status ?? '';
+                    $fStatus  = $verified->fraud_status ?? 'accept';
+
+                    if ($vStatus === 'settlement' ||
+                        ($vStatus === 'capture' && $fStatus === 'accept')) {
+                        $this->handleSuccess($payment);
+                        $payment->refresh();
+                    } elseif (in_array($vStatus, $failedStatuses)) {
+                        // Webhook belum tiba tapi Midtrans sudah konfirmasi gagal
+                        return redirect()->route('payment.failed', ['order_id' => $orderId]);
+                    }
+                } catch (\Exception $e) {
+                    Log::warning('Midtrans verify on success page failed: ' . $e->getMessage(), [
+                        'order_id' => $orderId,
+                    ]);
+                }
+            }
+
+            // Payment sudah diproses webhook sebelumnya dan statusnya gagal
+            if ($payment && in_array($payment->status, $failedStatuses)) {
+                return redirect()->route('payment.failed', ['order_id' => $orderId]);
+            }
 
             if ($payment) {
                 $orders = Order::where('payment_id', $payment->id)
@@ -316,23 +376,6 @@ class CheckoutController extends Controller
         return Inertia::render('Payment/Success', [
             'payment' => $payment,
             'orders'  => $orders,
-        ]);
-    }
-
-    /**
-     * Payment Pending Page (bank transfer / VA menunggu konfirmasi).
-     */
-    public function pending(Request $request): \Inertia\Response
-    {
-        $orderId = $request->query('order_id');
-        $payment = null;
-
-        if ($orderId) {
-            $payment = Payment::where('midtrans_order_id', $orderId)->first();
-        }
-
-        return Inertia::render('Payment/Pending', [
-            'payment' => $payment,
         ]);
     }
 

@@ -1,68 +1,173 @@
-import { Link, usePage } from '@inertiajs/react';
-import { ShoppingCart, Heart, Search, Menu } from 'lucide-react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import BrandLogo from '@/Components/BrandLogo';
 
-// Navbar publik (Konteks_A). Mengonsumsi shared prop auth.user.
 export default function AppHeader() {
     const { auth } = usePage().props;
     const user = auth?.user;
     const [open, setOpen] = useState(false);
+    const [search, setSearch] = useState('');
     const { t } = useTranslation();
 
-    return (
-        <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100">
-            <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-                {/* Logo */}
-                <Link href="/home" className="text-2xl font-extrabold tracking-tight shrink-0" aria-label={t('nav.logo')}>
-                    <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">{t('nav.logo_part1')}</span>
-                    <span className="text-indigo-700 font-black">{t('nav.logo_part2')}</span>
-                </Link>
+    function handleSearch(e) {
+        e.preventDefault();
+        router.get('/home', search ? { search } : {}, { preserveState: true });
+    }
 
-                {/* Search (desktop) */}
-                <div className="hidden md:flex flex-1 max-w-md">
-                    <div className="relative w-full">
-                        <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                        <input
-                            type="search"
-                            placeholder={t('nav.search_placeholder')}
-                            className="w-full rounded-full border border-gray-200 bg-gray-50 pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        />
+    return (
+        <header className="sticky top-0 z-50 bg-surface shadow-sm border-b border-outline-variant">
+            <nav className="max-w-7xl mx-auto px-md md:px-margin-desktop py-md flex items-center justify-between gap-lg">
+                {/* Logo + Search */}
+                <div className="flex items-center gap-lg flex-1">
+                    <Link href="/home" className="shrink-0" aria-label="BelajarKUY">
+                        <BrandLogo size="md" />
+                    </Link>
+
+                    {/* Search bar (desktop) */}
+                    <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md">
+                        <div className="relative w-full flex items-center bg-surface-container-low border-2 border-transparent focus-within:border-primary rounded-full transition-colors">
+                            <span className="material-symbols-outlined absolute left-3 text-outline select-none text-[20px]">search</span>
+                            <input
+                                type="search"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                placeholder={t('nav.search_placeholder')}
+                                className="w-full bg-transparent border-none focus:ring-0 rounded-full py-2 pl-10 pr-4 font-body-md text-body-md text-on-surface placeholder:text-outline outline-none"
+                            />
+                        </div>
+                    </form>
+                </div>
+
+                {/* Desktop nav */}
+                <div className="hidden md:flex items-center gap-gutter">
+                    <ul className="flex gap-lg">
+                        <li>
+                            <Link href="/home" className="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">
+                                Katalog
+                            </Link>
+                        </li>
+                        {user && (
+                            <li>
+                                <Link href="/student/my-courses" className="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">
+                                    Pembelajaran Saya
+                                </Link>
+                            </li>
+                        )}
+                    </ul>
+
+                    <div className="flex items-center gap-sm">
+                        {user ? (
+                            <>
+                                <Link
+                                    href="/wishlist"
+                                    className="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-primary-fixed/20"
+                                    aria-label={t('nav.wishlist')}
+                                >
+                                    <span className="material-symbols-outlined">favorite</span>
+                                </Link>
+                                <Link
+                                    href="/cart"
+                                    className="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-primary-fixed/20"
+                                    aria-label={t('nav.cart')}
+                                >
+                                    <span className="material-symbols-outlined">shopping_cart</span>
+                                </Link>
+                                <Link
+                                    href="/dashboard"
+                                    className="font-label-md text-label-md px-4 py-2 rounded-lg bg-primary text-on-primary hover:opacity-90 transition-opacity"
+                                >
+                                    {user.name?.split(' ')[0] ?? t('nav.dashboard')}
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link
+                                    href="/login"
+                                    className="font-label-md text-label-md px-4 py-2 rounded-lg bg-surface border-2 border-primary text-primary hover:bg-surface-container-low transition-colors"
+                                >
+                                    {t('nav.login')}
+                                </Link>
+                                <Link
+                                    href="/register"
+                                    className="font-label-md text-label-md px-4 py-2 rounded-lg bg-primary text-on-primary hover:opacity-90 transition-opacity"
+                                >
+                                    {t('nav.register')}
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
 
-                {/* Right actions */}
-                <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-                    <Link href="/student/wishlist" className="p-2 rounded-full text-gray-500 hover:text-red-500 hover:bg-gray-50" aria-label={t('nav.wishlist')}>
-                        <Heart className="w-5 h-5" />
-                    </Link>
-                    <Link href="/cart" className="p-2 rounded-full text-gray-500 hover:text-indigo-600 hover:bg-gray-50" aria-label={t('nav.cart')}>
-                        <ShoppingCart className="w-5 h-5" />
-                    </Link>
-
-                    {user ? (
-                        <Link
-                            href="/dashboard"
-                            className="hidden sm:inline-flex items-center rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
-                        >
-                            {user.name?.split(' ')[0] ?? t('nav.dashboard')}
+                {/* Mobile: cart icon + hamburger */}
+                <div className="flex md:hidden items-center gap-xs">
+                    {user && (
+                        <Link href="/cart" className="p-2 text-on-surface-variant hover:text-primary" aria-label={t('nav.cart')}>
+                            <span className="material-symbols-outlined">shopping_cart</span>
                         </Link>
-                    ) : (
+                    )}
+                    <button onClick={() => setOpen(!open)} className="p-2 text-primary" aria-label="Menu">
+                        <span className="material-symbols-outlined">{open ? 'close' : 'menu'}</span>
+                    </button>
+                </div>
+            </nav>
+
+            {/* Mobile dropdown */}
+            {open && (
+                <div className="md:hidden bg-surface border-t border-outline-variant px-md pb-lg flex flex-col gap-md">
+                    <form onSubmit={handleSearch} className="relative mt-md">
+                        <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline select-none text-[20px]">search</span>
+                        <input
+                            type="search"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder={t('nav.search_placeholder')}
+                            className="w-full bg-surface-container-low border-2 border-transparent focus:border-primary rounded-full py-2 pl-10 pr-4 font-body-md text-body-md outline-none"
+                        />
+                    </form>
+
+                    <Link href="/home" className="font-label-md text-label-md text-on-surface-variant py-sm border-b border-surface-variant" onClick={() => setOpen(false)}>
+                        Katalog Kursus
+                    </Link>
+                    {user && (
                         <>
-                            <Link href="/login" className="hidden sm:inline-flex px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600">
-                                {t('nav.login')}
+                            <Link href="/student/my-courses" className="font-label-md text-label-md text-on-surface-variant py-sm border-b border-surface-variant" onClick={() => setOpen(false)}>
+                                Pembelajaran Saya
                             </Link>
-                            <Link href="/register" className="inline-flex rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">
-                                {t('nav.register')}
+                            <Link href="/wishlist" className="font-label-md text-label-md text-on-surface-variant py-sm border-b border-surface-variant" onClick={() => setOpen(false)}>
+                                {t('nav.wishlist')}
                             </Link>
                         </>
                     )}
 
-                    <button onClick={() => setOpen(!open)} className="md:hidden p-2 text-gray-600" aria-label="Menu">
-                        <Menu className="w-6 h-6" />
-                    </button>
+                    {user ? (
+                        <Link
+                            href="/dashboard"
+                            className="text-center font-label-md text-label-md px-4 py-2 rounded-lg bg-primary text-on-primary mt-sm"
+                            onClick={() => setOpen(false)}
+                        >
+                            Dashboard
+                        </Link>
+                    ) : (
+                        <div className="flex gap-sm mt-sm">
+                            <Link
+                                href="/login"
+                                className="flex-1 text-center font-label-md text-label-md px-4 py-2 rounded-lg border-2 border-primary text-primary"
+                                onClick={() => setOpen(false)}
+                            >
+                                {t('nav.login')}
+                            </Link>
+                            <Link
+                                href="/register"
+                                className="flex-1 text-center font-label-md text-label-md px-4 py-2 rounded-lg bg-primary text-on-primary"
+                                onClick={() => setOpen(false)}
+                            >
+                                {t('nav.register')}
+                            </Link>
+                        </div>
+                    )}
                 </div>
-            </nav>
+            )}
         </header>
     );
 }

@@ -1,7 +1,8 @@
 import { Head, router, Link } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
+import Pagination from '@/Components/Admin/Pagination';
+import ConfirmDialog from '@/Components/ConfirmDialog';
 import { useState } from 'react';
-import { CheckCircle, XCircle, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const STATUS_CONFIG = {
     pending_review: { label: 'Pending', cls: 'bg-warning/10 text-warning' },
@@ -20,16 +21,11 @@ function StatusBadge({ status }) {
     );
 }
 
-/**
- * Pages/Admin/Courses/Index.jsx
- * Desain dari moderasi_kursus_admin_panel/code.html (Quinsha, Konteks_A)
- */
 export default function CoursesIndex({ courses }) {
     const [activeTab, setActiveTab] = useState('all');
+    const [dialog, setDialog] = useState(null);
 
     function updateStatus(course, status) {
-        const label = status === 'active' ? 'menyetujui' : 'menolak';
-        if (!confirm(`Yakin ${label} kursus "${course.title}"?`)) return;
         router.patch(`/admin/courses/${course.id}/status`, { status });
     }
 
@@ -48,7 +44,6 @@ export default function CoursesIndex({ courses }) {
         <AdminLayout title="Admin Portal">
             <Head title="Moderasi Kursus — BelajarKUY Admin" />
 
-            {/* Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-xl gap-md">
                 <div>
                     <h1 className="font-headline-lg text-headline-lg text-on-background">Course Moderation</h1>
@@ -126,28 +121,43 @@ export default function CoursesIndex({ courses }) {
                         <div className="flex xl:flex-col justify-end xl:justify-center gap-sm shrink-0 border-t xl:border-t-0 xl:border-l border-surface-variant pt-md xl:pt-0 xl:pl-lg mt-md xl:mt-0">
                             {course.status === 'pending_review' && (
                                 <button
-                                    onClick={() => updateStatus(course, 'active')}
+                                    onClick={() => setDialog({
+                                        title: 'Setujui Kursus',
+                                        message: `Publikasikan kursus "${course.title}"?`,
+                                        icon: 'check_circle', variant: 'primary', confirmLabel: 'Setujui',
+                                        onConfirm: () => updateStatus(course, 'active'),
+                                    })}
                                     className="bg-primary text-on-primary font-label-md text-label-md px-lg py-sm rounded-lg hover:bg-primary-container transition-colors flex items-center justify-center gap-xs"
                                 >
-                                    <CheckCircle className="w-4 h-4" />
+                                    <span className="material-symbols-outlined text-[18px]">check_circle</span>
                                     Setujui
                                 </button>
                             )}
                             {course.status === 'active' && (
                                 <button
-                                    onClick={() => updateStatus(course, 'inactive')}
+                                    onClick={() => setDialog({
+                                        title: 'Nonaktifkan Kursus',
+                                        message: `Kursus "${course.title}" akan disembunyikan dari platform.`,
+                                        icon: 'cancel', variant: 'danger', confirmLabel: 'Nonaktifkan',
+                                        onConfirm: () => updateStatus(course, 'inactive'),
+                                    })}
                                     className="bg-error text-on-error font-label-md text-label-md px-lg py-sm rounded-lg hover:opacity-90 transition-colors flex items-center justify-center gap-xs"
                                 >
-                                    <XCircle className="w-4 h-4" />
+                                    <span className="material-symbols-outlined text-[18px]">cancel</span>
                                     Nonaktifkan
                                 </button>
                             )}
                             {course.status === 'inactive' && (
                                 <button
-                                    onClick={() => updateStatus(course, 'active')}
+                                    onClick={() => setDialog({
+                                        title: 'Aktifkan Kursus',
+                                        message: `Publikasikan kembali kursus "${course.title}"?`,
+                                        icon: 'check_circle', variant: 'primary', confirmLabel: 'Aktifkan',
+                                        onConfirm: () => updateStatus(course, 'active'),
+                                    })}
                                     className="bg-success text-white font-label-md text-label-md px-lg py-sm rounded-lg hover:opacity-90 transition-colors flex items-center justify-center gap-xs"
                                 >
-                                    <CheckCircle className="w-4 h-4" />
+                                    <span className="material-symbols-outlined text-[18px]">check_circle</span>
                                     Aktifkan
                                 </button>
                             )}
@@ -155,42 +165,27 @@ export default function CoursesIndex({ courses }) {
                                 href={`/admin/courses/${course.id}`}
                                 className="bg-surface border border-outline text-on-surface font-label-md text-label-md px-lg py-sm rounded-lg hover:bg-background-subtle transition-colors flex items-center justify-center gap-xs"
                             >
-                                <Eye className="w-4 h-4" />
+                                <span className="material-symbols-outlined text-[18px]">visibility</span>
                                 Detail
                             </Link>
                             {course.status === 'pending_review' && (
-                                <button
-                                    onClick={() => updateStatus(course, 'inactive')}
+                                <Link
+                                    href={`/admin/courses/${course.id}`}
                                     className="text-error font-label-md text-label-md px-lg py-sm rounded-lg hover:bg-error-container transition-colors flex items-center justify-center gap-xs"
                                 >
-                                    <XCircle className="w-4 h-4" />
+                                    <span className="material-symbols-outlined text-[18px]">cancel</span>
                                     Tolak
-                                </button>
+                                </Link>
                             )}
                         </div>
                     </div>
                 ))}
             </div>
 
-            {/* Pagination */}
-            {courses.last_page > 1 && (
-                <div className="flex justify-between items-center mt-gutter">
-                    <span className="font-caption text-caption text-on-surface-variant">
-                        Halaman {courses.current_page} dari {courses.last_page}
-                    </span>
-                    <div className="flex gap-sm">
-                        {courses.prev_page_url && (
-                            <a href={courses.prev_page_url} className="p-sm rounded-lg border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors">
-                                <ChevronLeft className="w-4 h-4" />
-                            </a>
-                        )}
-                        {courses.next_page_url && (
-                            <a href={courses.next_page_url} className="p-sm rounded-lg border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors">
-                                <ChevronRight className="w-4 h-4" />
-                            </a>
-                        )}
-                    </div>
-                </div>
+            <Pagination data={courses} />
+
+            {dialog && (
+                <ConfirmDialog open onClose={() => setDialog(null)} {...dialog} />
             )}
         </AdminLayout>
     );

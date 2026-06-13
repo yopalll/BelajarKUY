@@ -21,7 +21,15 @@ use App\Http\Controllers\Admin\AdminInfoBoxController;
 use App\Http\Controllers\Admin\AdminPartnerController;
 use App\Http\Controllers\Admin\AdminSiteSettingController;
 use App\Http\Controllers\Admin\AdminReviewController;
+use App\Http\Controllers\Admin\AdminCouponController;
+use App\Http\Controllers\Admin\AdminCourseReportController;
+use App\Http\Controllers\Admin\AdminSupportTicketController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\CourseReportController;
+use App\Http\Controllers\Frontend\SupportTicketController;
+use App\Http\Controllers\Frontend\ContactController;
+use App\Http\Controllers\Frontend\StaticPageController;
+use App\Http\Controllers\Frontend\InstructorController as PublicInstructorController;
 use App\Http\Controllers\Frontend\WishlistController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CouponController as FrontendCouponController;
@@ -29,11 +37,15 @@ use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Backend\Instructor\CouponController as InstructorCouponController;
 use App\Http\Controllers\Backend\Instructor\CourseGoalController as InstructorCourseGoalController;
 use App\Http\Controllers\Frontend\CoursePlayerController;
+use App\Http\Controllers\Frontend\CertificateController;
 use Inertia\Inertia;
 
 // --- Public Routes ---
-// Landing page via React+Inertia (desain Vascha & Quinsha)
+// Landing page: guest → Welcome marketing page, auth → langsung katalog
 Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('home');
+    }
     return Inertia::render('Welcome');
 });
 
@@ -59,7 +71,7 @@ Route::get('/admin/login', function () {
     if (Auth::check() && Auth::user()->role === 'admin') {
         return redirect()->route('admin.dashboard');
     }
-    return view('auth.admin-login');
+    return Inertia::render('Auth/AdminLogin');
 })->name('admin.login.page')->middleware('guest');
 
 // --- Admin Panel (dilindungi auth + verified + role:admin) ---
@@ -67,20 +79,37 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('categories', CategoryController::class)->except(['show']);
+    Route::patch('categories/{category}/toggle', [CategoryController::class, 'toggle'])->name('categories.toggle');
     Route::resource('sub-categories', SubCategoryController::class)->except(['show']);
 
     Route::resource('courses', AdminCourseController::class)->only(['index', 'show']);
     Route::patch('courses/{course}/status', [AdminCourseController::class, 'updateStatus'])->name('courses.update-status');
+    Route::get('courses/{course}/lectures/{lecture}/preview-url', [AdminCourseController::class, 'previewUrl'])->name('courses.lectures.preview-url');
 
     Route::resource('instructors', AdminInstructorController::class)->only(['index', 'show']);
     Route::resource('orders', AdminOrderController::class)->only(['index', 'show']);
     Route::resource('users', AdminUserController::class)->only(['index']);
+    Route::patch('users/{user}/role', [AdminUserController::class, 'updateRole'])->name('users.update-role');
     Route::resource('sliders', AdminSliderController::class)->except(['show']);
+    Route::patch('sliders/{slider}/toggle', [AdminSliderController::class, 'toggle'])->name('sliders.toggle');
     Route::resource('info-boxes', AdminInfoBoxController::class)->except(['show']);
     Route::resource('partners', AdminPartnerController::class)->except(['show']);
 
+    Route::resource('coupons', AdminCouponController::class)->except(['show', 'create', 'edit']);
+    Route::patch('coupons/{coupon}/toggle', [AdminCouponController::class, 'toggle'])->name('coupons.toggle');
+    Route::get('coupons/generate-code', [AdminCouponController::class, 'generateCode'])->name('coupons.generate-code');
+
     Route::get('reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
     Route::patch('reviews/{review}/status', [AdminReviewController::class, 'updateStatus'])->name('reviews.update-status');
+    Route::patch('reviews/{review}/clear-report', [AdminReviewController::class, 'clearReport'])->name('reviews.clear-report');
+
+    Route::get('course-reports', [AdminCourseReportController::class, 'index'])->name('course-reports.index');
+    Route::patch('course-reports/{report}', [AdminCourseReportController::class, 'update'])->name('course-reports.update');
+
+    Route::get('support-tickets', [AdminSupportTicketController::class, 'index'])->name('support-tickets.index');
+    Route::get('support-tickets/{ticket}', [AdminSupportTicketController::class, 'show'])->name('support-tickets.show');
+    Route::post('support-tickets/{ticket}/reply', [AdminSupportTicketController::class, 'reply'])->name('support-tickets.reply');
+    Route::patch('support-tickets/{ticket}/status', [AdminSupportTicketController::class, 'updateStatus'])->name('support-tickets.update-status');
 
     Route::get('settings', [AdminSiteSettingController::class, 'index'])->name('settings.index');
     Route::put('settings', [AdminSiteSettingController::class, 'update'])->name('settings.update');
@@ -89,6 +118,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
 // --- Instructor Panel (dilindungi auth + verified + role:instructor) ---
 Route::middleware(['auth', 'verified', 'role:instructor'])->prefix('instructor')->name('instructor.')->group(function () {
     Route::get('/dashboard', [InstructorDashboardController::class, 'index'])->name('dashboard');
+
+    // Ketentuan Konten
+    Route::get('content-guidelines', fn () => Inertia::render('Instructor/ContentGuidelines'))
+        ->name('content-guidelines');
 
     // Course CRUD
     Route::resource('courses', InstructorCourseController::class)->except(['show']);
@@ -110,6 +143,7 @@ Route::middleware(['auth', 'verified', 'role:instructor'])->prefix('instructor')
     Route::patch('courses/{course}/sections/{section}/lectures/{lecture}', [InstructorLectureController::class, 'update'])->name('courses.sections.lectures.update');
     Route::delete('courses/{course}/sections/{section}/lectures/{lecture}', [InstructorLectureController::class, 'destroy'])->name('courses.sections.lectures.destroy');
     Route::post('courses/{course}/sections/{section}/lectures/reorder', [InstructorLectureController::class, 'reorder'])->name('courses.sections.lectures.reorder');
+    Route::get('courses/{course}/lectures/{lecture}/preview-url', [InstructorLectureController::class, 'previewUrl'])->name('courses.lectures.preview-url');
 
     // Goals (Yang Akan Anda Pelajari)
     Route::post('courses/{course}/goals', [InstructorCourseGoalController::class, 'store'])->name('courses.goals.store');
@@ -119,6 +153,12 @@ Route::middleware(['auth', 'verified', 'role:instructor'])->prefix('instructor')
     Route::get('coupons/generate-code', [InstructorCouponController::class, 'generateCode'])->name('coupons.generate-code');
     Route::resource('coupons', InstructorCouponController::class)->except(['show', 'create', 'edit']);
     Route::patch('coupons/{coupon}/toggle', [InstructorCouponController::class, 'toggle'])->name('coupons.toggle');
+
+    // Profil & Pengaturan instruktur
+    Route::get('profile',  [InstructorDashboardController::class, 'profile'])->name('profile');
+    Route::post('profile', [InstructorDashboardController::class, 'profileUpdate'])->name('profile.update');
+    Route::get('setting',  [InstructorDashboardController::class, 'setting'])->name('setting');
+    Route::post('setting', [InstructorDashboardController::class, 'settingUpdate'])->name('setting.update');
 });
 
 // --- Student Panel (dilindungi auth + verified + role:user) ---
@@ -133,12 +173,23 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('student')->name('s
     Route::get('/setting', [StudentDashboardController::class, 'setting'])->name('setting');
     Route::post('/setting', [StudentDashboardController::class, 'settingUpdate'])->name('setting.update');
     Route::get('/notifications', [StudentDashboardController::class, 'notifications'])->name('notifications');
+    Route::post('/notifications/{id}/read', [StudentDashboardController::class, 'markNotificationRead'])->name('notifications.read');
+    Route::post('/notifications/read-all', [StudentDashboardController::class, 'markAllNotificationsRead'])->name('notifications.read-all');
+    Route::get('/transactions', [StudentDashboardController::class, 'transactions'])->name('transactions');
+    Route::get('/transactions/{payment}', [StudentDashboardController::class, 'transactionDetail'])->name('transactions.show');
 
     // L10 Albariqi: Course Player (butuh Enrollment dari L9)
     Route::get('/learn/{slug}', [CoursePlayerController::class, 'index'])->name('learn');
     Route::get('/learn/{slug}/{lecture}', [CoursePlayerController::class, 'show'])->name('learn.show');
     Route::post('/lecture/{lecture}/complete', [CoursePlayerController::class, 'markComplete'])->name('lecture.complete');
+    // §3: GCS Signed URL — dipanggil frontend tepat sebelum play video GCS
+    Route::get('/lecture/{lecture}/signed-url', [CoursePlayerController::class, 'signedUrl'])->name('lecture.signed-url');
+    // Sertifikat — hanya pemilik yang bisa akses
+    Route::get('/certificate/{code}', [CertificateController::class, 'show'])->name('student.certificate.show');
 });
+
+// Verifikasi sertifikat — publik, tanpa login
+Route::get('/certificate/verify/{code}', [CertificateController::class, 'verify'])->name('certificate.verify');
 
 // --- Google OAuth ---
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('auth.google');
@@ -152,14 +203,17 @@ Route::get('/auth/google-callback', [GoogleController::class, 'callback'])->name
 // Landing page & katalog kursus (Phase 2)
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
+// Profil publik instruktur
+Route::get('/instructors/{user}', [PublicInstructorController::class, 'show'])->name('instructors.show');
+
 // Course detail page — Fase 1 migrasi React+Inertia (ADR-008)
 use App\Http\Controllers\Frontend\CourseDetailController;
 Route::get('/courses/{slug}', [CourseDetailController::class, 'show'])->name('course.detail');
 
 // L4 Ray: Cart — halaman React + add/remove/move-to-wishlist/count
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart/{course}', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/{course}', [CartController::class, 'add'])->middleware('can.purchase')->name('cart.add');
     Route::delete('/cart/{id}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/cart/{id}/move-to-wishlist', [CartController::class, 'moveToWishlist'])->name('cart.move-to-wishlist');
     Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
@@ -170,26 +224,52 @@ Route::middleware('auth')->group(function () {
 });
 
 // L9 Yosua/Ray: Checkout + Midtrans + Enrollment (React + Inertia)
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified', 'can.purchase'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
+    Route::get('/checkout/process', fn() => redirect()->route('checkout'));
     Route::get('/payment/success', [CheckoutController::class, 'success'])->name('payment.success');
-    Route::get('/payment/pending', [CheckoutController::class, 'pending'])->name('payment.pending');
     Route::get('/payment/failed', [CheckoutController::class, 'failed'])->name('payment.failed');
 });
 
 // Midtrans Webhook (tanpa auth — Midtrans server call langsung; CSRF sudah di-exclude di bootstrap/app.php)
 Route::post('/payment/callback', [CheckoutController::class, 'callback'])->name('payment.callback');
 
-// Reviews (Phase 5)
-Route::post('/courses/{course}/reviews', function () {
-    return back()->with('info', 'Fitur review belum tersedia.');
-})->middleware('auth')->name('course.review.store');
+// Reviews — wired ke CourseDetailController@storeReview
+Route::post('/courses/{course}/reviews', [CourseDetailController::class, 'storeReview'])
+    ->middleware('auth')->name('course.review.store');
+
+// Report ulasan kursus
+Route::post('/reviews/{review}/report', [CourseDetailController::class, 'reportReview'])
+    ->middleware('auth')->name('review.report');
+
+// Report kursus
+Route::post('/courses/{course}/report', [CourseReportController::class, 'store'])
+    ->middleware(['auth', 'verified'])->name('course.report.store');
+
+// Pusat Bantuan (ticket / helpdesk thread)
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/bantuan', [SupportTicketController::class, 'index'])->name('help.index');
+    Route::post('/bantuan', [SupportTicketController::class, 'store'])->name('help.store');
+    Route::get('/bantuan/{ticket}', [SupportTicketController::class, 'show'])->name('help.show');
+    Route::post('/bantuan/{ticket}/balas', [SupportTicketController::class, 'reply'])->name('help.reply');
+    Route::patch('/bantuan/{ticket}/tutup', [SupportTicketController::class, 'close'])->name('help.close');
+});
+
+// Halaman statis publik
+Route::get('/hubungi-kami', [ContactController::class, 'index'])->name('contact');
+Route::post('/hubungi-kami', [ContactController::class, 'store'])->name('contact.store');
+Route::get('/kebijakan-privasi', [StaticPageController::class, 'privacy'])->name('privacy');
+Route::get('/syarat-ketentuan', [StaticPageController::class, 'terms'])->name('terms');
+Route::get('/tentang-kami', [StaticPageController::class, 'about'])->name('about');
+Route::get('/tentang-belajarkuy', [StaticPageController::class, 'aboutApp'])->name('about-app');
 
 // L3 Ray: Wishlist toggle (add/remove) — JSON response untuk CourseCard
-Route::post('/wishlist/{course}', [WishlistController::class, 'toggle'])->middleware('auth')->name('wishlist.add');
+Route::post('/wishlist/{course}', [WishlistController::class, 'toggle'])->middleware(['auth', 'verified'])->name('wishlist.add');
+// Halaman wishlist frontend (AppLayout) — diakses dari konteks katalog/cart
+Route::get('/wishlist', [WishlistController::class, 'frontendIndex'])->middleware(['auth', 'verified'])->name('wishlist.index');
 // Badge count untuk navbar
-Route::get('/wishlist/count', [WishlistController::class, 'count'])->middleware('auth')->name('wishlist.count');
+Route::get('/wishlist/count', [WishlistController::class, 'count'])->middleware(['auth', 'verified'])->name('wishlist.count');
 
 // Admin review actions (alias untuk update-status)
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {

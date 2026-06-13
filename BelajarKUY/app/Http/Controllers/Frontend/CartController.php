@@ -24,8 +24,8 @@ class CartController extends Controller
         $cartItems = Cart::where('user_id', $user->id)
             ->with(['course' => function ($q) {
                 $q->with(['instructor:id,name,photo', 'category:id,name'])
-                  ->withCount(['reviews' => fn($q) => $q->where('status', true)])
-                  ->withAvg(['reviews' => fn($q) => $q->where('status', true)], 'rating');
+                  ->withCount(['reviews' => fn($q) => $q->where('status', 'approved')])
+                  ->withAvg(['reviews' => fn($q) => $q->where('status', 'approved')], 'rating');
             }])
             ->latest()
             ->get()
