@@ -4,48 +4,48 @@ BelajarKUY dikembangkan oleh tim mahasiswa sebagai Tugas Besar mata kuliah Pemro
 
 ## 9.1 Susunan Tim dan Tanggung Jawab
 
-### Yosua Valentino Gulo — Manajer Proyek dan Pengembang Penuh
+### Yosua Valentino Gulo — Project Manager & Full-Stack Developer
 
 - Koordinasi tim, manajemen sprint, dan arsitektur proyek.
-- Panel administrator: tinjauan kursus dan video serta mekanisme penolakan disertai umpan balik.
-- Integrasi gerbang pembayaran: proses bayar, pendaftaran kelas, dan surel faktur.
-- Layanan bantuan berbentuk percakapan beserta lampiran gambar.
-- Surel notifikasi dan penerbitan sertifikat.
-- Penyimpanan video pada awan dan pendeteksian durasi otomatis.
-- Penjenamaan dinamis: logo, favicon, dan teks dari panel administrator.
-- Halaman statis, pembaruan jenama footer, dan sistem pelaporan.
-- Penerapan berbasis kontainer pada peladen.
+- Panel administrator: review kursus dan video serta mekanisme penolakan disertai feedback.
+- Integrasi payment gateway: checkout, enrollment, dan email invoice.
+- Help desk berbentuk percakapan beserta lampiran gambar.
+- Email notifikasi dan penerbitan sertifikat.
+- Video storage di cloud dan deteksi durasi otomatis.
+- Dynamic branding: logo, favicon, dan teks dari panel administrator.
+- Halaman statis, update branding footer, dan sistem pelaporan.
+- Deployment berbasis container di server production.
 
-### Albariqi Deanda Tarigan — Pengembang Sisi Server, Autentikasi dan Pemutar
+### Albariqi Deanda Tarigan — Backend Developer, Authentication & Player
 
-- Sistem autentikasi melalui surel dan akun Google.
-- Pemutar kursus dan pelacakan progres.
-- Manajemen sesi dan keamanan akun.
+- Sistem autentikasi via email dan akun Google.
+- Course player dan pelacakan progres.
+- Session management dan keamanan akun.
 
-### Ray Nathan Geereno Saragih — Pengembang Sisi Server, Perdagangan
+### Ray Nathan Geereno Saragih — Backend Developer, Commerce
 
-- Sistem keranjang belanja dan daftar keinginan.
+- Sistem cart dan wishlist.
 - Manajemen kupon diskon.
 - Alur transaksi dan riwayat pesanan.
 
-### Vascha Uli Lumbantoruan — Pengembang Antarmuka, Pengalaman Pengguna
+### Vascha Uli Lumbantoruan — Frontend Developer, User Experience
 
-- Sistem desain dan identitas jenama BelajarKUY.
+- Design system dan identitas visual BelajarKUY.
 - Halaman depan dan halaman publik.
-- Komponen antarmuka yang konsisten.
+- Komponen UI yang konsisten.
 
-### Quinsha Ilmi Azzahra — Pengembang Antarmuka, Panel Administrator
+### Quinsha Ilmi Azzahra — Frontend Developer, Admin Panel
 
 - Panel administrator untuk manajemen kursus dan pengguna.
-- Migrasi antarmuka dari templat server ke komponen React.
-- Dasbor analitik instruktur.
+- Migrasi antarmuka dari template server ke React component.
+- Dashboard analitik instruktur.
 
-### Viter Moldy — Konsultan Basis Data
+### Viter Moldy — Database Consultant
 
-- Konsultasi rancangan skema basis data.
-- Optimasi relasi dan kinerja kueri.
-- Tinjauan migrasi dan integritas data.
+- Konsultasi rancangan skema database.
+- Optimasi relasi dan performa query.
+- Review migrasi dan integritas data.
 
 ## 9.2 Catatan
 
-Pembagian peran di atas bersifat fokus utama. Dalam praktiknya, anggota tim saling membantu lintas bidang sesuai kebutuhan sprint. Rincian kontribusi setiap anggota dapat ditelusuri melalui riwayat komit repositori.
+Pembagian peran di atas bersifat fokus utama. Dalam praktiknya, anggota tim saling membantu lintas bidang sesuai kebutuhan sprint. Detail kontribusi setiap anggota dapat ditelusuri melalui riwayat commit repositori.

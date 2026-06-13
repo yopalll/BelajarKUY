@@ -4,7 +4,7 @@
 
 Kebutuhan masyarakat Indonesia terhadap pendidikan digital yang terjangkau terus meningkat, namun akses terhadap materi pembelajaran berkualitas dalam bahasa Indonesia masih tersebar dan belum terpusat. Di sisi lain, para praktisi dan pengajar membutuhkan kanal yang memungkinkan mereka membagikan keahlian secara terstruktur sekaligus memperoleh kanal distribusi yang sederhana.
 
-BelajarKUY lahir untuk menjawab kebutuhan tersebut: sebuah marketplace kursus daring yang mempertemukan instruktur sebagai pembuat kursus dengan siswa sebagai pembelajar, dengan administrator sebagai pengelola ekosistem. Seluruh antarmuka disajikan dalam bahasa Indonesia dan transaksi menggunakan mata uang Rupiah.
+BelajarKUY lahir untuk menjawab kebutuhan tersebut: sebuah marketplace kursus online yang mempertemukan instruktur sebagai pembuat kursus dengan siswa sebagai pembelajar, dengan administrator sebagai pengelola ekosistem. Seluruh antarmuka disajikan dalam bahasa Indonesia dan transaksi menggunakan mata uang Rupiah.
 
 ## 1.2 Rumusan Masalah
 
@@ -15,12 +15,12 @@ BelajarKUY lahir untuk menjawab kebutuhan tersebut: sebuah marketplace kursus da
 
 ## 1.3 Tujuan
 
-Tujuan pengembangan BelajarKUY adalah membangun aplikasi web marketplace pembelajaran daring yang fungsional dan utuh, mencakup:
+Tujuan pengembangan BelajarKUY adalah membangun aplikasi web marketplace pembelajaran online yang fungsional dan utuh, mencakup:
 
-- Alur belanja menyeluruh, mulai dari penjelajahan katalog, keranjang, proses bayar, hingga pendaftaran kelas otomatis.
-- Pemutar kursus interaktif dengan pelacakan penyelesaian materi dan persentase progres.
+- Alur belanja menyeluruh, mulai dari penjelajahan katalog, cart, proses bayar, hingga pendaftaran kelas otomatis.
+- Course player interaktif dengan pelacakan penyelesaian materi dan persentase progres.
 - Panel terpisah untuk masing-masing peran pengguna dengan kewenangan yang sesuai.
-- Mekanisme moderasi kursus dan ulasan, serta layanan bantuan bagi pengguna.
+- Mekanisme moderasi kursus dan ulasan, serta help desk bagi pengguna.
 
 ## 1.4 Manfaat
 
@@ -33,22 +33,22 @@ Tujuan pengembangan BelajarKUY adalah membangun aplikasi web marketplace pembela
 
 ### Termasuk dalam ruang lingkup
 
-- Autentikasi multi-peran melalui surel maupun akun Google, dengan verifikasi melalui kode sekali pakai.
-- Katalog kursus, halaman detail, pencarian, dan penyaringan berdasarkan kategori.
-- Keranjang belanja, daftar keinginan, dan sistem kupon diskon.
-- Pembayaran melalui gerbang pembayaran Midtrans beserta pendaftaran kelas otomatis.
-- Pemutar kursus dengan pelacakan progres dan penerbitan sertifikat penyelesaian.
+- Autentikasi multi-peran via email maupun akun Google, dengan verifikasi via kode sekali pakai.
+- Katalog kursus, halaman detail, pencarian, dan filter berdasarkan kategori.
+- Cart, wishlist, dan sistem kupon diskon.
+- Pembayaran via payment gateway Midtrans beserta pendaftaran kelas otomatis.
+- Course player dengan pelacakan progres dan penerbitan sertifikat penyelesaian.
 - Panel instruktur untuk manajemen kursus, bagian, materi, sasaran belajar, dan kupon.
 - Panel administrator untuk manajemen kategori, konten halaman depan, serta moderasi kursus dan ulasan.
-- Ulasan dan penilaian kursus, layanan bantuan berbentuk percakapan, dan pelaporan kursus maupun ulasan.
-- Notifikasi melalui surel dan pembaruan dalam aplikasi.
+- Ulasan dan rating kursus, help desk berbentuk percakapan, dan pelaporan kursus maupun ulasan.
+- Notifikasi via email dan update dalam aplikasi.
 
 ### Di luar ruang lingkup
 
-- Pemrosesan transaksi uang nyata. Pembayaran berjalan pada lingkungan uji gerbang pembayaran.
+- Pemrosesan transaksi uang nyata. Pembayaran berjalan pada environment sandbox payment gateway.
 - Pencairan dana (payout) atau bagi hasil pendapatan kepada instruktur. Pelaporan pendapatan bersifat simulasi.
 - Proses persetujuan pendaftaran instruktur. Akun instruktur aktif secara langsung; yang dimoderasi adalah kursusnya.
 
 ## 1.6 Konteks Akademik
 
-BelajarKUY dikembangkan sebagai Tugas Besar perkuliahan oleh sebuah tim mahasiswa. Keberhasilan proyek diukur dari kelengkapan dan kebenaran fungsional fitur, kualitas rancangan basis data dan arsitektur, serta penerapan praktik pengembangan yang baik, bukan dari pencapaian metrik bisnis kuantitatif.
+BelajarKUY dikembangkan sebagai Tugas Besar perkuliahan oleh sebuah tim mahasiswa. Keberhasilan proyek diukur dari kelengkapan dan kebenaran fungsional fitur, kualitas rancangan database dan arsitektur, serta penerapan praktik pengembangan yang baik, bukan dari pencapaian metrik bisnis kuantitatif.

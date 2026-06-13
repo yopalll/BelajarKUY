@@ -2,12 +2,12 @@
 
 ## 2.1 Gaya Arsitektur
 
-BelajarKUY menggunakan arsitektur **monolitik modern berbasis Laravel** dengan lapisan antarmuka **React melalui Inertia**. Pendekatan ini menggabungkan keunggulan dua dunia: keteraturan dan keamanan kerangka kerja server-side Laravel, serta pengalaman navigasi mulus ala aplikasi satu halaman (single page application) pada sisi klien.
+BelajarKUY menggunakan arsitektur **monolitik modern berbasis Laravel** dengan frontend **React via Inertia**. Pendekatan ini menggabungkan keunggulan dua dunia: keteraturan dan keamanan framework server-side Laravel, serta pengalaman navigasi mulus ala single page application di sisi klien.
 
-Inertia menjadi jembatan antara server dan klien. Controller Laravel tidak mengembalikan HTML mentah maupun respons API terpisah, melainkan menyerahkan nama komponen halaman React beserta data (props). Dengan demikian tidak diperlukan lapisan API tersendiri, sementara routing, otorisasi, dan validasi tetap berada di sisi server.
+Inertia menjadi jembatan antara server dan klien. Controller Laravel tidak mengembalikan HTML mentah maupun respons API terpisah, melainkan menyerahkan nama component halaman React beserta data (props). Dengan demikian tidak diperlukan API layer tersendiri, sementara routing, otorisasi, dan validasi tetap di server.
 
 ```
-Permintaan Pengguna
+Request Pengguna
         |
         v
   Route (routes/web.php)
@@ -16,85 +16,85 @@ Permintaan Pengguna
   Middleware (autentikasi, peran, verifikasi)
         |
         v
-  Controller  ── memanggil ──>  Model (Eloquent ORM)  <──>  Basis Data
+  Controller  ── memanggil ──>  Model (Eloquent ORM)  <──>  Database
         |
         v
-  Inertia::render( Komponen, Props )
+  Inertia::render( Component, Props )
         |
         v
-  Komponen Halaman React  ──>  Antarmuka di Peramban
+  React Page Component  ──>  Tampilan di Browser
 ```
 
-## 2.2 Tumpukan Teknologi
+## 2.2 Tech Stack
 
-| Lapisan | Teknologi | Peran |
+| Layer | Teknologi | Peran |
 | --- | --- | --- |
-| Kerangka kerja server | Laravel (PHP) | Routing, controller, ORM, otorisasi, antrian, surel |
-| Lapisan antarmuka | React melalui Inertia | Komponen halaman dinamis tanpa lapisan API terpisah |
-| Penataan gaya | Tailwind CSS | Sistem desain berbasis utilitas |
-| Alat bangun | Vite | Kompilasi dan penyajian aset frontend |
-| Basis data | MySQL (produksi), SQLite (pengembangan) | Penyimpanan data relasional |
-| Gerbang pembayaran | Midtrans Snap | Pemrosesan pembayaran pada lingkungan uji |
-| Penyimpanan media | Google Cloud Storage dan Cloudinary | Berkas video serta gambar |
-| Pengolahan gambar | Intervention Image | Pengubahan ukuran dan optimasi gambar |
-| Mesin pencari | Meilisearch melalui Laravel Scout | Pencarian katalog yang responsif |
-| Komunikasi waktu nyata | Laravel Reverb | Pembaruan dan notifikasi langsung |
-| Autentikasi | Laravel Breeze dan Socialite | Masuk melalui surel maupun akun Google |
-| Surel transaksional | Resend | Pengiriman surel verifikasi, pembelian, dan bantuan |
-| Pembangkit rute klien | Ziggy | Pemakaian nama rute Laravel di dalam React |
+| Server framework | Laravel (PHP) | Routing, controller, ORM, otorisasi, queue, email |
+| Frontend | React via Inertia | Dynamic page component tanpa API layer terpisah |
+| Styling | Tailwind CSS | Utility-based design system |
+| Build tool | Vite | Kompilasi dan serving asset frontend |
+| Database | MySQL (production), SQLite (development) | Penyimpanan data relasional |
+| Payment gateway | Midtrans Snap | Pemrosesan pembayaran pada environment sandbox |
+| Cloud storage | Google Cloud Storage dan Cloudinary | File video dan gambar |
+| Image processing | Intervention Image | Resize dan optimasi gambar |
+| Search engine | Meilisearch via Laravel Scout | Pencarian katalog yang responsif |
+| Real-time | Laravel Reverb | Update dan notifikasi langsung |
+| Authentication | Laravel Breeze dan Socialite | Login via email maupun akun Google |
+| Transactional email | Resend | Pengiriman email verifikasi, pembelian, dan bantuan |
+| Client-side routing | Ziggy | Penggunaan named route Laravel di dalam React |
 
 ## 2.3 Pola Berbasis Peran
 
-Aplikasi menggunakan satu tabel pengguna dengan kolom peran yang membedakan tiga jenis pengguna: `user` (siswa), `instructor` (instruktur), dan `admin` (administrator). Pembatasan akses antar area dilakukan melalui middleware peran. Setiap area memiliki awalan rute tersendiri, yaitu area publik, area siswa, area instruktur, dan area administrator.
+Aplikasi menggunakan satu tabel pengguna dengan kolom peran yang membedakan tiga jenis pengguna: `user` (siswa), `instructor`, dan `admin`. Pembatasan akses antar area dilakukan melalui middleware peran. Setiap area memiliki prefix route tersendiri, yaitu area publik, area siswa, area instruktur, dan area administrator.
 
 ## 2.4 Struktur Kode
 
-Struktur direktori mengikuti konvensi Laravel dengan penambahan komponen React pada direktori sumber daya.
+Struktur direktori mengikuti konvensi Laravel dengan penambahan React component pada direktori resources.
 
 ```
 app/
   Http/
-    Controllers/        Pengendali permintaan, dikelompokkan per area
-      Admin/            Pengendali panel administrator
-      Auth/             Pengendali autentikasi dan verifikasi
-      Backend/          Pengendali panel instruktur dan siswa
-      Frontend/         Pengendali halaman publik dan transaksi
-    Middleware/         Penyaring permintaan (peran, kelayakan membeli)
+    Controllers/        Controller, dikelompokkan per area
+      Admin/            Panel administrator
+      Auth/             Autentikasi dan verifikasi
+      Backend/          Panel instruktur dan siswa
+      Frontend/         Halaman publik dan transaksi
+    Middleware/         Request filter (peran, kelayakan membeli)
     Requests/           Aturan validasi terstruktur (Form Request)
-  Models/               Model Eloquent yang memetakan tabel basis data
-  Mail/                 Kelas surel transaksional
+  Models/               Eloquent model yang memetakan tabel database
+  Mail/                 Kelas email transaksional
   Notifications/        Kelas notifikasi pengguna
-  Services/             Layanan domain (penyimpanan video, kode sekali pakai)
+  Services/             Domain service (cloud video storage, kode sekali pakai)
 
 database/
-  migrations/           Definisi skema basis data
-  seeders/              Pengisi data awal
-  factories/            Pembangkit data contoh
+  migrations/           Definisi skema database
+  seeders/              Data awal
+  factories/            Data contoh (factory)
 
 resources/
   js/
-    Pages/              Komponen halaman React per area
-    Components/         Komponen antarmuka yang dapat dipakai ulang
-    Layouts/            Kerangka tata letak halaman
-    i18n/               Berkas alih bahasa antarmuka
-  views/                Templat Blade penunjang dan templat surel
+    Pages/              React page component per area
+    Components/         Reusable UI component
+    Layouts/            Layout halaman
+    i18n/               File terjemahan antarmuka
+  views/                Blade template pendukung dan email template
 
 routes/
-  web.php               Definisi seluruh rute aplikasi
+  web.php               Definisi seluruh route aplikasi
 
-public/                 Aset publik dan titik masuk aplikasi
-config/                 Berkas konfigurasi, termasuk integrasi layanan awan
-lang/                   Berkas terjemahan sisi server
-docker/                 Berkas pendukung penerapan berbasis kontainer
+public/                 Asset publik dan entry point
+config/                 File konfigurasi, termasuk integrasi layanan cloud
+lang/                   File terjemahan server-side
+docker/                 File pendukung deployment berbasis container
 ```
 
-## 2.5 Lapisan Layanan
+## 2.5 Service Layer
 
-Beberapa kebutuhan lintas fitur dipisahkan ke dalam kelas layanan agar pengendali tetap ramping dan logika mudah diuji ulang:
+Beberapa kebutuhan lintas fitur dipisahkan ke dalam kelas service agar controller tetap ramping dan logika mudah diuji:
 
-- **Layanan penyimpanan video** menangani unggahan berkas video ke penyimpanan awan serta pendeteksian durasi video secara otomatis dari metadata berkas.
-- **Layanan kode sekali pakai** membangkitkan dan memverifikasi kode untuk verifikasi surel pengguna.
+- **Video storage service** menangani upload file video ke cloud storage serta deteksi durasi video secara otomatis dari metadata file.
+- **OTP service** membangkitkan dan memverifikasi kode untuk verifikasi email pengguna.
 
-## 2.6 Komunikasi dengan Layanan Eksternal
+## 2.6 Integrasi Layanan Eksternal
 
-Seluruh kredensial layanan eksternal disimpan pada berkas lingkungan dan tidak pernah dituliskan langsung di dalam kode maupun basis data. Integrasi mencakup gerbang pembayaran, penyimpanan media awan, layanan surel, dan mesin pencari. Pendekatan ini menjaga keamanan kredensial sekaligus memudahkan pergantian konfigurasi antar lingkungan.
+Seluruh kredensial layanan eksternal disimpan pada file `.env` dan tidak pernah ditulis langsung di dalam kode maupun database. Integrasi mencakup payment gateway, cloud storage media, layanan email, dan search engine. Pendekatan ini menjaga keamanan kredensial sekaligus memudahkan pergantian konfigurasi antar environment.

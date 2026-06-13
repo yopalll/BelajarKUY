@@ -6,8 +6,8 @@
 
 <h1>BelajarKUY</h1>
 
-<p><b>A Modern Online Course Marketplace &nbsp;|&nbsp; Marketplace Kursus Daring Modern</b></p>
-<p><i>Built with Laravel and React via Inertia &nbsp;|&nbsp; Dibangun dengan Laravel dan React melalui Inertia</i></p>
+<p><b>A Modern Online Course Marketplace &nbsp;|&nbsp; Marketplace Kursus Online Modern</b></p>
+<p><i>Built with Laravel and React via Inertia &nbsp;|&nbsp; Dibangun dengan Laravel dan React via Inertia</i></p>
 
 </div>
 
@@ -19,7 +19,7 @@
 BelajarKUY is an online course marketplace inspired by platforms such as Udemy, tailored for the Indonesian audience. Developed as a university final project, it brings together three user roles, namely Student, Instructor, and Administrator, within a single learning ecosystem. The application provides a complete commerce flow from catalog browsing through cart, checkout, payment, and automatic class enrollment, an interactive course player with progress tracking and certificate issuance, and a comprehensive administration panel for content moderation and platform management.
 
 **[ID]**
-BelajarKUY adalah marketplace kursus daring bergaya Udemy yang ditujukan untuk pengguna Indonesia. Dikembangkan sebagai Tugas Besar perkuliahan, aplikasi ini menyatukan tiga peran pengguna, yaitu Siswa, Instruktur, dan Administrator, dalam satu ekosistem belajar. Aplikasi menyediakan alur belanja lengkap mulai dari penjelajahan katalog, keranjang, proses bayar, hingga pendaftaran kelas otomatis, pemutar kursus interaktif dengan pelacakan progres dan penerbitan sertifikat, serta panel administrasi menyeluruh untuk moderasi konten dan pengelolaan platform.
+BelajarKUY adalah marketplace kursus online bergaya Udemy yang ditujukan untuk pengguna Indonesia. Dikembangkan sebagai Tugas Besar perkuliahan, aplikasi ini menyatukan tiga peran pengguna, yaitu Siswa, Instruktur, dan Administrator, dalam satu ekosistem belajar. Aplikasi menyediakan alur belanja lengkap mulai dari penjelajahan katalog, cart, proses bayar, hingga pendaftaran kelas otomatis, course player interaktif dengan pelacakan progres dan penerbitan sertifikat, serta panel administrasi menyeluruh untuk moderasi konten dan pengelolaan platform.
 
 ---
 
@@ -29,7 +29,7 @@ BelajarKUY adalah marketplace kursus daring bergaya Udemy yang ditujukan untuk p
 The application follows a modern monolithic architecture built on Laravel, with a React interface layer delivered through Inertia. This approach combines the structure and security of a server-side framework with the smooth navigation of a single page application, without maintaining a separate API layer. Routing, authorization, and validation remain on the server, while pages are rendered as React components.
 
 **[ID]**
-Aplikasi menggunakan arsitektur monolitik modern berbasis Laravel dengan lapisan antarmuka React melalui Inertia. Pendekatan ini memadukan keteraturan dan keamanan kerangka kerja sisi server dengan navigasi mulus ala aplikasi satu halaman, tanpa memelihara lapisan API terpisah. Routing, otorisasi, dan validasi tetap berada di sisi server, sementara halaman dirender sebagai komponen React.
+Aplikasi menggunakan arsitektur monolitik modern berbasis Laravel dengan frontend React via Inertia. Pendekatan ini memadukan keteraturan dan keamanan framework server-side dengan navigasi mulus ala single page application, tanpa memelihara API layer tersendiri. Routing, otorisasi, dan validasi tetap di server, sementara halaman dirender sebagai React component.
 
 ---
 
@@ -39,40 +39,40 @@ Aplikasi menggunakan arsitektur monolitik modern berbasis Laravel dengan lapisan
 - Multi-role authentication through email and Google, with one-time code email verification.
 - Course catalog, detailed course pages, and responsive search powered by a dedicated search engine.
 - Shopping cart, wishlist, and an instructor coupon system.
-- Secure payment through the Midtrans gateway with automatic class enrollment upon success.
+- Secure payment through the Midtrans payment gateway with automatic class enrollment upon success.
 - Interactive course player with lecture completion tracking and completion certificates.
 - Instructor panel for managing courses, sections, lectures, learning goals, and coupons.
 - Administrator panel for category management, landing page content, and moderation of courses and reviews.
 - Reviews and ratings, a conversation-based help desk, content reporting, and notifications.
 
 **[ID]**
-- Autentikasi multi-peran melalui surel dan akun Google, dengan verifikasi surel menggunakan kode sekali pakai.
-- Katalog kursus, halaman detail kursus, dan pencarian responsif yang ditenagai mesin pencari khusus.
-- Keranjang belanja, daftar keinginan, dan sistem kupon diskon instruktur.
-- Pembayaran aman melalui gerbang pembayaran Midtrans dengan pendaftaran kelas otomatis setelah berhasil.
-- Pemutar kursus interaktif dengan pelacakan penyelesaian materi dan sertifikat penyelesaian.
+- Autentikasi multi-peran via email dan akun Google, dengan verifikasi email menggunakan kode sekali pakai.
+- Katalog kursus, halaman detail kursus, dan pencarian responsif yang ditenagai search engine.
+- Cart, wishlist, dan sistem kupon diskon instruktur.
+- Pembayaran aman via payment gateway Midtrans dengan pendaftaran kelas otomatis setelah berhasil.
+- Course player interaktif dengan pelacakan penyelesaian materi dan sertifikat penyelesaian.
 - Panel instruktur untuk mengelola kursus, bagian, materi, sasaran belajar, dan kupon.
 - Panel administrator untuk manajemen kategori, konten halaman depan, serta moderasi kursus dan ulasan.
-- Ulasan dan penilaian, layanan bantuan berbentuk percakapan, pelaporan konten, dan notifikasi.
+- Ulasan dan rating, layanan bantuan berbentuk percakapan, pelaporan konten, dan notifikasi.
 
 ---
 
-## Tech Stack | Tumpukan Teknologi
+## Tech Stack
 
-| Layer / Lapisan | Technology / Teknologi |
+| Layer | Technology |
 | --- | --- |
-| Server framework / Kerangka kerja server | Laravel (PHP) |
-| Interface layer / Lapisan antarmuka | React via Inertia |
-| Styling / Penataan gaya | Tailwind CSS |
-| Build tool / Alat bangun | Vite |
-| Database / Basis data | MySQL (production), SQLite (development) |
-| Payment gateway / Gerbang pembayaran | Midtrans Snap |
-| Media storage / Penyimpanan media | Google Cloud Storage, Cloudinary |
-| Search engine / Mesin pencari | Meilisearch via Laravel Scout |
-| Real-time / Waktu nyata | Laravel Reverb |
-| Authentication / Autentikasi | Laravel Breeze and Socialite |
-| Transactional email / Surel transaksional | Resend |
-| Deployment / Penerapan | Docker |
+| Server framework | Laravel (PHP) |
+| Frontend | React via Inertia |
+| Styling | Tailwind CSS |
+| Build tool | Vite |
+| Database | MySQL (production), SQLite (development) |
+| Payment gateway | Midtrans Snap |
+| Cloud storage | Google Cloud Storage, Cloudinary |
+| Search engine | Meilisearch via Laravel Scout |
+| Real-time | Laravel Reverb |
+| Authentication | Laravel Breeze and Socialite |
+| Transactional email | Resend |
+| Deployment | Docker |
 
 ---
 
@@ -97,22 +97,22 @@ docs_belajarkuy/  Academic and technical documentation
 **[ID]** Pastikan PHP beserta Composer dan Node.js beserta npm telah tersedia.
 
 ```bash
-# 1. Clone the repository | Klona repositori
+# 1. Clone the repository | Clone repositori
 git clone <repository-url>
 cd BelajarKUY
 
-# 2. Install dependencies | Pasang dependensi
+# 2. Install dependencies | Install dependensi
 composer install
 npm install
 
-# 3. Prepare environment | Siapkan berkas lingkungan
+# 3. Prepare environment | Siapkan file .env
 cp .env.example .env
 php artisan key:generate
 
 # 4. Run migrations and seeders | Jalankan migrasi dan data awal
 php artisan migrate --seed
 
-# 5. Link storage and build assets | Tautkan storage dan bangun aset
+# 5. Link storage and build assets | Link storage dan build asset
 php artisan storage:link
 npm run build
 ```
@@ -122,24 +122,24 @@ npm run build
 ## Running the Application | Menjalankan Aplikasi
 
 **[EN]** For development, run the following processes in separate terminals.
-**[ID]** Untuk pengembangan, jalankan proses berikut pada terminal terpisah.
+**[ID]** Untuk development, jalankan proses berikut pada terminal terpisah.
 
 ```bash
-# Terminal 1: frontend dev server | server aset antarmuka
+# Terminal 1: frontend dev server
 npm run dev
 
-# Terminal 2: application server | server aplikasi
+# Terminal 2: application server
 php artisan serve
 
-# Terminal 3: search engine | mesin pencari
+# Terminal 3: search engine
 meilisearch
 
-# Terminal 4: real-time server | server waktu nyata
+# Terminal 4: real-time server
 php artisan reverb:start
 ```
 
 **[EN]** A container-based deployment is also provided. See the documentation for details.
-**[ID]** Tersedia pula penerapan berbasis kontainer. Lihat dokumentasi untuk perinciannya.
+**[ID]** Tersedia pula deployment berbasis container. Lihat dokumentasi untuk detailnya.
 
 ---
 
@@ -166,16 +166,16 @@ php artisan reverb:start
 
 | Name / Nama | Role / Peran | GitHub |
 | --- | --- | --- |
-| Yosua Valentino Gulo | Project Manager and Full-Stack Developer / Manajer Proyek dan Pengembang Penuh | [yopalll](https://github.com/yopalll) |
-| Albariqi Deanda Tarigan | Backend Developer, Authentication and Player / Pengembang Sisi Server, Autentikasi dan Pemutar | [albariqitarigan](https://github.com/albariqitarigan) |
-| Ray Nathan Geereno Saragih | Backend Developer, Commerce / Pengembang Sisi Server, Perdagangan | [rayysrgh](https://github.com/rayysrgh) |
-| Vascha Uli Lumbantoruan | Frontend Developer, User Experience / Pengembang Antarmuka, Pengalaman Pengguna | [vaschau-rgb](https://github.com/vaschau-rgb) |
-| Quinsha Ilmi Azzahra | Frontend Developer, Administration Panel / Pengembang Antarmuka, Panel Administrator | [uqxinn](https://github.com/uqxinn) |
-| Viter Moldy | Database Consultant / Konsultan Basis Data | [vitermoldy](https://github.com/vitermoldy) |
+| Yosua Valentino Gulo | Project Manager & Full-Stack Developer | [yopalll](https://github.com/yopalll) |
+| Albariqi Deanda Tarigan | Backend Developer — Authentication & Player | [albariqitarigan](https://github.com/albariqitarigan) |
+| Ray Nathan Geereno Saragih | Backend Developer — Commerce | [rayysrgh](https://github.com/rayysrgh) |
+| Vascha Uli Lumbantoruan | Frontend Developer — User Experience | [vaschau-rgb](https://github.com/vaschau-rgb) |
+| Quinsha Ilmi Azzahra | Frontend Developer — Admin Panel | [uqxinn](https://github.com/uqxinn) |
+| Viter Moldy | Database Consultant | [vitermoldy](https://github.com/vitermoldy) |
 
 ---
 
 ## License | Lisensi
 
 **[EN]** This project was developed for academic purposes. The underlying Laravel framework is open-source software licensed under the MIT license.
-**[ID]** Proyek ini dikembangkan untuk keperluan akademik. Kerangka kerja Laravel yang menjadi basisnya merupakan perangkat lunak sumber terbuka yang dilisensikan di bawah lisensi MIT.
+**[ID]** Proyek ini dikembangkan untuk keperluan akademik. Framework Laravel yang menjadi basisnya merupakan software open-source yang dilisensikan di bawah lisensi MIT.

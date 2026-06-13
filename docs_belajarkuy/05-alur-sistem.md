@@ -5,19 +5,19 @@ Bagian ini menjelaskan alur kerja utama yang menghubungkan beberapa fitur menjad
 ## 5.1 Autentikasi dan Pengarahan Peran
 
 ```
-Pendaftaran atau Masuk (surel atau Google)
+Registrasi atau Login (email atau Google)
         |
         v
-Verifikasi surel melalui kode sekali pakai
+Verifikasi email via kode sekali pakai
         |
         v
-Pengarahan ke dasbor sesuai peran:
-        - admin       -> dasbor administrator
-        - instructor  -> dasbor instruktur
-        - user        -> dasbor siswa
+Redirect ke dashboard sesuai peran:
+        - admin       -> dashboard administrator
+        - instructor  -> dashboard instruktur
+        - user        -> dashboard siswa
 ```
 
-Pengguna yang belum terverifikasi tidak dapat memasuki area terbatas. Administrator memiliki halaman masuk tersendiri yang terpisah dari halaman umum.
+Pengguna yang belum terverifikasi tidak dapat memasuki area terbatas. Administrator memiliki halaman login tersendiri yang terpisah dari halaman umum.
 
 ## 5.2 Pembelian hingga Akses Kelas
 
@@ -27,27 +27,27 @@ Alur ini merupakan tulang punggung aplikasi. Ia membedakan tiga keadaan yang tid
 Siswa menekan tombol Bayar
         |
         v
-Catatan pembayaran dibuat dengan status menunggu
+Catatan pembayaran dibuat dengan status pending
         |
         v
-Gerbang pembayaran memproses transaksi
+Payment gateway memproses transaksi
         |
         v
-Pemberitahuan balik (webhook) diterima
+Webhook callback diterima
         |
         v
 Bila berhasil (settlement atau capture):
         - Pesanan dibuat dengan status selesai          [telah dipesan]
         - Pendaftaran kelas dibuat secara atomik         [telah terdaftar]
-        - Keranjang dikosongkan
-        - Surel konfirmasi pembelian dan faktur dikirim
+        - Cart dikosongkan
+        - Email konfirmasi pembelian dan invoice dikirim
         |
         v
-Siswa membuka pemutar kursus
-(hak akses diperiksa melalui keberadaan pendaftaran kelas)
+Siswa membuka course player
+(hak akses diperiksa melalui keberadaan enrollment)
 ```
 
-Pembuatan pesanan dan pendaftaran kelas dilakukan dalam satu transaksi basis data agar konsisten: bila salah satu gagal, keduanya dibatalkan. Bila pembayaran tertunda, pengguna diarahkan ke halaman status tertunda; bila gagal atau dibatalkan, pengguna diarahkan ke halaman kegagalan.
+Pembuatan pesanan dan pendaftaran kelas dilakukan dalam satu database transaction agar konsisten: bila salah satu gagal, keduanya dibatalkan. Bila pembayaran tertunda, pengguna diarahkan ke halaman status pending; bila gagal atau dibatalkan, pengguna diarahkan ke halaman kegagalan.
 
 ## 5.3 Belajar dan Penerbitan Sertifikat
 
@@ -55,7 +55,7 @@ Pembuatan pesanan dan pendaftaran kelas dilakukan dalam satu transaksi basis dat
 Siswa membuka kursus dari Kursus Saya
         |
         v
-Pemutar mengarahkan ke materi pertama yang belum selesai
+Player mengarahkan ke materi pertama yang belum selesai
         |
         v
 Siswa menandai materi selesai (idempoten)
@@ -72,18 +72,18 @@ Bila seluruh materi selesai:
 ## 5.4 Moderasi Kursus
 
 ```
-Instruktur mengirim kursus untuk ditinjau
+Instruktur submit kursus untuk ditinjau
         |
         v
-Status kursus menjadi menunggu tinjauan
+Status kursus menjadi pending review
         |
         v
 Administrator meninjau melalui halaman detail kursus:
         - Setuju  -> kursus menjadi aktif dan tampil di publik
-        - Tolak   -> kursus menjadi nonaktif disertai umpan balik bagi instruktur
+        - Tolak   -> kursus menjadi nonaktif disertai feedback bagi instruktur
 ```
 
-## 5.5 Layanan Bantuan
+## 5.5 Help Desk
 
 ```
 Pengguna membuat tiket bantuan (disertai lampiran bila perlu)
@@ -92,7 +92,7 @@ Pengguna membuat tiket bantuan (disertai lampiran bila perlu)
 Tiket tampil sebagai percakapan berurutan
         |
         v
-Administrator membalas; pengguna menerima pemberitahuan melalui surel
+Administrator membalas; pengguna menerima notifikasi via email
         |
         v
 Percakapan berlanjut hingga persoalan selesai
@@ -100,4 +100,4 @@ Percakapan berlanjut hingga persoalan selesai
 
 ## 5.6 Pelaporan Konten
 
-Pengguna dapat melaporkan kursus maupun ulasan yang dianggap tidak pantas. Laporan tersebut masuk ke antrean tinjauan administrator untuk ditindaklanjuti, sehingga kualitas konten platform tetap terjaga.
+Pengguna dapat melaporkan kursus maupun ulasan yang dianggap tidak pantas. Laporan tersebut masuk ke antrian tinjauan administrator untuk ditindaklanjuti, sehingga kualitas konten platform tetap terjaga.
